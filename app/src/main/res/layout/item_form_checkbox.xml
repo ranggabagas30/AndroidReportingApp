@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/form.checkbox.root"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/padding_large">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/form.checkbox.mandatory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/mandatory"
+        style="@style/AppTheme.TextView.Mandatory"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/form.checkbox.title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="SAMPLE"
+        style="@style/AppTheme.TextView.Title"/>
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/form.checkbox.ckb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Checkbox"/>
+</LinearLayout>

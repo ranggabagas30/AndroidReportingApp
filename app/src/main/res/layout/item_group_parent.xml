@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="5dp"
-    android:paddingStart="16dp"
-    android:paddingEnd="16dp"
+    android:paddingStart="@dimen/padding_large"
+    android:paddingEnd="@dimen/padding_large"
     android:background="@color/colorPrimaryLight">
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -18,11 +18,12 @@
         android:textStyle="bold"
         android:textColor="@color/colorPrimaryText"/>
 
-    <com.google.android.material.button.MaterialButton
+    <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/group.parent.btn.upload"
         android:layout_width="48dp"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:padding="10dp"
-        app:icon="@drawable/ic_file_upload_24dp" />
+        android:background="@drawable/shape_button_upload"
+        app:srcCompat="@drawable/ic_file_upload_24dp" />
 </RelativeLayout>

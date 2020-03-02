@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/padding_large">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/form.edittext.mandatory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/mandatory"
+        style="@style/AppTheme.TextView.Mandatory"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/form.edittext.title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="SAMPLE"
+        style="@style/AppTheme.TextView.Title"/>
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/form.edittext.textfield"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Text Field"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/form.edittext.description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="desc"/>
+</LinearLayout>

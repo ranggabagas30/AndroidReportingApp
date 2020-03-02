@@ -1,0 +1,42 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <View
+        android:id="@+id/form.header.helper1"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/padding_large" />
+
+    <RelativeLayout
+        android:id="@+id/form.header.content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/form.header.helper1"
+        android:layout_centerVertical="true"
+        android:background="@drawable/shape_item_drill_green"
+        android:paddingBottom="@dimen/padding_medium"
+        android:paddingLeft="@dimen/padding_large"
+        android:paddingRight="@dimen/padding_large"
+        android:paddingTop="@dimen/padding_medium" >
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/form.header.label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:ellipsize="end"
+            android:includeFontPadding="false"
+            android:text="Sample"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/form.header.upload.status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/form.header.label"
+            android:text="NOT COMPLETE"
+            android:textStyle="bold"
+            android:textSize="12sp"
+            android:visibility="visible"/>
+    </RelativeLayout>
+
+</RelativeLayout>

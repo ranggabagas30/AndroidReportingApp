@@ -6,4 +6,12 @@
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="tetap_login">Tetap login</string>
+    <string name="mandatory">Mandatory</string>
+    <string name="radio_ok">OK</string>
+    <string name="radio_nok">NOK</string>
+    <string name="radio_na">N/A</string>
+    <string name="remark">Remark</string>
+
+    <string name="dummy_long_text">asdfasd asdfasdf asdfasdf asdfasdasdafsdsdfasdfasdasdfasdfaadsfasdf sdfasdasdafsdsdfasdfasdasdfasdfaadsfasdf sdfasdasdafsdsdfasdfasdasdfasdfaadsfasdf</string>
+    <string name="tidak_ada_item">Tidak ada item</string>
 </resources>

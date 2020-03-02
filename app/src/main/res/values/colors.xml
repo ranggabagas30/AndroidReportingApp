@@ -14,4 +14,19 @@
     <color name="colorSurface">@android:color/white</color>
     <color name="colorOnError">@android:color/white</color>
     <color name="colorOnSurface">@android:color/black</color>
+
+    <!-- legacy -->
+    <item type="color" name="item_drill_green">#16d7b2</item>
+    <item type="color" name="item_drill_red">#f75b54</item>
+    <item type="color" name="item_drill_blue">#4cbcf3</item>
+    <item type="color" name="item_drill_gray">#ae62f5</item>
+    <item type="color" name="list_title">#555555</item>
+    <item type="color" name="list_subgray">#b8b8b8</item>
+    <item type="color" name="item_nav_1_expcol_default">#f6f7f7</item>
+    <item type="color" name="item_nav_1_expcol_pressed">#d7d7d7</item>
+    <item type="color" name="item_nav_2_expcol_default">#ffffff</item>
+    <item type="color" name="item_nav_2_expcol_pressed">#ffffff</item>
+    <item type="color" name="item_nav_2_pressed">#efefef</item>
+    <item type="color" name="col_title">#999999</item>
+    <item type="color" name="single_title">#333333</item>
 </resources>

@@ -1,0 +1,109 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/padding_large"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/form.photolayout.picture"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/colorPrimaryLight"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/form.photolayout.no_picture"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="33dp"
+        app:layout_constraintTop_toBottomOf="@+id/form.photolayout.picture"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_no_picture"
+        android:scaleType="centerInside"
+        android:adjustViewBounds="true"
+        android:visibility="visible"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/form.photolayout.title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="10dp"
+        android:text="SAMPLE"
+        android:textSize="14sp"
+        style="@style/AppTheme.TextView.Title.SingleLine"
+        app:layout_constraintTop_toBottomOf="@id/form.photolayout.picture"
+        app:layout_constraintStart_toEndOf="@id/form.photolayout.no_picture"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/form.photolayout.mandatory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="@string/mandatory"
+        android:visibility="visible"
+        style="@style/AppTheme.TextView.Mandatory"
+        app:layout_constraintTop_toBottomOf="@id/form.photolayout.title"
+        app:layout_constraintStart_toEndOf="@id/form.photolayout.no_picture"/>
+
+    <RadioGroup
+        android:id="@+id/form.photolayout.rgroup"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        app:layout_constraintTop_toBottomOf="@id/form.photolayout.btn.camera"
+        app:layout_constraintStart_toEndOf="@id/form.photolayout.no_picture"
+        android:orientation="horizontal">
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/form.photolayout.rbtn.ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/radio_ok" />
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/form.photolayout.rbtn.nok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/radio_nok" />
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/form.photolayout.rbtn.na"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/radio_na" />
+
+    </RadioGroup>
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/form.photolayout.upload"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:padding="10dp"
+        android:background="@drawable/shape_button_upload"
+        app:srcCompat="@drawable/ic_file_upload_24dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/form.photolayout.btn.camera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:srcCompat="@drawable/ic_photo_camera_24dp"
+        app:backgroundTint="@color/colorPrimaryLight"
+        app:layout_constraintTop_toBottomOf="@id/form.photolayout.picture"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:elevation="0dp"/>
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/form.photolayout.tf.remark"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/remark"
+        app:layout_constraintTop_toBottomOf="@id/form.photolayout.rgroup"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

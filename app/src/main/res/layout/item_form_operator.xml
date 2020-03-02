@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.AppCompatTextView
+    android:id="@+id/form.operator.title"
+    style="@style/AppTheme.TextView.Title.SingleLine"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/padding_large"
+    android:paddingRight="@dimen/padding_large"
+    android:paddingTop="@dimen/padding_large"
+    android:text="Operator"
+    android:textStyle="bold"
+    xmlns:android="http://schemas.android.com/apk/res/android" />

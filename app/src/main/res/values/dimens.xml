@@ -2,4 +2,16 @@
 <resources>
     <dimen name="checkin_tflayout_start_end_margin">10dp</dimen>
     <dimen name="checkin_tflayout_top_bottom_margin">5dp</dimen>
+    <dimen name="width_height_button">50dp</dimen>
+
+    <!-- legacy -->
+    <!-- general padding -->
+    <dimen name="padding_xxs">2dp</dimen>
+    <dimen name="padding_xtra_small">4dp</dimen>
+    <dimen name="padding_small">8dp</dimen>
+    <dimen name="padding_medium">10dp</dimen>
+    <dimen name="padding_medium_neg">-10dp</dimen>
+    <dimen name="padding_large">16dp</dimen>
+    <dimen name="padding_xtra_large">20dp</dimen>
+    <dimen name="padding_xxl">40dp</dimen>
 </resources>
