@@ -1,0 +1,168 @@
+buildscript {
+    repositories {
+        maven { url 'https://maven.fabric.io/public' }
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath "io.fabric.tools:gradle:${rootProject.ext.fabricGradleVersion}"
+    }
+}
+
+apply plugin: 'com.android.application'
+
+apply plugin: 'io.fabric'
+
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
+apply plugin: 'kotlin-kapt'
+
+// Manifest version information!
+def minAPIlevel = rootProject.ext.minSdkVersion
+def versionMajor = 0
+def versionMinor = 1
+def versionPatch = 0
+
+android {
+
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+    defaultConfig {
+        applicationId "com.domikado.bit"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode minAPIlevel * 1000000 + versionMajor * 10000 + versionMinor * 100 + versionPatch
+        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
+    }
+
+    signingConfigs {
+        release {
+            storeFile file('release.keystore.jks')
+            storePassword "domikado"
+            keyAlias "bit"
+            keyPassword "domikado"
+        }
+    }
+
+    buildTypes {
+        debug {
+            applicationIdSuffix ".debug"
+            applicationVariants.all { variant ->
+                renameAPK(variant)
+            }
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            applicationVariants.all { variant ->
+                renameAPK(variant)
+            }
+        }
+    }
+
+    flavorDimensions "default"
+
+    productFlavors {
+        bit {
+            applicationId 'com.domikado.bit'
+            dimension "default"
+        }
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+}
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+    mavenCentral()
+}
+
+def renameAPK(variant) {
+    variant.outputs.all { output ->
+        def formattedDate = new Date().format('ddMMYY')
+        outputFileName = "${variant.name}-${variant.versionName}-${formattedDate}.apk"
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    // Base
+    implementation "com.android.support:multidex:${rootProject.ext.multidex}"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "androidx.appcompat:appcompat:${rootProject.ext.appCompat}"
+    implementation "androidx.core:core-ktx:${rootProject.ext.coreKtx}"
+    implementation "androidx.fragment:fragment-ktx:${rootProject.ext.fragmentKtx}"
+    implementation "androidx.constraintlayout:constraintlayout:${rootProject.ext.constraintLayoutVersion}"
+    implementation "androidx.legacy:legacy-support-v4:${rootProject.ext.legacySupport}"
+    implementation "com.google.android.material:material:${rootProject.ext.materialComponent}"
+    implementation "androidx.navigation:navigation-fragment-ktx:${rootProject.ext.navigationComponent}"
+    implementation "androidx.navigation:navigation-ui-ktx:${rootProject.ext.navigationComponent}"
+    implementation "com.google.android.gms:play-services-location:${rootProject.ext.playServicesLocationVersion}"
+    implementation "com.google.android.gms:play-services-maps:${rootProject.ext.playServicesMapsVersion}"
+    implementation "com.google.firebase:firebase-core:${rootProject.ext.firebaseCoreVersion}"
+    implementation "com.google.firebase:firebase-messaging:${rootProject.ext.firebaseMessagingVersion}"
+    implementation "com.google.firebase:firebase-analytics:${rootProject.ext.firebaseAnalytics}"
+    implementation "com.crashlytics.sdk.android:crashlytics:${rootProject.ext.crashlyticsVersion}"
+
+    // Coroutine
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${rootProject.ext.coroutine}"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${rootProject.ext.coroutine}"
+
+    // Rx
+    implementation "io.reactivex.rxjava2:rxandroid:${rootProject.ext.rxAndroid}"
+    implementation "io.reactivex.rxjava2:rxkotlin:${rootProject.ext.rxKotlin}"
+    implementation "io.reactivex.rxjava2:rxjava:${rootProject.ext.rxJava}"
+
+    // Networking
+    // retrofit : http://square.github.io/retrofit
+    implementation "com.squareup.okhttp3:logging-interceptor:${rootProject.ext.okHttp3Logging}"
+    implementation "com.squareup.retrofit2:retrofit:${rootProject.ext.retrofit2}"
+    implementation "com.squareup.retrofit2:converter-gson:${rootProject.ext.retrofit2}"
+    implementation "com.jakewharton.retrofit:retrofit2-rxjava2-adapter:${rootProject.ext.retrofit2rxjava2}"
+
+    // Room db
+    implementation "androidx.room:room-runtime:${rootProject.ext.roomDb}"
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    kapt "androidx.room:room-compiler:${rootProject.ext.roomDb}" // For Kotlin use kapt instead of annotationProcessor
+    implementation "androidx.room:room-rxjava2:${rootProject.ext.roomDb}" // rxjava2 support
+
+    // Custom view
+//    implementation "com.romandanylyk:pageindicatorview:${rootProject.ext.pageIndicatorView}"
+//    implementation "com.akexorcist:RoundCornerProgressBar:${rootProject.ext.roundProgressBar}"
+//    implementation "com.mikhaellopez:circularprogressbar:${rootProject.ext.circularProgressBar}"
+//    implementation "com.google.android:flexbox:${rootProject.ext.flexboxLayout}"
+    implementation "com.thoughtbot:expandablerecyclerview:${rootProject.ext.expendableRecyclerView}"
+
+    // Utilities
+    implementation "com.github.bumptech.glide:glide:${rootProject.ext.glide}"
+    annotationProcessor "com.github.bumptech.glide:compiler:${rootProject.ext.glideCompiler}"
+    implementation "com.google.code.gson:gson:${rootProject.ext.gson}"
+    implementation "pl.droidsonroids.gif:android-gif-drawable:${rootProject.ext.gifLoader}"
+    implementation "com.pixplicity.easyprefs:library:${rootProject.ext.sharedPrefs}"
+    implementation "com.karumi:dexter:${rootProject.ext.dexterPermission}" // permissions
+    implementation "com.facebook.stetho:stetho:${rootProject.ext.facebookStethoversion}"
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+}
+
+apply plugin: 'com.google.gms.google-services'

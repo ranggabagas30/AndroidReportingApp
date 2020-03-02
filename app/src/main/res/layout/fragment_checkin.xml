@@ -1,0 +1,212 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.domikado.bit.ui.screen.checkin.CheckinFragment">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/checkin.tflayout.siteidstp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/checkin_tflayout_top_bottom_margin"
+            android:layout_marginBottom="@dimen/checkin_tflayout_top_bottom_margin"
+            android:layout_marginStart="@dimen/checkin_tflayout_start_end_margin"
+            android:layout_marginEnd="@dimen/checkin_tflayout_start_end_margin"
+            android:hint="Site ID STP"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/checkin.tf.siteidstp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/checkin.tflayout.sitename"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/checkin_tflayout_top_bottom_margin"
+            android:layout_marginBottom="@dimen/checkin_tflayout_top_bottom_margin"
+            android:layout_marginStart="@dimen/checkin_tflayout_start_end_margin"
+            android:layout_marginEnd="@dimen/checkin_tflayout_start_end_margin"
+            android:hint="Site Name"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/checkin.tf.sitename"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/checkin.tflayout.pmperiod"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/checkin_tflayout_top_bottom_margin"
+            android:layout_marginBottom="@dimen/checkin_tflayout_top_bottom_margin"
+            android:layout_marginStart="@dimen/checkin_tflayout_start_end_margin"
+            android:layout_marginEnd="@dimen/checkin_tflayout_start_end_margin"
+            android:hint="PM Period"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/checkin.tf.pmperiod"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- SITE COORDINATE -->
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/checkin.sitecoordinate.label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:text="Site Coordinates : "
+            android:textSize="16sp"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/checkin.sitecoordinate.tflayout.latitude"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:hint="Latitude"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/checkin.sitecoordinate.tf.latitude"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:ellipsize="end">
+
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/checkin.sitecoordinate.tflayout.longitude"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:hint="Longitude"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/checkin.sitecoordinate.tf.longitude"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:ellipsize="end">
+
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
+        <!-- END OF SITE COORDINATE -->
+
+        <!-- USER COORDINATE -->
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/checkin.usercoordinate.label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:text="User Coordinates : "
+            android:textSize="16sp"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/checkin.usercoordinate.tflayout.latitude"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:hint="Menunggu kesiapan GPS"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/checkin.usercoordinate.tf.latitude"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:ellipsize="end">
+
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/checkin.usercoordinate.tflayout.longitude"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:hint="Menunggu kesiapan GPS"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/checkin.usercoordinate.tf.longitude"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:ellipsize="end">
+
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
+        <!-- END OF USER COORDINATES -->
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/checkin.tflayout.distancetosite"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/checkin_tflayout_top_bottom_margin"
+            android:layout_marginBottom="@dimen/checkin_tflayout_top_bottom_margin"
+            android:layout_marginStart="@dimen/checkin_tflayout_start_end_margin"
+            android:layout_marginEnd="@dimen/checkin_tflayout_start_end_margin"
+            android:hint="Jarak ke lokasi site: (dalam meter)"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/checkin.tf.distancetosite"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/checkin.tflayout.gpsaccuracy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/checkin_tflayout_top_bottom_margin"
+            android:layout_marginBottom="@dimen/checkin_tflayout_top_bottom_margin"
+            android:layout_marginStart="@dimen/checkin_tflayout_start_end_margin"
+            android:layout_marginEnd="@dimen/checkin_tflayout_start_end_margin"
+            android:hint="Tingkat akurasi GPS"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/checkin.tf.gpsaccuracy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="Check in"/>
+    </LinearLayout>
+</ScrollView>

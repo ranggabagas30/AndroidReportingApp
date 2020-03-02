@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.screen.mainmenu.MainMenuFragment">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/main_menu.user.welcome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="Hi Domikado Tester"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <include
+        android:id="@+id/main_menu.item.schedule"
+        layout="@layout/item_main_menu"
+        android:layout_width="0dp"
+        android:layout_height="150dp"
+        android:layout_margin="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/main_menu.user.welcome"
+        app:layout_constraintEnd_toStartOf="@id/guideline" />
+
+    <include
+        android:id="@+id/main_menu.item.preventive"
+        layout="@layout/item_main_menu"
+        android:layout_width="0dp"
+        android:layout_height="150dp"
+        android:layout_margin="5dp"
+        app:layout_constraintStart_toEndOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/main_menu.user.welcome"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <include
+        android:id="@+id/main_menu.item.pengaturan"
+        layout="@layout/item_main_menu"
+        android:layout_width="0dp"
+        android:layout_height="150dp"
+        android:layout_margin="5dp"
+        app:layout_constraintStart_toEndOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/main_menu.item.preventive"
+        app:layout_constraintEnd_toEndOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navigation_graph"
+    app:startDestination="@id/mainMenuFragment">
+
+    <fragment
+        android:id="@+id/mainMenuFragment"
+        android:name="com.domikado.bit.ui.screen.mainmenu.MainMenuFragment"
+        android:label="fragment_main_menu"
+        tools:layout="@layout/fragment_main_menu" >
+        <action
+            android:id="@+id/action_mainMenuFragment_to_scheduleListFragment"
+            app:destination="@id/scheduleListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/scheduleListFragment"
+        android:name="com.domikado.bit.ui.screen.schedulelist.ScheduleListFragment"
+        android:label="fragment_schedule"
+        tools:layout="@layout/fragment_schedule" >
+        <action
+            android:id="@+id/action_scheduleListFragment_to_checkinFragment"
+            app:destination="@id/checkinFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/formGroupFragment"
+        android:name="com.domikado.bit.ui.screen.formgroup.FormGroupFragment"
+        android:label="fragment_group"
+        tools:layout="@layout/fragment_group" >
+        <action
+            android:id="@+id/action_formGroupFragment_to_formFillFragment"
+            app:destination="@id/formFillFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/formFillFragment"
+        android:name="com.domikado.bit.ui.screen.formfill.FormFillFragment"
+        android:label="fragment_form"
+        tools:layout="@layout/fragment_form" />
+    <fragment
+        android:id="@+id/checkinFragment"
+        android:name="com.domikado.bit.ui.screen.checkin.CheckinFragment"
+        android:label="fragment_checkin"
+        tools:layout="@layout/fragment_checkin" >
+        <action
+            android:id="@+id/action_checkinFragment_to_formGroupFragment"
+            app:destination="@id/formGroupFragment" />
+    </fragment>
+</navigation>

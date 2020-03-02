@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "886396200048",
+    "firebase_url": "https://bitdomikado.firebaseio.com",
+    "project_id": "bitdomikado",
+    "storage_bucket": "bitdomikado.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:886396200048:android:c0679ed6e0d78ec215c0b5",
+        "android_client_info": {
+          "package_name": "com.domikado.bit.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "886396200048-dlan8v9rpntcb861sctmud2b7fpld5hp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.domikado.bit.debug",
+            "certificate_hash": "ca453082ef06b6f06bf805961aa5ca86545a4d68"
+          }
+        },
+        {
+          "client_id": "886396200048-faiacvastkpk1k9bmeg9f7me3chefl8b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCAoLfcNz_bD_Cez-7VGcX1Dvs_aQZVCOI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "886396200048-faiacvastkpk1k9bmeg9f7me3chefl8b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
