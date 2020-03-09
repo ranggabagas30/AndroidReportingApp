@@ -1,4 +1,4 @@
-package com.domikado.bit.data.datamodel
+package com.domikado.bit.abstraction.recyclerview.itemmodel
 
 import com.domikado.bit.abstraction.recyclerview.AbstractBaseItemModel
 import com.domikado.bit.abstraction.recyclerview.ViewHolderTypeFactory

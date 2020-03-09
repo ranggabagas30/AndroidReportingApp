@@ -71,6 +71,8 @@ android {
         bit {
             applicationId 'com.domikado.bit'
             dimension "default"
+            buildConfigField("String", "BASE_URL", '"http://operation-api.sekap.net"')
+            buildConfigField("String", "DATABASE_NAME", '"bit_main.db"')
         }
     }
 
@@ -159,6 +161,7 @@ dependencies {
     implementation "com.pixplicity.easyprefs:library:${rootProject.ext.sharedPrefs}"
     implementation "com.karumi:dexter:${rootProject.ext.dexterPermission}" // permissions
     implementation "com.facebook.stetho:stetho:${rootProject.ext.facebookStethoversion}"
+    implementation 'com.pixplicity.easyprefs:library:1.9.0'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
