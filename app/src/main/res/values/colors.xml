@@ -4,10 +4,12 @@
     <color name="colorPrimaryLight">#5079c2</color>
     <color name="colorPrimaryDark">#002763</color>
     <color name="colorPrimaryText">@android:color/white</color>
+    <color name="colorOnPrimary">@android:color/white</color>
     <color name="colorSecondary">#01579b</color>
     <color name="colorSecondaryLight">#4f83cc</color>
     <color name="colorSecondaryDark">#002f6c</color>
     <color name="colorOnSecondary">@android:color/white</color>
+    <color name="colorWindowBackground">#EEECEC</color>
     <color name="colorBackground">@android:color/white</color>
     <color name="colorOnBackground">@android:color/black</color>
     <color name="colorError">#910C0C</color>

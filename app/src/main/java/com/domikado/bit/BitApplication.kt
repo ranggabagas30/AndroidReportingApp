@@ -2,6 +2,7 @@ package com.domikado.bit
 
 import android.content.ContextWrapper
 import androidx.multidex.MultiDexApplication
+import com.jakewharton.threetenabp.AndroidThreeTen
 import com.pixplicity.easyprefs.library.Prefs
 
 class BitApplication: MultiDexApplication() {
@@ -16,5 +17,7 @@ class BitApplication: MultiDexApplication() {
             .setPrefsName(packageName)
             .setUseDefaultSharedPreference(true)
             .build()
+
+        AndroidThreeTen.init(this); // ThreeTenABP by JakeWharton implements JSR-310 date/time
     }
 }

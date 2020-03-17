@@ -2,29 +2,10 @@ package com.domikado.bit.data.local.database.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import com.domikado.bit.data.local.database.entity.unused.TbWorkFormRowColumn
 
 @Entity(
-    tableName = WORK_FORM_ITEM.TB_NAME,
-    foreignKeys = [
-//        ForeignKey(
-//            entity = TbWorkFormGroup::class,
-//            parentColumns = [WORK_FORM_GROUP.ID],
-//            childColumns = [WORK_FORM_ITEM.WORK_FORM_GROUP_ID]
-//        ),
-//        ForeignKey(
-//            entity = TbWorkFormRow::class,
-//            parentColumns = [WORK_FORM_ROW.ID],
-//            childColumns = [WORK_FORM_ITEM.WORK_FORM_ROW_ID]
-//        )
-        ForeignKey(
-            entity = TbWorkFormRowColumn::class,
-            parentColumns = [WORK_FORM_ROW_COLUMN_JOIN.ID],
-            childColumns = [WORK_FORM_ITEM.WORK_FORM_ROW_COLUMN_ID]
-        )
-    ]
+    tableName = WORK_FORM_ITEM.TB_NAME
 )
 data class TbWorkFormItem(
 
@@ -45,15 +26,6 @@ data class TbWorkFormItem(
 
     @ColumnInfo(name = WORK_FORM_ITEM.IS_LISTABLE)
     val isListable: Boolean?,
-
-//    @ColumnInfo(name = WORK_FORM_ITEM.WORK_FORM_GROUP_ID)
-//    val workFormGroupId: Int,
-
-//    @ColumnInfo(name = WORK_FORM_ITEM.WORK_FORM_ROW_ID)
-//    val workFormRowId: Int,
-
-    @ColumnInfo(name = WORK_FORM_ITEM.WORK_FORM_ROW_COLUMN_ID)
-    val workFormRowColumnId: Int,
 
     @ColumnInfo(name = WORK_FORM_ITEM.FIELD_TYPE)
     val fieldType: String?, // i.e. "Photo", "Label", "TextField", "Radio"...
@@ -96,4 +68,6 @@ object WORK_FORM_ITEM {
     const val DEFAULT_VALUE = "default_value"
     const val SCOPE_TYPE = "scope_type"
     const val LABEL_KEY = "label_key"
+
+    const val INDEX_WORK_FORM_ROW_COLUMN = "ROW_COLUMN_INDEX"
 }

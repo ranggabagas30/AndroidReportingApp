@@ -6,9 +6,11 @@ import io.reactivex.Single
 
 interface IAuthRepository {
 
-    fun createCurrentUser(user: User): Completable
+    fun signInUser(username: String, password: String): Single<User>
 
-    fun getCurrentUser(): Single<User>
+    fun saveUser(user: User): Completable
+
+    fun getCurrentUser(): User
 
     fun signOutCurrentUser(): Completable
 

@@ -17,8 +17,5 @@ interface ILocalWorkFormRepository {
 
     fun getWorkFormItems(workFormRowColumnId: Int): Single<List<WorkFormItem>>
 
-
     fun addWorkForms(workForms: List<WorkForm>): Completable
-
-
 }

@@ -8,5 +8,6 @@ data class JSONSite(
     val location_id: Int,
     val name: String,
     val site_id_customer: String,
-    val updated_at: String
+    val updated_at: String,
+    val status: Int
 )

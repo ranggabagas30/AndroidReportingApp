@@ -6,7 +6,6 @@ import androidx.room.Query
 import com.domikado.bit.data.local.database.entity.TbWorkFormItem
 import com.domikado.bit.data.local.database.entity.WORK_FORM_ITEM
 import io.reactivex.Completable
-import io.reactivex.Single
 
 @Dao
 interface ItemDao {
@@ -16,9 +15,4 @@ interface ItemDao {
 
     @Query("DELETE FROM ${WORK_FORM_ITEM.TB_NAME}")
     fun deleteAll()
-
-    @Query("SELECT * FROM ${WORK_FORM_ITEM.TB_NAME} WHERE ${WORK_FORM_ITEM.WORK_FORM_GROUP_ID} = :groupId")
-    fun getFormItemsByGroupId(groupId: Int): Single<List<TbWorkFormItem>>
-
-
 }

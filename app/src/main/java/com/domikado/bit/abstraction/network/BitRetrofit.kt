@@ -1,7 +1,7 @@
 package com.domikado.bit.abstraction.network
 
 import com.domikado.bit.BuildConfig
-import com.domikado.bit.abstraction.utility.PREF_KEY_ACCESS_TOKEN
+import com.domikado.bit.utility.PREF_KEY_ACCESS_TOKEN
 import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import com.pixplicity.easyprefs.library.Prefs
@@ -14,7 +14,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-class RetrofitConfig {
+class BitRetrofit {
 
     companion object {
         private const val CONNECTION_TIMEOUT = 1L // minute
@@ -38,7 +38,7 @@ class RetrofitConfig {
 
         private lateinit var retrofit: Retrofit
 
-        fun <T> createService(serviceClass: Class<T>) {
+        fun <T> createService(serviceClass: Class<T>): T {
 
             if (!httpClient.interceptors().contains(httpLoggingInterceptor)) {
                 httpClient.addInterceptor(httpLoggingInterceptor)
@@ -53,7 +53,7 @@ class RetrofitConfig {
                 .client(httpClient.build())
                 .build()
 
-            retrofit.create(serviceClass)
+            return retrofit.create(serviceClass)
         }
 
         private class AuthenticationInterceptor: Interceptor {

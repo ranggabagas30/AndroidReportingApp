@@ -6,7 +6,7 @@ import io.reactivex.Single
 
 class RemoteScheduleSource {
 
-    fun getWorkTypeSchedules(workTypeId: Int, locator: ScheduleServiceLocator): Single<List<Schedule>>
-            = locator.remoteScheduleRepository.getWorkTypeSchedules(workTypeId)
+    fun getSchedules(userId: Int, locator: ScheduleServiceLocator): Single<List<Schedule>> =
+        locator.remoteScheduleRepository.getSchedules(userId)
 
 }

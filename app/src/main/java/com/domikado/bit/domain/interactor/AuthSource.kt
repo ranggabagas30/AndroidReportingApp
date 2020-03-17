@@ -7,10 +7,13 @@ import io.reactivex.Single
 
 class AuthSource {
 
-    fun createCurrentUser(user: User, locator: UserServiceLocator): Completable
-            = locator.authRepository.createCurrentUser(user)
+    fun signInUser(username: String, password: String, locator: UserServiceLocator): Single<User>
+            = locator.authRepository.signInUser(username, password)
 
-    fun getCurrentUser(locator: UserServiceLocator): Single<User>
+    fun saveUser(user: User, locator: UserServiceLocator): Completable
+            = locator.authRepository.saveUser(user)
+
+    fun getCurrentUser(locator: UserServiceLocator): User
             = locator.authRepository.getCurrentUser()
 
     fun signOutCurrentUser(locator: UserServiceLocator): Completable

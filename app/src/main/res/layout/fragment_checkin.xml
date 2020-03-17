@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.domikado.bit.ui.screen.checkin.CheckinFragment">
+    tools:context="com.domikado.bit.ui.screen.checkin.CheckInFragment">
 
     <LinearLayout
         android:orientation="vertical"
@@ -19,6 +19,7 @@
             android:layout_marginStart="@dimen/checkin_tflayout_start_end_margin"
             android:layout_marginEnd="@dimen/checkin_tflayout_start_end_margin"
             android:hint="Site ID STP"
+            android:enabled="false"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
             <com.google.android.material.textfield.TextInputEditText

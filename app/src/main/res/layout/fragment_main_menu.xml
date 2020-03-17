@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:padding="16dp"
         android:text="Hi Domikado Tester"
+        android:visibility="gone"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -32,7 +33,7 @@
         app:layout_constraintEnd_toStartOf="@id/guideline" />
 
     <include
-        android:id="@+id/main_menu.item.preventive"
+        android:id="@+id/main_menu.item.otdr"
         layout="@layout/item_main_menu"
         android:layout_width="0dp"
         android:layout_height="150dp"
@@ -42,12 +43,12 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <include
-        android:id="@+id/main_menu.item.pengaturan"
+        android:id="@+id/main_menu.item.settings"
         layout="@layout/item_main_menu"
         android:layout_width="0dp"
         android:layout_height="150dp"
         android:layout_margin="5dp"
         app:layout_constraintStart_toEndOf="@id/guideline"
-        app:layout_constraintTop_toBottomOf="@id/main_menu.item.preventive"
+        app:layout_constraintTop_toBottomOf="@id/main_menu.item.otdr"
         app:layout_constraintEnd_toEndOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

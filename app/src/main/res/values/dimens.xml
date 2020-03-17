@@ -3,6 +3,8 @@
     <dimen name="checkin_tflayout_start_end_margin">10dp</dimen>
     <dimen name="checkin_tflayout_top_bottom_margin">5dp</dimen>
     <dimen name="width_height_button">50dp</dimen>
+    <dimen name="card_corner_radius_normal">10dp</dimen>
+    <dimen name="card_elevation_normal">4dp</dimen>
 
     <!-- legacy -->
     <!-- general padding -->

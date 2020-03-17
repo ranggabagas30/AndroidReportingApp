@@ -27,7 +27,7 @@ private const val DATABASE_SCHEMA_VERSION = 1
         TbJoinWorkFormRowColumn::class
     ],
     version = DATABASE_SCHEMA_VERSION,
-    exportSchema = true
+    exportSchema = false
 )
 abstract class BitDatabase : RoomDatabase() {
 

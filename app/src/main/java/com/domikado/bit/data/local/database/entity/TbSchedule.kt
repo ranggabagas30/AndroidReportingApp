@@ -1,12 +1,13 @@
 package com.domikado.bit.data.local.database.entity
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.PrimaryKey
+import androidx.room.*
 
 @Entity(
     tableName = SCHEDULE.TB_NAME,
+    indices = [
+        Index(value = [SCHEDULE.USER_ID], name = SCHEDULE.INDEX_USER_ID),
+        Index(value = [SCHEDULE.WORK_TYPE_ID], name = SCHEDULE.INDEX_WORK_TYPE)
+    ],
     foreignKeys = [
         ForeignKey(
             entity = TbUser::class,
@@ -44,10 +45,11 @@ data class TbSchedule(
 
 object SCHEDULE{
     const val TB_NAME = "schedule"
-    const val PREFIX = TB_NAME + "_"
     const val ID = "id"
     const val WORK_DATE = "work_date"
     const val USER_ID = "user_id"
     const val WORK_TYPE_ID = "work_type_id"
-    const val WORK_TYPE = "work_type"
+
+    const val INDEX_USER_ID = "${TB_NAME}-USER_INDEX"
+    const val INDEX_WORK_TYPE = "${TB_NAME}-WORK_TYPE_INDEX"
 }

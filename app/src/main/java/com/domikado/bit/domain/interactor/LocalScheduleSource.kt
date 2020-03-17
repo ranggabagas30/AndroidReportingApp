@@ -7,9 +7,9 @@ import io.reactivex.Single
 
 class LocalScheduleSource {
 
-    fun getWorkTypeSchedules(workTypeId: Int, locator: ScheduleServiceLocator): Single<List<Schedule>>
-            = locator.localScheduleRepository.getWorkTypeSchedules(workTypeId)
+    fun getWorkTypeSchedules(userId: Int, workTypeId: Int? = null, locator: ScheduleServiceLocator): Single<List<Schedule>>
+            = locator.localScheduleRepository.getSchedules(userId, workTypeId)
 
-    fun deleteSchedules(schedules: List<Schedule>, locator: ScheduleServiceLocator): Completable
-            = locator.localScheduleRepository.deleteSchedules(schedules)
+    fun deleteSchedules(userId: Int, locator: ScheduleServiceLocator): Completable
+            = locator.localScheduleRepository.deleteSchedules(userId)
 }

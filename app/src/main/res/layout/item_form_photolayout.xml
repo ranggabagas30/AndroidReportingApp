@@ -55,7 +55,8 @@
         android:layout_marginStart="10dp"
         app:layout_constraintTop_toBottomOf="@id/form.photolayout.btn.camera"
         app:layout_constraintStart_toEndOf="@id/form.photolayout.no_picture"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="invisible">
 
         <com.google.android.material.radiobutton.MaterialRadioButton
             android:id="@+id/form.photolayout.rbtn.ok"

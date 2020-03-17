@@ -1,12 +1,12 @@
 package com.domikado.bit.data.local.database.entity
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.PrimaryKey
+import androidx.room.*
 
 @Entity(
     tableName = WORK_FORM_GROUP.WORK_FORM_ID,
+    indices = [
+        Index(value = [WORK_FORM_GROUP.WORK_FORM_ID], name = WORK_FORM_GROUP.INDEX_WORK_FORM)
+    ],
     foreignKeys = [
         ForeignKey(
             entity = TbWorkForm::class,
@@ -41,4 +41,6 @@ object WORK_FORM_GROUP {
     const val WORK_FORM_ID = "work_form_id"
     const val DESCRIPTION = "description"
     const val ANCESTRY = "ancestry"
+
+    const val INDEX_WORK_FORM = "${TB_NAME}-WORK_FORM_INDEX"
 }

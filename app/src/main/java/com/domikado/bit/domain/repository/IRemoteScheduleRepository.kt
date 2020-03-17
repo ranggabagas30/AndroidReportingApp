@@ -5,6 +5,5 @@ import io.reactivex.Single
 
 interface IRemoteScheduleRepository {
 
-    fun getWorkTypeSchedules(workTypeId: Int): Single<List<Schedule>>
-
+    fun getSchedules(userId: Int): Single<List<Schedule>>
 }

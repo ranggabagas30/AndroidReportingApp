@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Bit</string>
 
+    <string name="work_fo_monitoring">FO MONITORING</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="username">Username</string>
@@ -11,6 +13,7 @@
     <string name="radio_nok">NOK</string>
     <string name="radio_na">N/A</string>
     <string name="remark">Remark</string>
+    <string name="checkin">Check In</string>
 
     <string name="dummy_long_text">asdfasd asdfasdf asdfasdf asdfasdasdafsdsdfasdfasdasdfasdfaadsfasdf sdfasdasdafsdsdfasdfasdasdfasdfaadsfasdf sdfasdasdafsdsdfasdfasdasdfasdfaadsfasdf</string>
     <string name="tidak_ada_item">Tidak ada item</string>

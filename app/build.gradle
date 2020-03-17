@@ -19,6 +19,8 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'kotlin-kapt'
 
+apply plugin: "androidx.navigation.safeargs.kotlin"
+
 // Manifest version information!
 def minAPIlevel = rootProject.ext.minSdkVersion
 def versionMajor = 0
@@ -161,7 +163,9 @@ dependencies {
     implementation "com.pixplicity.easyprefs:library:${rootProject.ext.sharedPrefs}"
     implementation "com.karumi:dexter:${rootProject.ext.dexterPermission}" // permissions
     implementation "com.facebook.stetho:stetho:${rootProject.ext.facebookStethoversion}"
-    implementation 'com.pixplicity.easyprefs:library:1.9.0'
+    implementation "com.pixplicity.easyprefs:library:${rootProject.ext.easyPref}"
+    implementation "com.github.ajalt:timberkt:${rootProject.ext.timberKt}"
+    implementation 'com.jakewharton.threetenabp:threetenabp:1.2.2' // An adaptation of the JSR-310 backport for Android using java.time.*
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

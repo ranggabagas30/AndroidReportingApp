@@ -6,13 +6,6 @@ import androidx.room.PrimaryKey
 
 @Entity(
     tableName = WORK_FORM_COLUMN.TB_NAME
-//    foreignKeys = [
-//        ForeignKey(
-//            entity = TbWorkFormGroup::class,
-//            parentColumns = [WORK_FORM_GROUP.ID],
-//            childColumns = [WORK_FORM_COLUMN.WORK_FORM_GROUP_ID]
-//        )
-//    ]
 )
 data class TbWorkFormColumn(
 
@@ -22,12 +15,7 @@ data class TbWorkFormColumn(
 
     val name: String?,
 
-//    @ColumnInfo(name = WORK_FORM_COLUMN.WORK_FORM_GROUP_ID)
-//    val workFormGroupId: Int,
-
     val position: Int?
-
-
 )
 
 object WORK_FORM_COLUMN {

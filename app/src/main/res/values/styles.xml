@@ -9,9 +9,10 @@
         <item name="colorSecondary">@color/colorSecondary</item>
         <item name="colorSecondaryVariant">@color/colorSecondaryLight</item>
         <item name="colorOnSecondary">@color/colorOnSecondary</item>
+        <item name="colorOnPrimary">@color/colorOnPrimary</item>
 
         <!-- additional background -->
-        <item name="android:windowBackground">@color/colorBackground</item>
+        <item name="android:windowBackground">@color/colorWindowBackground</item>
         <item name="colorOnBackground">@color/colorOnBackground</item>
         <item name="colorSurface">@color/colorSurface</item>
         <item name="colorOnSurface">@color/colorOnSurface</item>

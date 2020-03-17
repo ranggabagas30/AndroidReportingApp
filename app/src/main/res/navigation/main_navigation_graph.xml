@@ -20,8 +20,12 @@
         android:label="fragment_schedule"
         tools:layout="@layout/fragment_schedule" >
         <action
-            android:id="@+id/action_scheduleListFragment_to_checkinFragment"
-            app:destination="@id/checkinFragment" />
+            android:id="@+id/action_scheduleListFragment_to_checkInFragment"
+            app:destination="@id/checkInFragment" />
+        <argument
+            android:name="workTypeId"
+            app:argType="integer"
+            android:defaultValue="-1"/>
     </fragment>
     <fragment
         android:id="@+id/formGroupFragment"
@@ -38,12 +42,45 @@
         android:label="fragment_form"
         tools:layout="@layout/fragment_form" />
     <fragment
-        android:id="@+id/checkinFragment"
-        android:name="com.domikado.bit.ui.screen.checkin.CheckinFragment"
+        android:id="@+id/checkInFragment"
+        android:name="com.domikado.bit.ui.screen.checkin.CheckInFragment"
         android:label="fragment_checkin"
         tools:layout="@layout/fragment_checkin" >
         <action
-            android:id="@+id/action_checkinFragment_to_formGroupFragment"
+            android:id="@+id/action_checkInFragment_to_formGroupFragment"
             app:destination="@id/formGroupFragment" />
+        <argument
+            android:name="scheduleId"
+            app:argType="integer"
+            android:defaultValue="-1"/>
+        <argument
+            android:name="workDate"
+            app:argType="string"
+            android:defaultValue="@null"
+            app:nullable="true"/>
+        <argument
+            android:name="siteId"
+            app:argType="integer"
+            android:defaultValue="-1"/>
+        <argument
+            android:name="siteName"
+            app:argType="string"
+            android:defaultValue="@null"
+            app:nullable="true"/>
+        <argument
+            android:name="siteIdCustomer"
+            app:argType="string"
+            android:defaultValue="@null"
+            app:nullable="true"/>
+        <argument
+            android:name="siteLatitude"
+            app:argType="string"
+            android:defaultValue="@null"
+            app:nullable="true"/>
+        <argument
+            android:name="siteLongitude"
+            app:argType="string"
+            android:defaultValue="@null"
+            app:nullable="true"/>
     </fragment>
 </navigation>
