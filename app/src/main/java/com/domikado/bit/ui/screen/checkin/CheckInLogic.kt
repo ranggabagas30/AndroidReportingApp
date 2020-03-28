@@ -10,10 +10,10 @@ class CheckInLogic(
 
     override fun onChanged(t: CheckInEvent?) {
         when (t) {
-            is CheckInEvent.OnCreate -> onCreate(t.scheduleId, t.workDate, t.siteId, t.siteName, t.siteIdCustomer, t.siteLatitude, t.siteLongitude)
+            is CheckInEvent.OnCreate -> onCreate(t.scheduleId, t.workDate, t.siteId, t.siteName, t.siteCode, t.siteLatitude, t.siteLongitude, t.siteMonitorId)
             is CheckInEvent.OnCreateView -> onCreateView()
             is CheckInEvent.OnViewCreated -> onViewCreated()
-            is CheckInEvent.OnCheckInClick -> onCheckInClick(t.scheduleId, t.siteId, t.distanceToSite, t.gpsAccuracy)
+            is CheckInEvent.OnCheckInClick -> onCheckInClick()
         }
     }
 
@@ -21,16 +21,18 @@ class CheckInLogic(
                          workDate: String?,
                          siteId: Int,
                          siteName: String?,
-                         siteIdCustomer: String?,
+                         siteCode: String?,
                          siteLatitude: Double?,
-                         siteLongitude: Double?) { // receives args from schedule list fragment
+                         siteLongitude: Double?,
+                         siteMonitorId: Int) { // receives args from schedule list fragment
         checkInViewModel.scheduleId = scheduleId
         checkInViewModel.workDate = workDate
         checkInViewModel.siteId = siteId
         checkInViewModel.siteName = siteName
-        checkInViewModel.siteIdCustomer = siteIdCustomer
+        checkInViewModel.siteCode = siteCode
         checkInViewModel.siteLatitude = siteLatitude
         checkInViewModel.siteLongitude = siteLongitude
+        checkInViewModel.siteMonitorId = siteMonitorId
     }
 
     private fun onCreateView() {
@@ -44,15 +46,17 @@ class CheckInLogic(
                 it.workDate,
                 it.siteId,
                 it.siteName,
-                it.siteIdCustomer,
+                it.siteCode,
                 it.siteLatitude,
-                it.siteLongitude
+                it.siteLongitude,
+                it.siteMonitorId
             )
         }
     }
 
-    private fun onCheckInClick(scheduleId: Int, siteId: Int, distanceToSite: Double, gpsAccuracy: Double) {
+    private fun onCheckInClick() {
         // hit endpoint checkin
-        // if success -> update site as checked in
+        // if success -> update Site as checked in
+
     }
 }

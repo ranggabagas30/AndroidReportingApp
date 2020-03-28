@@ -31,4 +31,8 @@
     <item type="color" name="item_nav_2_pressed">#efefef</item>
     <item type="color" name="col_title">#999999</item>
     <item type="color" name="single_title">#333333</item>
+
+    <!-- watermark -->
+    <color name="colorWatermarkBackground">#4D3F4144</color>
+    <color name="colorWatermarkText">@android:color/white</color>
 </resources>

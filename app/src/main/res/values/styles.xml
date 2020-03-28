@@ -54,4 +54,10 @@
         <item name="android:ellipsize">end</item>
         <item name="android:maxLines">1</item>
     </style>
+
+    <style name="AppTheme.TextView.Watermark" parent="Widget.AppCompat.TextView">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/colorWatermarkText</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>

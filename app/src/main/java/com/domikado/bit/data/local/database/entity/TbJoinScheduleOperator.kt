@@ -1,8 +1,6 @@
 package com.domikado.bit.data.local.database.entity
 
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.Index
+import androidx.room.*
 
 /**
  * Schedule - Operator (M:M)
@@ -13,7 +11,7 @@ import androidx.room.Index
         Index(value = [SCHEDULE_OPERATOR_JOIN.SCHEDULE_ID], name = SCHEDULE_OPERATOR_JOIN.INDEX_SCHEDULE_ID),
         Index(value = [SCHEDULE_OPERATOR_JOIN.OPERATOR_ID], name = SCHEDULE_OPERATOR_JOIN.INDEX_OPERATOR_ID)
     ],
-    primaryKeys = [SCHEDULE_OPERATOR_JOIN.SCHEDULE_ID, SCHEDULE_OPERATOR_JOIN.OPERATOR_ID],
+    //primaryKeys = [SCHEDULE_OPERATOR_JOIN.ID, SCHEDULE_OPERATOR_JOIN.SCHEDULE_ID, SCHEDULE_OPERATOR_JOIN.OPERATOR_ID],
     foreignKeys = [
         ForeignKey(
             entity = TbSchedule::class,
@@ -28,12 +26,16 @@ import androidx.room.Index
     ]
 )
 data class TbJoinScheduleOperator(
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = SCHEDULE_OPERATOR_JOIN.ID)
+    val id: Int = 0,
     val schedule_id: Int,
     val operator_id: Int
 )
 
 object SCHEDULE_OPERATOR_JOIN {
     const val TB_NAME = "schedule_operator_join"
+    const val ID = "schedule_operator_join_id"
     const val SCHEDULE_ID = "schedule_id"
     const val OPERATOR_ID = "operator_id"
 

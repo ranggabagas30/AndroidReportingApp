@@ -3,7 +3,7 @@ package com.domikado.bit.ui.screen.schedulelist
 import androidx.lifecycle.Observer
 import com.domikado.bit.domain.domainmodel.Loading
 import com.domikado.bit.domain.domainmodel.Schedule
-import com.domikado.bit.ui.screen.login.recyclerview.ScheduleModel
+import com.domikado.bit.ui.screen.schedulelist.recyclerview.ScheduleModel
 
 interface IScheduleListContract {
 

@@ -49,7 +49,7 @@ class LoginLogic(
         //debug
         view.startLoadingSignIn(Loading(LOGIN_LOADING_TITLE, LOGIN_LOADING_MESSAGE))
         loginViewModel.async(
-            Completable.timer(2, TimeUnit.SECONDS)
+            Completable.timer(1, TimeUnit.SECONDS)
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
                 .subscribe(

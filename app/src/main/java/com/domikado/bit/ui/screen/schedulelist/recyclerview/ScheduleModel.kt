@@ -1,4 +1,4 @@
-package com.domikado.bit.ui.screen.login.recyclerview
+package com.domikado.bit.ui.screen.schedulelist.recyclerview
 
 import com.domikado.bit.abstraction.recyclerview.AbstractBaseItemModel
 import com.domikado.bit.abstraction.recyclerview.ViewHolderTypeFactory

@@ -8,23 +8,23 @@ import com.domikado.bit.BuildConfig
 import com.domikado.bit.data.local.database.dao.*
 import com.domikado.bit.data.local.database.entity.*
 
-private const val DATABASE_SCHEMA_VERSION = 1
-
 @Database(
     entities = [
         TbOperator::class,
         TbSchedule::class,
+        TbWorkType::class,
         TbSite::class,
         TbUser::class,
-        TbWorkForm::class,
-        TbWorkFormColumn::class,
-        TbWorkFormGroup::class,
-        TbWorkFormItem::class,
-        TbWorkFormRow::class,
-        TbWorkType::class,
+        TbFormFillData::class,
+//        TbWorkForm::class,
+//        TbWorkFormColumn::class,
+//        TbWorkFormGroup::class,
+//        TbWorkFormItem::class,
+//        TbWorkFormRow::class,
+//        TbWorkType::class,
         TbJoinScheduleOperator::class,
-        TbJoinScheduleSite::class,
-        TbJoinWorkFormRowColumn::class
+        TbJoinSiteMonitoring::class
+        //TbJoinWorkFormRowColumn::class
     ],
     version = DATABASE_SCHEMA_VERSION,
     exportSchema = false
@@ -32,13 +32,14 @@ private const val DATABASE_SCHEMA_VERSION = 1
 abstract class BitDatabase : RoomDatabase() {
 
     // database access objects
-    abstract fun itemDao(): ItemDao
-    abstract fun rowDao(): RowDao
-    abstract fun rowColumnDao(): RowColumnJoinDao
+//    abstract fun itemDao(): ItemDao
+//    abstract fun rowDao(): RowDao
+//    abstract fun rowColumnDao(): RowColumnJoinDao
     abstract fun scheduleDao(): ScheduleDao
     abstract fun scheduleOperatorJoinDao(): ScheduleOperatorJoinDao
     abstract fun scheduleSiteJoinDao(): ScheduleSiteJoinDao
     abstract fun workTypeDao(): WorkTypeDao
+    abstract fun formFillDataDao(): FormFillDataDao
 
     // database singleton
     companion object {
@@ -48,8 +49,8 @@ abstract class BitDatabase : RoomDatabase() {
         fun getInstance(context: Context): BitDatabase =
             INSTANCE ?: synchronized(this) {
                 INSTANCE ?: buildDatabase(
-                        context
-                    ).also { INSTANCE = it }
+                    context
+                ).also { INSTANCE = it }
             }
 
         private fun buildDatabase(context: Context) =
@@ -61,3 +62,5 @@ abstract class BitDatabase : RoomDatabase() {
 
     }
 }
+
+private const val DATABASE_SCHEMA_VERSION = 1

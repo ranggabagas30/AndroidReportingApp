@@ -5,17 +5,17 @@ import com.domikado.bit.data.remote.pojo.JSONUser
 data class User(
     val id: String, // max 35 characters
     val username: String,
-    val password: String? = null,
+    val password: String,
     val fullName: String?,
-    val email: String?,
+    val email: String? = null,
     val accessToken: String
 )
 
 internal val JSONUser.toUser
     get() = User(
-        this.id.toString(),
+        this.id,
         this.username,
-        fullName = this.full_name,
-        email = this.email,
-        accessToken = this.persistence_token
+        this.api_token,
+        this.name,
+        accessToken = this.api_token
     )

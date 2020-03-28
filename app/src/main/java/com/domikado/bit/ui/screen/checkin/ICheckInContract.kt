@@ -1,7 +1,9 @@
 package com.domikado.bit.ui.screen.checkin
 
+import android.location.Location
 import androidx.lifecycle.Observer
 import com.domikado.bit.domain.domainmodel.Loading
+import com.domikado.bit.domain.domainmodel.Result
 
 interface ICheckInContract {
 
@@ -12,9 +14,10 @@ interface ICheckInContract {
                             workDate: String?,
                             siteId: Int,
                             siteName: String?,
-                            siteIdCustomer: String?,
+                            siteCode: String?,
                             siteLatitude: Double?,
-                            siteLongitude: Double?)
+                            siteLongitude: Double?,
+                            siteMonitorId: Int)
         fun setObserver(observer: Observer<CheckInEvent>)
     }
 }
@@ -25,16 +28,13 @@ sealed class CheckInEvent {
         val workDate: String?,
         val siteId: Int,
         val siteName: String?,
-        val siteIdCustomer: String?,
+        val siteCode: String?,
         val siteLatitude: Double?,
-        val siteLongitude: Double?
+        val siteLongitude: Double?,
+        val siteMonitorId: Int
     ): CheckInEvent()
     object OnCreateView: CheckInEvent()
     object OnViewCreated: CheckInEvent()
-    data class OnCheckInClick(
-        val scheduleId: Int,
-        val siteId: Int,
-        val distanceToSite: Double,
-        val gpsAccuracy: Double
-    ): CheckInEvent()
+    object OnCheckInClick: CheckInEvent()
+    data class LocationListener(val result: Result<Throwable, Location?>): CheckInEvent()
 }

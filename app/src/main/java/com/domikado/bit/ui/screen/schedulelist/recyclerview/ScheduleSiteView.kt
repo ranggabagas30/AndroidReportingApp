@@ -1,4 +1,4 @@
-package com.domikado.bit.ui.screen.login.recyclerview
+package com.domikado.bit.ui.screen.schedulelist.recyclerview
 
 import android.content.Context
 import android.util.AttributeSet

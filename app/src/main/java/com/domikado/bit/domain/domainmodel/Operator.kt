@@ -1,14 +1,7 @@
 package com.domikado.bit.domain.domainmodel
 
-import com.domikado.bit.data.remote.pojo.JSONOperator
-
 data class Operator(
-    val id: Int,
-    val name: String = "Unknown"
+    val id: String,
+    val name: String?,
+    val detailName: String?
 )
-
-internal val JSONOperator.toOperator
-    get() = Operator(
-        this.id,
-        this.name
-    )

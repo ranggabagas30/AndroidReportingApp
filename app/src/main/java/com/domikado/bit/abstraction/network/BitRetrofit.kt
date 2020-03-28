@@ -20,7 +20,7 @@ class BitRetrofit {
         private const val CONNECTION_TIMEOUT = 1L // minute
         private const val READ_TIMEOUT = 30L // seconds
         private const val WRITE_TIMEOUT = 15L // seconds
-        private const val API_BASE_URL = BuildConfig.BASE_URL + "/v1/"
+        private const val API_BASE_URL = BuildConfig.BASE_URL + "/api/"
 
         private val httpLoggingInterceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
 

@@ -1,4 +1,4 @@
-package com.domikado.bit.ui.screen.login.recyclerview
+package com.domikado.bit.ui.screen.schedulelist.recyclerview
 
 import com.domikado.bit.abstraction.recyclerview.IBaseRvListener
 
@@ -8,8 +8,9 @@ interface OnScheduleClickListener: IBaseRvListener<ScheduleModel> {
         workDate: String?,
         siteId: Int,
         siteName: String?,
-        siteIdCustomer: String?,
+        siteCode: String?,
         siteLatitude: Double?,
-        siteLongitude: Double?
+        siteLongitude: Double?,
+        siteMonitorId: Int
     )
 }

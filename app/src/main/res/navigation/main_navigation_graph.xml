@@ -46,9 +46,6 @@
         android:name="com.domikado.bit.ui.screen.checkin.CheckInFragment"
         android:label="fragment_checkin"
         tools:layout="@layout/fragment_checkin" >
-        <action
-            android:id="@+id/action_checkInFragment_to_formGroupFragment"
-            app:destination="@id/formGroupFragment" />
         <argument
             android:name="scheduleId"
             app:argType="integer"
@@ -68,7 +65,7 @@
             android:defaultValue="@null"
             app:nullable="true"/>
         <argument
-            android:name="siteIdCustomer"
+            android:name="siteCode"
             app:argType="string"
             android:defaultValue="@null"
             app:nullable="true"/>
@@ -82,5 +79,12 @@
             app:argType="string"
             android:defaultValue="@null"
             app:nullable="true"/>
+        <argument
+            android:name="siteMonitorId"
+            app:argType="integer"
+            android:defaultValue="-1"/>
+        <action
+            android:id="@+id/action_checkInFragment_to_formFillFragment"
+            app:destination="@id/formFillFragment" />
     </fragment>
 </navigation>

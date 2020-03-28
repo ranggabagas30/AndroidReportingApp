@@ -39,6 +39,7 @@
             android:layout_marginStart="@dimen/checkin_tflayout_start_end_margin"
             android:layout_marginEnd="@dimen/checkin_tflayout_start_end_margin"
             android:hint="Site Name"
+            android:enabled="false"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -58,6 +59,7 @@
             android:layout_marginStart="@dimen/checkin_tflayout_start_end_margin"
             android:layout_marginEnd="@dimen/checkin_tflayout_start_end_margin"
             android:hint="PM Period"
+            android:enabled="false"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -85,6 +87,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:hint="Latitude"
+            android:enabled="false"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -104,6 +107,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:hint="Longitude"
+            android:enabled="false"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -133,7 +137,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:hint="Menunggu kesiapan GPS"
+            android:hint="Latitude"
+            android:enabled="false"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -141,7 +146,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
-                android:ellipsize="end">
+                android:ellipsize="end"
+                android:text="@string/menunggu_kesiapan_gps">
 
             </com.google.android.material.textfield.TextInputEditText>
         </com.google.android.material.textfield.TextInputLayout>
@@ -152,7 +158,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:hint="Menunggu kesiapan GPS"
+            android:hint="Longitude"
+            android:enabled="false"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -160,7 +167,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
-                android:ellipsize="end">
+                android:ellipsize="end"
+                android:text="@string/menunggu_kesiapan_gps">
 
             </com.google.android.material.textfield.TextInputEditText>
         </com.google.android.material.textfield.TextInputLayout>
@@ -175,6 +183,7 @@
             android:layout_marginStart="@dimen/checkin_tflayout_start_end_margin"
             android:layout_marginEnd="@dimen/checkin_tflayout_start_end_margin"
             android:hint="Jarak ke lokasi site: (dalam meter)"
+            android:enabled="false"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -194,6 +203,7 @@
             android:layout_marginStart="@dimen/checkin_tflayout_start_end_margin"
             android:layout_marginEnd="@dimen/checkin_tflayout_start_end_margin"
             android:hint="Tingkat akurasi GPS"
+            android:enabled="false"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -205,6 +215,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/checkin.btn.checkin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"

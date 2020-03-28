@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/form.root"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="16dp"
+    android:background="@color/colorBackground"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <include
+        android:id="@+id/form.header"
+        layout="@layout/item_form_header"/>
+
+    <LinearLayout
+        android:id="@+id/form.body"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!--            <include-->
+        <!--                layout="@layout/item_form_checkbox"/>-->
+
+        <!--            <include-->
+        <!--                layout="@layout/item_form_radio"/>-->
+
+        <!--            <include-->
+        <!--                layout="@layout/item_form_photolayout"/>-->
+
+        <!--            <include-->
+        <!--                layout="@layout/item_form_edittext"/>-->
+    </LinearLayout>
+</LinearLayout>

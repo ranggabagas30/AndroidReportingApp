@@ -57,6 +57,7 @@ android {
             applicationVariants.all { variant ->
                 renameAPK(variant)
             }
+            buildConfigField("String", "BASE_URL", '"http://192.168.120.13"')
         }
         release {
             minifyEnabled false
@@ -137,6 +138,7 @@ dependencies {
 
     // Networking
     // retrofit : http://square.github.io/retrofit
+    //implementation 'com.squareup.okhttp3:okhttp:3.10.0'
     implementation "com.squareup.okhttp3:logging-interceptor:${rootProject.ext.okHttp3Logging}"
     implementation "com.squareup.retrofit2:retrofit:${rootProject.ext.retrofit2}"
     implementation "com.squareup.retrofit2:converter-gson:${rootProject.ext.retrofit2}"
@@ -144,8 +146,11 @@ dependencies {
 
     // Room db
     implementation "androidx.room:room-runtime:${rootProject.ext.roomDb}"
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    kapt "androidx.room:room-compiler:${rootProject.ext.roomDb}" // For Kotlin use kapt instead of annotationProcessor
+    implementation "androidx.legacy:legacy-support-v4:${rootProject.ext.legacySupport}"
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    kapt "androidx.room:room-compiler:${rootProject.ext.roomDb}"
+    // For Kotlin use kapt instead of annotationProcessor
     implementation "androidx.room:room-rxjava2:${rootProject.ext.roomDb}" // rxjava2 support
 
     // Custom view
@@ -154,6 +159,9 @@ dependencies {
 //    implementation "com.mikhaellopez:circularprogressbar:${rootProject.ext.circularProgressBar}"
 //    implementation "com.google.android:flexbox:${rootProject.ext.flexboxLayout}"
     implementation "com.thoughtbot:expandablerecyclerview:${rootProject.ext.expendableRecyclerView}"
+
+    // camera
+    implementation 'com.otaliastudios:cameraview:2.6.2'
 
     // Utilities
     implementation "com.github.bumptech.glide:glide:${rootProject.ext.glide}"
@@ -165,7 +173,8 @@ dependencies {
     implementation "com.facebook.stetho:stetho:${rootProject.ext.facebookStethoversion}"
     implementation "com.pixplicity.easyprefs:library:${rootProject.ext.easyPref}"
     implementation "com.github.ajalt:timberkt:${rootProject.ext.timberKt}"
-    implementation 'com.jakewharton.threetenabp:threetenabp:1.2.2' // An adaptation of the JSR-310 backport for Android using java.time.*
+    implementation "com.jakewharton.threetenabp:threetenabp:${rootProject.ext.threeTenAbp}"
+    // An adaptation of the JSR-310 backport for Android using java.time.*
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

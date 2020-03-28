@@ -7,8 +7,8 @@ import com.domikado.bit.domain.interactor.LocalScheduleSource
 import com.domikado.bit.domain.interactor.RemoteScheduleSource
 import com.domikado.bit.domain.servicelocator.ScheduleServiceLocator
 import com.domikado.bit.domain.servicelocator.UserServiceLocator
-import com.domikado.bit.ui.screen.login.recyclerview.ScheduleModel
-import com.domikado.bit.ui.screen.login.recyclerview.ScheduleSiteModel
+import com.domikado.bit.ui.screen.schedulelist.recyclerview.ScheduleModel
+import com.domikado.bit.ui.screen.schedulelist.recyclerview.ScheduleSiteModel
 
 /**
  * - mengunduh data schedule dari remote server
@@ -59,7 +59,8 @@ class ScheduleListLogic(
                         0,
                         -6.21312312,
                         108.123121231231,
-                        "DMKD"
+                        "DMKD",
+                        1
                     ),
                     ScheduleSiteModel(
                         2,
@@ -67,7 +68,8 @@ class ScheduleListLogic(
                         0,
                         -6.21312312,
                         108.123121231231,
-                        "MNDR"
+                        "MNDR",
+                    2
                     )
                 )
             ),
@@ -84,7 +86,9 @@ class ScheduleListLogic(
                         2,
                         -6.21312312,
                         108.123121231231,
-                        "MDKA"
+                        "MDKA",
+                        3
+
                     ),
                     ScheduleSiteModel(
                         4,
@@ -92,7 +96,8 @@ class ScheduleListLogic(
                         2,
                         -6.21312312,
                         108.123121231231,
-                        "CIMB"
+                        "CIMB",
+                        4
                     )
                 )
             )

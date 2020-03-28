@@ -1,4 +1,4 @@
-package com.domikado.bit.ui.screen.login.recyclerview
+package com.domikado.bit.ui.screen.schedulelist.recyclerview
 
 import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
@@ -59,7 +59,9 @@ class ScheduleViewHolder(itemView: View, private val onScheduleClickListener: On
             childSiteView.apply {
                 setViewId(it.siteId)
                 setSiteName(it.siteName?: "Site name N/A")
-                setSiteStatus(it.siteStatus?: "Site status N/A")
+                setSiteStatus(it.siteStatus?.let {
+                    SITE_STATUS[it]
+                }?:  "Site status N/A")
                 setCheckInOnClickListener(View.OnClickListener { _ ->
                     // interface click listener
                     // navigate to checkin
@@ -68,13 +70,14 @@ class ScheduleViewHolder(itemView: View, private val onScheduleClickListener: On
                         model.workDate,
                         it.siteId,
                         it.siteName,
-                        it.siteIdCustomer,
+                        it.siteCode,
                         it.siteLatitude,
-                        it.siteLongitude
+                        it.siteLongitude,
+                        it.siteMonitorId
                     )
                 })
                 if (it.isCheckInAllowed) enableCheckin() else disableCheckin()
-                Timber.d { "child site id: ${childSiteView.id}" }
+                Timber.d { "child Site id: ${childSiteView.id}" }
             }
         }?.also {
             for(i in it.indices) {
@@ -115,9 +118,5 @@ class ScheduleViewHolder(itemView: View, private val onScheduleClickListener: On
             }
             parentDropdownIcon.setImageResource(iconExpanded)
         }
-    }
-
-    private fun setProperSiteName(siteName: String?): String {
-        return siteName?: "<UNKNOWN SITE NAME>"
     }
 }

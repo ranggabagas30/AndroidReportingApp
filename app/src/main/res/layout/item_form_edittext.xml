@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="@dimen/padding_large">
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <include
+        android:id="@+id/form.edittext.column"
+        layout="@layout/item_form_column"/>
+
+    <include
+        android:id="@+id/form.edittext.operator"
+        layout="@layout/item_form_operator"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/form.edittext.mandatory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingTop="16dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
         android:text="@string/mandatory"
         style="@style/AppTheme.TextView.Mandatory"/>
 
@@ -16,6 +23,9 @@
         android:id="@+id/form.edittext.title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="16dp"
         android:text="SAMPLE"
         style="@style/AppTheme.TextView.Title"/>
 
@@ -23,11 +33,16 @@
         android:id="@+id/form.edittext.textfield"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Text Field"/>
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:hint="Input data"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/form.edittext.description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:text="desc"/>
-</LinearLayout>
+</merge>

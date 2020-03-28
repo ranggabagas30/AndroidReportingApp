@@ -23,9 +23,12 @@ import androidx.room.*
 )
 data class TbSchedule(
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = SCHEDULE.ID)
-    val id: Int,
+    val id: Int = 0,
+
+    @ColumnInfo(name = SCHEDULE.REMOTE_SCHEDULE_ID)
+    val remoteScheduleId: Int,
 
     @ColumnInfo(name = SCHEDULE.WORK_DATE)
     val workDate: Long?,
@@ -46,6 +49,7 @@ data class TbSchedule(
 object SCHEDULE{
     const val TB_NAME = "schedule"
     const val ID = "id"
+    const val REMOTE_SCHEDULE_ID = "remote_schedule_id"
     const val WORK_DATE = "work_date"
     const val USER_ID = "user_id"
     const val WORK_TYPE_ID = "work_type_id"
