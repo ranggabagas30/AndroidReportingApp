@@ -64,6 +64,7 @@ ext {
     rxAndroid = "2.1.1"
     rxKotlin = "2.4.0"
     rxJava = "2.2.16"
+    rxRelay = "2.1.1"
     okHttp3Logging = "3.11.0"
     retrofit2 = "2.6.0"
     retrofit2rxjava2 = "1.0.0"

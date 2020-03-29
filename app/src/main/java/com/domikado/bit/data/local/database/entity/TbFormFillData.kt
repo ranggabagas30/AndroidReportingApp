@@ -1,16 +1,22 @@
 package com.domikado.bit.data.local.database.entity
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import androidx.room.*
 
 /**
  *
- * associative JSONTable FormFillData (many-to_many)
- * defined FK: schedule_id, operator_id, item_id, row_id
  * */
 @Entity(
-    tableName = FORM_FILL_DATA.TB_NAME
+    tableName = FORM_FILL_DATA.TB_NAME,
+    indices = [
+        Index(value = [FORM_FILL_DATA.SITE_MONITOR_ID], name = FORM_FILL_DATA.INDEX_SITE_MONITOR_ID)
+    ],
+    foreignKeys = [
+        ForeignKey(
+            entity = TbJoinSiteMonitoring::class,
+            parentColumns = [SITE_MONITORING_JOIN.ID],
+            childColumns = [FORM_FILL_DATA.SITE_MONITOR_ID]
+        )
+    ]
 )
 data class TbFormFillData(
 
@@ -54,4 +60,6 @@ object FORM_FILL_DATA {
     const val LATITUDE = "latitude"
     const val LONGITUDE = "longitude"
     const val LAST_UPLOAD_AT = "last_upload_at"
+
+    const val INDEX_SITE_MONITOR_ID = "$TB_NAME-SITE_MONITOR_INDEX"
 }

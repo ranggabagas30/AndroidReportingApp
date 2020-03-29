@@ -9,6 +9,9 @@ import com.domikado.bit.domain.domainmodel.User
 import com.domikado.bit.domain.interactor.AuthSource
 import com.domikado.bit.domain.servicelocator.UserServiceLocator
 import com.domikado.bit.utility.PREF_KEY_ACCESS_TOKEN
+import com.github.ajalt.timberkt.Timber.d
+import com.github.ajalt.timberkt.Timber.e
+import com.google.firebase.iid.FirebaseInstanceId
 import com.pixplicity.easyprefs.library.Prefs
 import io.reactivex.Completable
 import java.util.concurrent.TimeUnit
@@ -88,6 +91,9 @@ class LoginLogic(
     }
 
     private fun onStart() {
+
+        getFirebaseIdAndToken()
+
         // mengecek apakah session user masih ada
         val accessToken = Prefs.getString(PREF_KEY_ACCESS_TOKEN, null)
         if (!TextUtils.isEmpty(accessToken)) view.navigateAfterLogin()
@@ -95,6 +101,21 @@ class LoginLogic(
 
     private fun saveUserData(user: User) {
 
+    }
+
+    private fun getFirebaseIdAndToken() {
+        FirebaseInstanceId.getInstance().instanceId
+            .addOnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    e {"Error FCM: ${task.exception}"}
+                    return@addOnCompleteListener
+                }
+
+                val id = task.result?.id
+                val token = task.result?.token
+                d {"firebase id: $id"}
+                d {"firebase Token: $token"}
+            }
     }
 }
 

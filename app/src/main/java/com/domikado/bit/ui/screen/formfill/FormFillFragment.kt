@@ -1,6 +1,7 @@
 package com.domikado.bit.ui.screen.formfill
 
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -25,6 +26,10 @@ import kotlinx.android.synthetic.main.fragment_form.*
  * A simple [Fragment] subclass.
  */
 class FormFillFragment : BaseFragment(), IFormFillContract.View {
+
+    private val RC_TAKE_PICTURE = 1
+    private var formFillId: Int? = null
+    private var position: Int? = null
 
     private lateinit var recyclerAdapter: RecyclerAdapter
 
@@ -92,7 +97,16 @@ class FormFillFragment : BaseFragment(), IFormFillContract.View {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when(requestCode) {
+            RC_TAKE_PICTURE -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    // save picture
+                    // reload list
+                    position?.also {
 
+                        //recyclerAdapter.changeItem(it, )
+                    }
+                }
+            }
         }
     }
 

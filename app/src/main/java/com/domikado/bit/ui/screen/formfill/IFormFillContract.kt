@@ -2,6 +2,7 @@ package com.domikado.bit.ui.screen.formfill
 
 import androidx.lifecycle.Observer
 import com.domikado.bit.ui.screen.formfill.recyclerview.FormFillModel
+import java.io.File
 
 interface IFormFillContract {
 
@@ -14,7 +15,7 @@ interface IFormFillContract {
 sealed class FormFillEvent {
     object OnStart: FormFillEvent()
     data class OnTakePictureClick(val formFillId: Int): FormFillEvent()
-    object OnSuccessTakePicture: FormFillEvent()
+    data class OnSuccessTakePicture(val formFillId: Int, val position: Int, val imageFile: File): FormFillEvent()
     object OnFailedTakePicture: FormFillEvent()
     object OnTextChanged: FormFillEvent()
 }

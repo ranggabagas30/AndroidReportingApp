@@ -21,6 +21,8 @@ apply plugin: 'kotlin-kapt'
 
 apply plugin: "androidx.navigation.safeargs.kotlin"
 
+apply plugin: 'com.google.gms.google-services'
+
 // Manifest version information!
 def minAPIlevel = rootProject.ext.minSdkVersion
 def versionMajor = 0
@@ -135,6 +137,7 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxandroid:${rootProject.ext.rxAndroid}"
     implementation "io.reactivex.rxjava2:rxkotlin:${rootProject.ext.rxKotlin}"
     implementation "io.reactivex.rxjava2:rxjava:${rootProject.ext.rxJava}"
+    implementation "com.jakewharton.rxrelay2:rxrelay:${rootProject.ext.rxRelay}"
 
     // Networking
     // retrofit : http://square.github.io/retrofit
@@ -146,11 +149,7 @@ dependencies {
 
     // Room db
     implementation "androidx.room:room-runtime:${rootProject.ext.roomDb}"
-    implementation "androidx.legacy:legacy-support-v4:${rootProject.ext.legacySupport}"
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    kapt "androidx.room:room-compiler:${rootProject.ext.roomDb}"
-    // For Kotlin use kapt instead of annotationProcessor
+    kapt "androidx.room:room-compiler:${rootProject.ext.roomDb}" // For Kotlin use kapt instead of annotationProcessor
     implementation "androidx.room:room-rxjava2:${rootProject.ext.roomDb}" // rxjava2 support
 
     // Custom view
@@ -173,12 +172,9 @@ dependencies {
     implementation "com.facebook.stetho:stetho:${rootProject.ext.facebookStethoversion}"
     implementation "com.pixplicity.easyprefs:library:${rootProject.ext.easyPref}"
     implementation "com.github.ajalt:timberkt:${rootProject.ext.timberKt}"
-    implementation "com.jakewharton.threetenabp:threetenabp:${rootProject.ext.threeTenAbp}"
-    // An adaptation of the JSR-310 backport for Android using java.time.*
+    implementation "com.jakewharton.threetenabp:threetenabp:${rootProject.ext.threeTenAbp}" // An adaptation of the JSR-310 backport for Android using java.time.*
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }
-
-apply plugin: 'com.google.gms.google-services'

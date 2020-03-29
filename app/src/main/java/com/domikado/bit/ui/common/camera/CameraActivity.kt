@@ -39,6 +39,8 @@ class CameraActivity : AppCompatActivity() {
 
     companion object {
         const val RESULT_IMAGE_FILE = "RESULT_IMAGE_FILE"
+        const val RESULT_FORM_FILL_ID = "RESULT_FORM_FILL_ID"
+        const val RESULT_POSITION = "RESULT_POSITION"
         const val EXTRA_SCHEDULE_ID = "EXTRA_SCHEDULE_ID"
     }
 

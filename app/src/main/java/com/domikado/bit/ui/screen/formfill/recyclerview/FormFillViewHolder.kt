@@ -158,7 +158,7 @@ class FormFillViewHolder(itemView: View, private val onFormFillListener: OnFormF
                 else -> InputType.TYPE_CLASS_TEXT
             }
             addTextChangedListener {
-                onFormFillListener.onTextChanged(formFillId, it.toString())
+                //onFormFillListener.onTextChanged(formFillId, it.toString())
             }
         }
 
@@ -201,14 +201,14 @@ class FormFillViewHolder(itemView: View, private val onFormFillListener: OnFormF
 
         val takePictureView = formPhotoLayoutView.findViewById(R.id.form_photolayout_btn_camera) as FloatingActionButton
         takePictureView.setOnClickListener {
-            onFormFillListener.onTakePicture(formFillId)
+            //onFormFillListener.onTakePicture(formFillId)
         }
 
         val remarkView = formPhotoLayoutView.findViewById(R.id.form_photolayout_tf_remark) as AppCompatEditText
         remarkView.apply {
             setText(section.remark)
             addTextChangedListener {
-                onFormFillListener.onTextChanged(formFillId, it.toString())
+                //onFormFillListener.onTextChanged(formFillId, it.toString())
             }
         }
         formBodyView.addView(formPhotoLayoutView)

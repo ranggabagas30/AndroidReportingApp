@@ -4,11 +4,15 @@ import android.content.ContextWrapper
 import androidx.multidex.MultiDexApplication
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.pixplicity.easyprefs.library.Prefs
+import timber.log.Timber
 
 class BitApplication: MultiDexApplication() {
 
     override fun onCreate() {
         super.onCreate()
+
+        // install timber
+        Timber.plant(Timber.DebugTree())
 
         // Prefs initialization
         Prefs.Builder()

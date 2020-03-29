@@ -44,4 +44,9 @@ class RecyclerAdapter(
         if (this.items.remove(item))
             notifyItemRemoved(position)
     }
+
+    fun changeItem(position: Int, item: AbstractBaseItemModel) {
+        this.items[position] = item
+        notifyItemChanged(position)
+    }
 }
