@@ -1,6 +1,7 @@
 package com.domikado.bit.abstraction.network
 
 import com.domikado.bit.data.remote.pojo.*
+import io.reactivex.Completable
 import io.reactivex.Single
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -11,15 +12,28 @@ interface BitRemoteService {
     // LOGIN
     @POST("login")
     fun login(
-        @Header("username") username: String,
-        @Header("password") password: String?
+        @Header("Accept") accept: String = "application/json",
+        @Header("Username") username: String,
+        @Header("Password") password: String,
+        @Header("Firebaseid") firebaseToken: String
     ): Single<JSONLogin>
+
+    // LOGOUT
+    @POST("logout")
+    fun logout(
+        @Header("Accept") accept: String = "application/json",
+        @Header("Userid") userId: String,
+        @Header("Apitoken") apiToken: String,
+        @Header("Firebaseid") firebaseId: String
+    ): Single<JSONLogout>
 
     // GET SCHEDULES
     @POST("v1/all/my-schedule")
     fun getSchedules(
-        @Header("user_id") userId: String,
-        @Header("api_token") apiToken: String
+        @Header("Accept") accept: String = "application/json",
+        @Header("Userid") userId: String,
+        @Header("Apitoken") apiToken: String,
+        @Header("Firebaseid") firebaseId: String
     ): Single<JSONGetSchedule>
 
     // GET SITE DETAIL
@@ -33,8 +47,10 @@ interface BitRemoteService {
     // CHECKIN
     @POST("v1/check-in/site/{id_site_monitor}")
     fun checkIn(
-        @Header("user_id") userId: String,
-        @Header("api_token") apiToken: String,
+        @Header("Accept") accept: String = "application/json",
+        @Header("Userid") userId: String,
+        @Header("Apitoken") apiToken: String,
+        @Header("Firebaseid") firebaseId: String,
         @Path("id_site_monitor") idSiteMonitor: String
     ): Single<JSONCheckIn>
 
@@ -42,14 +58,12 @@ interface BitRemoteService {
     @Multipart
     @POST("v1/upload/data")
     fun uploadFormData(
-        @Header("user_id") userId: String,
-        @Header("api_token") apiToken: String,
-        @Part("id_site_monitor") idSiteMonitor: String,
+        @Header("Accept") accept: String = "application/json",
+        @Header("Userid") userId: String,
+        @Header("Apitoken") apiToken: String,
+        @Header("Firebaseid") firebaseId: String,
         @Part image1: MultipartBody.Part,
-        @Part("item1") item1: RequestBody,
-        @Part("remark1") remark1: RequestBody,
         @Part image2: MultipartBody.Part,
-        @Part("item2") item2: RequestBody,
-        @Part("remark2") remark2: RequestBody
-    ): Single<JSONUploadFormData>
+        @PartMap textBody: Map<String, @JvmSuppressWildcards RequestBody>
+    ): Completable
 }

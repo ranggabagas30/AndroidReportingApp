@@ -6,35 +6,42 @@ import com.domikado.bit.domain.domainmodel.CheckIn
 import com.domikado.bit.domain.domainmodel.Schedule
 import com.domikado.bit.domain.domainmodel.toSchedule
 import com.domikado.bit.domain.repository.IRemoteScheduleRepository
+import com.github.ajalt.timberkt.d
 import io.reactivex.Single
 
-class RemoteScheduleImpl(private val bitAPI: BitAPI, private val apiToken: String): IRemoteScheduleRepository {
+class RemoteScheduleImpl(private val bitAPI: BitAPI): IRemoteScheduleRepository {
 
-    override fun getSchedules(userId: Int): Single<List<Schedule>> {
-        return bitAPI.getSchedules(userId.toString(), apiToken)
+    override fun getSchedules(userId: String, apiToken: String, firebaseToken: String): Single<List<Schedule>> {
+        return bitAPI.getSchedules(userId, apiToken, firebaseToken)
             .map { response ->
                 if (response.status == 0) throw BitThrowable.BitApiResponseException(response.message)
                 else {
-                    response.data?.map {
+                    if (response.data == null) throw BitThrowable.BitApiResponseException("Response schedule list kosong")
+                    response.data.map {
                         it.toSchedule
                     }
                 }
             }
+
     }
 
-    override fun checkIn(userId: Int): Single<CheckIn> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun checkIn(
+        userId: String,
+        apiToken: String,
+        firebaseId: String,
+        siteMonitorId: Int
+    ): Single<CheckIn> {
+        return bitAPI.checkIn(userId, apiToken, firebaseId, siteMonitorId.toString())
+            .map { response ->
+                d {"checkin response: $response"}
+                if (response.status == 0) throw BitThrowable.BitApiResponseException(response.message)
+                else {
+                    if (response.data == null) throw BitThrowable.BitApiResponseException("Response checkin kosong")
+                    CheckIn(
+                        response.status,
+                        response.message
+                    )
+                }
+            }
     }
-
-    //    override fun checkIn(userId: Int, siteIdMonitor: String): Single<CheckIn> {
-////        return bitAPI.checkIn(userId.toString(), apiToken, siteIdMonitor)
-////            .map { response ->
-////                if (response.status == 0) throw BitThrowable.BitApiResponseException(response.message)
-////                else {
-////                    response.data?.map {
-////                        it.toSite
-////                    }
-////                }
-////            }
-//    }
 }

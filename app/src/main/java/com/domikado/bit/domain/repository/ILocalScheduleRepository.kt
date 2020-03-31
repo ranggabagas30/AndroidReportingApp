@@ -6,8 +6,13 @@ import io.reactivex.Single
 
 interface ILocalScheduleRepository {
 
-    fun getSchedules(userId: Int, workTypeId: Int? = null): Single<List<Schedule>>
+    fun getSchedules(userId: String): Single<List<Schedule>>
 
-    fun deleteSchedules(userId: Int): Completable
+    fun deleteSchedules(userId: String): Completable
 
+    fun deleteSchedules(schedules: List<Schedule>): Completable
+
+    fun saveSchedules(schedules: List<Schedule>): Completable
+
+    fun getProgress(scheduleId: Int): Single<Int>
 }

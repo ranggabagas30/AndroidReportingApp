@@ -3,6 +3,7 @@ package com.domikado.bit.utility
 import android.app.Activity
 import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
+import androidx.fragment.app.Fragment
 
 object PermissionUtil {
 
@@ -24,5 +25,9 @@ object PermissionUtil {
 
     fun requestPermissions(activity: Activity, permissions: Array<out String>, requestCode: Int) {
         ActivityCompat.requestPermissions(activity, permissions, requestCode)
+    }
+
+    fun requestPermissions(fragment: Fragment, permissions: Array<out String>, requestCode: Int) {
+        fragment.requestPermissions(permissions, requestCode)
     }
 }

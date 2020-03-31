@@ -20,7 +20,8 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
         <activity android:name=".ui.common.camera.CameraActivity"></activity>
 
         <provider
@@ -37,7 +38,7 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <activity android:name=".ui.screen.SettingActivity" />
+        <activity android:name=".ui.screen.setting.SettingActivity" />
         <activity android:name=".ui.screen.login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

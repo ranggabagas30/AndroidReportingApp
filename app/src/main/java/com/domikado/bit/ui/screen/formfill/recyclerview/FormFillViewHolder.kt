@@ -19,50 +19,58 @@ import com.domikado.bit.R
 import com.domikado.bit.abstraction.recyclerview.AbstractViewHolder
 import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import java.io.File
 
 class FormFillViewHolder(itemView: View, private val onFormFillListener: OnFormFillListener): AbstractViewHolder<FormFillModel>(itemView) {
 
+    private var model: FormFillModel? = null
+
     override fun bind(model: FormFillModel) {
         println("bind form fill model with id: ${model.id}")
+        this.model = model
+
         val formHeaderView = itemView.findViewById(R.id.form_header) as RelativeLayout
         val formBodyView = itemView.findViewById(R.id.form_body) as LinearLayout
-
-        setHeader(formHeaderView, model.header)
-        setBody(formBodyView, model.body, model.id)
+        setHeader(formHeaderView)
+        setBody(formBodyView)
     }
 
-    private fun setHeader(formHeaderView: RelativeLayout, header: HeaderModel){
+    private fun setHeader(formHeaderView: RelativeLayout){
         val titleView = formHeaderView.findViewById(R.id.form_header_title) as AppCompatTextView
-        titleView.text = header.title
+        titleView.text = model?.header?.title
 
         val uploadStatusView = formHeaderView.findViewById(R.id.form_header_upload_status) as AppCompatTextView
-        uploadStatusView.text = header.uploadStatus
+        uploadStatusView.text = model?.header?.uploadStatus
     }
 
-    private fun setBody(formBodyView: LinearLayout, body: BodyModel, formFillId: Int) {
-        for (section in body.sections) {
-            when(section) {
-                is SectionModel.CheckBoxModel -> {
-                    val view: View? = formBodyView.findViewById(section.id)
-                    if (view == null) addCheckBox(formBodyView, section, formFillId)
-                }
-                is SectionModel.RadioModel -> {
-                    val view: View? = formBodyView.findViewById(section.id)
-                    if (view == null) addRadio(formBodyView, section, formFillId)
-                }
-                is SectionModel.EditTextModel -> {
-                    val view: View? = formBodyView.findViewById(section.id)
-                    if (view == null) addEditText(formBodyView, section, formFillId)
-                }
-                is SectionModel.PhotoLayoutModel -> {
-                    val view: View? = formBodyView.findViewById(section.id)
-                    if (view == null) addPhotoLayout(formBodyView, section, formFillId) // if view with section id is not found (not added before), than add it to the parent
+    private fun setBody(formBodyView: LinearLayout) {
+        model?.body?.sections?.also {
+            for (section in it) {
+                when(section) {
+                    is SectionModel.CheckBoxModel -> {
+                        val view: View? = formBodyView.findViewById(section.id)
+                        if (view == null) addCheckBox(formBodyView, section)
+                    }
+                    is SectionModel.RadioModel -> {
+                        val view: View? = formBodyView.findViewById(section.id)
+                        if (view == null) addRadio(formBodyView, section)
+                    }
+                    is SectionModel.EditTextModel -> {
+                        val view: View? = formBodyView.findViewById(section.id)
+                        if (view == null) addEditText(formBodyView, section)
+                    }
+                    is SectionModel.PhotoLayoutModel -> {
+                        val view: View? = formBodyView.findViewById(section.id)
+                        if (view == null) addPhotoLayout(formBodyView, section) // if view with section id is not found (not added before), than add it to the parent
+                        else getPhotolayout(formBodyView, section)
+                    }
                 }
             }
         }
+
     }
 
-    private fun addCheckBox(formBodyView: LinearLayout, section: SectionModel.CheckBoxModel, formFillId: Int) {
+    private fun addCheckBox(formBodyView: LinearLayout, section: SectionModel.CheckBoxModel) {
         val formCheckBoxView = LayoutInflater.from(formBodyView.context).inflate(R.layout.item_form_checkbox, formBodyView, true) as LinearLayout
 
         // set id
@@ -98,7 +106,7 @@ class FormFillViewHolder(itemView: View, private val onFormFillListener: OnFormF
         formBodyView.addView(formCheckBoxView)
     }
 
-    private fun addRadio(formBodyView: LinearLayout, section: SectionModel.RadioModel, formFillId: Int) {
+    private fun addRadio(formBodyView: LinearLayout, section: SectionModel.RadioModel) {
         val formRadioView = LayoutInflater.from(formBodyView.context).inflate(R.layout.item_form_radio, formBodyView, true) as LinearLayout
 
         // set id
@@ -130,7 +138,7 @@ class FormFillViewHolder(itemView: View, private val onFormFillListener: OnFormF
         formBodyView.addView(formRadioView)
     }
 
-    private fun addEditText(formBodyView: LinearLayout, section: SectionModel.EditTextModel, formFillId: Int) {
+    private fun addEditText(formBodyView: LinearLayout, section: SectionModel.EditTextModel) {
         val formEditTextView = LayoutInflater.from(formBodyView.context).inflate(R.layout.item_form_edittext, formBodyView, true) as LinearLayout
 
         // set id
@@ -168,7 +176,8 @@ class FormFillViewHolder(itemView: View, private val onFormFillListener: OnFormF
         formBodyView.addView(formEditTextView)
     }
 
-    private fun addPhotoLayout(formBodyView: LinearLayout, section: SectionModel.PhotoLayoutModel, formFillId: Int) {
+    private fun addPhotoLayout(formBodyView: LinearLayout, section: SectionModel.PhotoLayoutModel) {
+        println("add photo layout: $section")
         val formPhotoLayoutView = LayoutInflater.from(formBodyView.context).inflate(R.layout.item_form_photolayout, formBodyView, false) as ConstraintLayout
 
         // set id
@@ -193,25 +202,69 @@ class FormFillViewHolder(itemView: View, private val onFormFillListener: OnFormF
         // set picture view
         val pictureView = formPhotoLayoutView.findViewById(R.id.form_photolayout_picture) as AppCompatImageView
         pictureView.apply {
-            visibility = if (!TextUtils.isEmpty(section.photoPath)) View.VISIBLE else View.GONE
-            Glide.with(formPhotoLayoutView)
-                .load(section.photoPath)
-                .into(this)
+            println("load image into pictureview")
+            if (!TextUtils.isEmpty(section.photoPath)){
+                visibility = View.VISIBLE
+                Glide.with(formBodyView.context)
+                    .load(File(section.photoPath!!))
+                    .into(pictureView)
+            } else {
+                visibility = View.GONE
+            }
         }
 
         val takePictureView = formPhotoLayoutView.findViewById(R.id.form_photolayout_btn_camera) as FloatingActionButton
         takePictureView.setOnClickListener {
-            //onFormFillListener.onTakePicture(formFillId)
+            onFormFillListener.onTakePicture(model)
         }
 
         val remarkView = formPhotoLayoutView.findViewById(R.id.form_photolayout_tf_remark) as AppCompatEditText
         remarkView.apply {
             setText(section.remark)
             addTextChangedListener {
-                //onFormFillListener.onTextChanged(formFillId, it.toString())
+                onFormFillListener.onTextChanged(it?.toString(), model)
             }
         }
         formBodyView.addView(formPhotoLayoutView)
+    }
+
+    private fun getPhotolayout(formBodyView: LinearLayout, section: SectionModel.PhotoLayoutModel) {
+        val formPhotoLayoutView = formBodyView.findViewById(section.id) as ConstraintLayout
+
+        // define section column
+        setColumn(formPhotoLayoutView, R.id.form_photolayout_column, section.column)
+
+        // define section operator
+        setOperator(formPhotoLayoutView, R.id.form_photolayout_operator, section.operator)
+
+        // define section title
+        setTitle(formPhotoLayoutView, R.id.form_photolayout_title, section.title)
+
+        // define section mandatory
+        setMandatory(formPhotoLayoutView, R.id.form_photolayout_mandatory, section.isMandatory)
+
+        // set no picture view
+        val noPictureView = formPhotoLayoutView.findViewById(R.id.form_photolayout_no_picture) as AppCompatImageView
+        noPictureView.visibility = if (TextUtils.isEmpty(section.photoPath)) View.VISIBLE else View.GONE
+
+        // set picture view
+        val pictureView = formPhotoLayoutView.findViewById(R.id.form_photolayout_picture) as AppCompatImageView
+        pictureView.apply {
+            println("load image into pictureview")
+            if (!TextUtils.isEmpty(section.photoPath)){
+                visibility = View.VISIBLE
+                Glide.with(formBodyView.context)
+                    .load(File(section.photoPath!!))
+                    .into(pictureView)
+            } else {
+                visibility = View.GONE
+            }
+        }
+
+        val remarkView = formPhotoLayoutView.findViewById(R.id.form_photolayout_tf_remark) as AppCompatEditText
+        remarkView.apply {
+            setText(section.remark)
+        }
     }
 
     /* common functions */

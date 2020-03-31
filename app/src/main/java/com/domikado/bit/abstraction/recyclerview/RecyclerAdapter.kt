@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
 class RecyclerAdapter(
-    private var items: ArrayList<AbstractBaseItemModel>,
+    private var items: MutableList<AbstractBaseItemModel>,
     private val viewHolderTypeFactory: ViewHolderTypeFactory,
     private val listeners: Map<Int, IBaseRvListener<*>>?
 ): RecyclerView.Adapter<AbstractViewHolder<AbstractBaseItemModel>>() {
@@ -34,7 +34,7 @@ class RecyclerAdapter(
         holder.bind(items[position])
     }
 
-    fun setItems(items: ArrayList<AbstractBaseItemModel>) {
+    fun setItems(items: MutableList<AbstractBaseItemModel>) {
         this.items.clear()
         if (this.items.addAll(items))
             notifyDataSetChanged()

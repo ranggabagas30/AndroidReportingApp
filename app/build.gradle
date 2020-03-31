@@ -59,7 +59,8 @@ android {
             applicationVariants.all { variant ->
                 renameAPK(variant)
             }
-            buildConfigField("String", "BASE_URL", '"http://192.168.120.13"')
+            //buildConfigField("String", "BASE_URL", '"http://192.168.120.13"')
+            buildConfigField("String", "BASE_URL", '"http://103.17.52.231"')
         }
         release {
             minifyEnabled false
@@ -167,12 +168,13 @@ dependencies {
     annotationProcessor "com.github.bumptech.glide:compiler:${rootProject.ext.glideCompiler}"
     implementation "com.google.code.gson:gson:${rootProject.ext.gson}"
     implementation "pl.droidsonroids.gif:android-gif-drawable:${rootProject.ext.gifLoader}"
-    implementation "com.pixplicity.easyprefs:library:${rootProject.ext.sharedPrefs}"
-    implementation "com.karumi:dexter:${rootProject.ext.dexterPermission}" // permissions
-    implementation "com.facebook.stetho:stetho:${rootProject.ext.facebookStethoversion}"
     implementation "com.pixplicity.easyprefs:library:${rootProject.ext.easyPref}"
     implementation "com.github.ajalt:timberkt:${rootProject.ext.timberKt}"
     implementation "com.jakewharton.threetenabp:threetenabp:${rootProject.ext.threeTenAbp}" // An adaptation of the JSR-310 backport for Android using java.time.*
+
+    // debugging
+    debugImplementation "com.amitshekhar.android:debug-db:${rootProject.ext.androidDebug}"
+    implementation "com.facebook.stetho:stetho:${rootProject.ext.facebookStethoversion}"
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

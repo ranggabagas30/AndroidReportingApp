@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.domikado.bit.BuildConfig
 import com.domikado.bit.R
 import com.domikado.bit.utility.FileUtil
 import com.domikado.bit.utility.GpsUtils
@@ -25,7 +26,8 @@ class CameraActivity : AppCompatActivity() {
     private val permissions = arrayOf(
         Manifest.permission.WRITE_EXTERNAL_STORAGE, 
         Manifest.permission.CAMERA, 
-        Manifest.permission.ACCESS_FINE_LOCATION
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_COARSE_LOCATION
     )
 
     private val permissionRationale = "Mohon izinkan untuk melanjutkan pengambilan foto"
@@ -39,8 +41,6 @@ class CameraActivity : AppCompatActivity() {
 
     companion object {
         const val RESULT_IMAGE_FILE = "RESULT_IMAGE_FILE"
-        const val RESULT_FORM_FILL_ID = "RESULT_FORM_FILL_ID"
-        const val RESULT_POSITION = "RESULT_POSITION"
         const val EXTRA_SCHEDULE_ID = "EXTRA_SCHEDULE_ID"
     }
 
@@ -77,7 +77,7 @@ class CameraActivity : AppCompatActivity() {
     private fun invokeActionCamera() {
         when {
             !gpsUtils.isGpsOn() -> gpsUtils.askTurnOnGps()
-            PermissionUtil.shouldShowPermissionRationale(this, permissions) -> Toast.makeText(this, permissionRationale, Toast.LENGTH_LONG).show()
+            //PermissionUtil.shouldShowPermissionRationale(this, permissions) -> Toast.makeText(this, permissionRationale, Toast.LENGTH_LONG).show()
             PermissionUtil.hasPermissions(this, permissions) -> cameraView.setLifecycleOwner(this)
             else -> PermissionUtil.requestPermissions(this, permissions, RC_PERMISSION_TAKE_PICTURE)
         }
@@ -86,17 +86,22 @@ class CameraActivity : AppCompatActivity() {
     private fun invokeActionCapture() {
         when {
             !gpsUtils.isGpsOn() -> gpsUtils.askTurnOnGps()
-            PermissionUtil.shouldShowPermissionRationale(this, permissions) -> Toast.makeText(this, permissionRationale, Toast.LENGTH_LONG).show()
-            PermissionUtil.hasPermissions(this, permissions) -> cameraView.setLifecycleOwner(this)
+            //PermissionUtil.shouldShowPermissionRationale(this, permissions) -> Toast.makeText(this, permissionRationale, Toast.LENGTH_LONG).show()
+            PermissionUtil.hasPermissions(this, permissions) -> cameraView.takePictureSnapshot()
             else -> PermissionUtil.requestPermissions(this, permissions, RC_PERMISSION_SAVE_PICTURE)
         }
     }
 
     private val cameraListener = object : CameraListener() {
         override fun onPictureTaken(result: PictureResult) {
-            val scheduleId: String? = cameraViewModel.args?.getString(EXTRA_SCHEDULE_ID, null)
-            if (scheduleId == null) {
+            var scheduleId: String? = cameraViewModel.args?.getString(EXTRA_SCHEDULE_ID, null)
 
+            // test
+            if (BuildConfig.DEBUG) {
+                scheduleId = "123"
+            }
+
+            if (scheduleId == null) {
                 // if schedule id is null, then cancel
                 makeText(scheduleIdEmpty, Toast.LENGTH_LONG)
                 setResult(Activity.RESULT_CANCELED)
@@ -107,11 +112,14 @@ class CameraActivity : AppCompatActivity() {
             try {
                 FileUtil.getPhotoDir(scheduleId.toInt()).also { photoDir ->
                     FileUtil.createOrUseDir(photoDir).also { path ->
-                        val imageFile = FileUtil.createImageFile(path, "${FileUtil.createFileName()}.jpg")
+
+                        // create image file
+                        val imageFile = FileUtil.createImageFile(path, FileUtil.createFileName())
 
                         // save image file asynchronously
                         result.toFile(imageFile) {
-                            if (it == null) throw NullPointerException("periksa izin penyimpanan file ke storage")
+                            if (it == null) throw IllegalAccessException("periksa izin penyimpanan file ke storage")
+
                             Intent().apply {
 
                                 // sent result image file back to caller activity

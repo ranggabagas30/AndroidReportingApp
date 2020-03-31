@@ -20,10 +20,13 @@ import com.domikado.bit.abstraction.recyclerview.AbstractBaseItemModel
 import com.domikado.bit.abstraction.recyclerview.RecyclerAdapter
 import com.domikado.bit.abstraction.recyclerview.ViewHolderTypeFactoryImpl
 import com.domikado.bit.domain.domainmodel.Loading
+import com.domikado.bit.domain.domainmodel.Operator
 import com.domikado.bit.ui.screen.schedulelist.recyclerview.OnScheduleClickListener
 import com.domikado.bit.ui.screen.schedulelist.recyclerview.ScheduleModel
 import com.domikado.bit.utility.makeText
-import com.github.ajalt.timberkt.Timber
+import com.github.ajalt.timberkt.d
+import com.github.ajalt.timberkt.e
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_schedule.*
 
 /**
@@ -32,11 +35,10 @@ import kotlinx.android.synthetic.main.fragment_schedule.*
 class ScheduleListFragment : BaseFragment(), IScheduleListContract.View {
 
     private val args: ScheduleListFragmentArgs by navArgs()
-    private val scheduleListEvent = MutableLiveData<ScheduleListEvent>()
+    private val scheduleListEvent by lazy { MutableLiveData<ScheduleListEvent>() }
     private lateinit var rvSchedules: RecyclerView
     private lateinit var recyclerAdapter: RecyclerAdapter
     private lateinit var linearLayoutManager: LinearLayoutManager
-    private lateinit var schedules: ArrayList<ScheduleModel>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,14 +46,8 @@ class ScheduleListFragment : BaseFragment(), IScheduleListContract.View {
     ): View? {
 
         val scheduleListViewModel: ScheduleListViewModel by viewModels()
-
-        try {
-            scheduleListViewModel
-                .buildScheduleListLogic(this)
-        } catch (e: Throwable) {
-            Timber.e(e)
-            requireActivity().makeText("Error create schedule list: ${e.message}", Toast.LENGTH_LONG)
-        }
+        scheduleListViewModel
+            .buildScheduleListLogic(this)
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_schedule, container, false)
@@ -61,35 +57,13 @@ class ScheduleListFragment : BaseFragment(), IScheduleListContract.View {
         super.onViewCreated(view, savedInstanceState)
 
         linearLayoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
-
         rvSchedules = schedule_rv_
         rvSchedules.layoutManager = linearLayoutManager
 
-        schedules = arrayListOf()
         recyclerAdapter = RecyclerAdapter(
-            schedules as ArrayList<AbstractBaseItemModel>,
+            arrayListOf<ScheduleModel>() as ArrayList<AbstractBaseItemModel>,
             ViewHolderTypeFactoryImpl(),
-            mapOf(
-                R.layout.item_schedule_parent to object: OnScheduleClickListener {
-
-                    override fun onSiteCheckInButtonClick(
-                        scheduleId: Int,
-                        workDate: String?,
-                        siteId: Int,
-                        siteName: String?,
-                        siteCode: String?,
-                        siteLatitude: Double?,
-                        siteLongitude: Double?,
-                        siteMonitorId: Int
-                    ) {
-                        navigateToCheckIn(scheduleId, workDate, siteId, siteName, siteCode, siteLatitude, siteLongitude, siteMonitorId)
-                    }
-
-                    override fun onItemClick(model: ScheduleModel) {
-                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                    }
-                }
-            )
+            rvListeners
         )
         rvSchedules.adapter = recyclerAdapter
     }
@@ -101,17 +75,44 @@ class ScheduleListFragment : BaseFragment(), IScheduleListContract.View {
             scheduleListEvent.value = ScheduleListEvent.OnStart
     }
 
-    override fun loadSchedules(schedules: ArrayList<ScheduleModel>) = recyclerAdapter.setItems(schedules as ArrayList<AbstractBaseItemModel>)
+    override fun loadSchedules(schedules: List<ScheduleModel>) {
 
-    override fun uploadScheduleData(schedule: ScheduleModel) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        recyclerAdapter.setItems(schedules.toMutableList())
     }
 
     override fun startLoadingSchedule(loading: Loading) = showLoadingMessage(loading.title, loading.message)
 
     override fun dismissLoading() = hideLoading()
 
+    override fun showError(t: Throwable, message: String?) {
+        e(t)
+        requireActivity().makeText("$message: ${t.message}", Toast.LENGTH_LONG)
+    }
+
     override fun setObserver(observer: Observer<ScheduleListEvent>) = scheduleListEvent.observe(this, observer)
+
+    private val rvListeners = mapOf(
+        R.layout.item_schedule_parent to object: OnScheduleClickListener {
+
+            override fun onSiteCheckInButtonClick(
+                scheduleId: Int,
+                workDate: String?,
+                siteId: Int,
+                siteName: String?,
+                siteCode: String?,
+                siteLatitude: Double?,
+                siteLongitude: Double?,
+                siteMonitorId: Int,
+                operator: Operator?
+            ) {
+                navigateToCheckIn(scheduleId, workDate, siteId, siteName, siteCode, siteLatitude, siteLongitude, siteMonitorId, operator)
+            }
+
+            override fun onItemClick(model: ScheduleModel) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+        }
+    )
 
     private fun navigateToCheckIn(scheduleId: Int,
                                   workDate: String?,
@@ -120,7 +121,19 @@ class ScheduleListFragment : BaseFragment(), IScheduleListContract.View {
                                   siteCode: String?,
                                   siteLatitude: Double?,
                                   siteLongitude: Double?,
-                                  siteMonitorId: Int) {
+                                  siteMonitorId: Int,
+                                  operator: Operator?) {
+
+        d {"navigate checkin -> " +
+                "scheduleId: $scheduleId, " +
+                "workdate: $workDate, " +
+                "site: $siteId, " +
+                "sitename: $siteName, " +
+                "sitecode: $siteCode, " +
+                "sitelat: $siteLatitude, " +
+                "siteLong: $siteLongitude, " +
+                "siteMonitorId: $siteMonitorId, " +
+                "operator: $operator"}
         val action = ScheduleListFragmentDirections.actionScheduleListFragmentToCheckInFragment(
             scheduleId,
             workDate,
@@ -129,7 +142,8 @@ class ScheduleListFragment : BaseFragment(), IScheduleListContract.View {
             siteCode,
             siteLatitude.toString(),
             siteLongitude.toString(),
-            siteMonitorId
+            siteMonitorId,
+            Gson().toJson(operator, Operator::class.java)
         )
         findNavController().navigate(action)
     }

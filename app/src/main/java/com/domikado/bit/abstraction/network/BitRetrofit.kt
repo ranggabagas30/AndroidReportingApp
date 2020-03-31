@@ -1,10 +1,8 @@
 package com.domikado.bit.abstraction.network
 
 import com.domikado.bit.BuildConfig
-import com.domikado.bit.utility.PREF_KEY_ACCESS_TOKEN
 import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import com.pixplicity.easyprefs.library.Prefs
 import okhttp3.HttpUrl
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -63,10 +61,6 @@ class BitRetrofit {
                 val originalHttpUrl = original.url()
                 val modifiedHttpUrl: HttpUrl
                 val modifiedHttpUrlBuilder = originalHttpUrl.newBuilder()
-
-                Prefs.getString(PREF_KEY_ACCESS_TOKEN, null).also { accessToken ->
-                    accessToken?.let { modifiedHttpUrlBuilder.addQueryParameter("access_token", accessToken) }
-                }
 
                 modifiedHttpUrl = modifiedHttpUrlBuilder.build()
                 val modifiedReqBuilder = original.newBuilder()

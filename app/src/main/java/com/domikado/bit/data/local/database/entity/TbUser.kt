@@ -9,12 +9,9 @@ import androidx.room.PrimaryKey
 )
 data class TbUser(
 
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     @ColumnInfo(name = USER.ID)
-    val id: Int = 0,
-
-    @ColumnInfo(name = USER.REMOTE_USER_ID)
-    val remoteUserId: String,
+    val id: String,
 
     @ColumnInfo(name = USER.USERNAME)
     val username: String,
@@ -35,10 +32,7 @@ data class TbUser(
 object USER {
     const val TB_NAME = "user"
     const val ID = "id"
-    const val REMOTE_USER_ID = "remote_user_id"
     const val USERNAME = "username"
-    const val PASSWORD = "password"
     const val FULLNAME = "full_name"
-    const val EMAIL    = "email"
     const val ACCESS_TOKEN = "access_token"
 }

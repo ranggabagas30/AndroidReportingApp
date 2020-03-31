@@ -1,9 +1,10 @@
 package com.domikado.bit.domain.domainmodel
 
 sealed class BitThrowable : Throwable() {
-    data class BitIllegalStateException(val additionalMessage: String?): IllegalStateException()
-    data class BitApiResponseException(val additionalMessage: String? = "Terjadi kesalahan"): BitThrowable()
-    data class BitApiTokenNullException(val errorMessage: String = "API TOKEN kosong"): BitThrowable()
-    data class BitLocationNullException(val errorMessage: String = "Gagal mendapatkan GPS location"): BitThrowable()
+    data class BitIllegalAuthException(override var message: String = "Gagal melakukan authentikasi"): BitThrowable()
+    data class BitIllegalStateException(override var message: String?): IllegalStateException()
+    data class BitApiResponseException(override var message: String? = "Terjadi kesalahan"): BitThrowable()
+    data class BitApiTokenNullException(override var message: String = "API TOKEN kosong"): BitThrowable()
+    data class BitLocationNullException(override var message: String = "Gagal mendapatkan GPS location"): BitThrowable()
 }
 

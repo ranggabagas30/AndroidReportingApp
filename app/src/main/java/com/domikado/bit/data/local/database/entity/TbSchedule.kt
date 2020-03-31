@@ -5,55 +5,58 @@ import androidx.room.*
 @Entity(
     tableName = SCHEDULE.TB_NAME,
     indices = [
-        Index(value = [SCHEDULE.USER_ID], name = SCHEDULE.INDEX_USER_ID),
-        Index(value = [SCHEDULE.WORK_TYPE_ID], name = SCHEDULE.INDEX_WORK_TYPE)
+        Index(value = [SCHEDULE.USER_ID], name = SCHEDULE.INDEX_USER_ID)
     ],
     foreignKeys = [
         ForeignKey(
             entity = TbUser::class,
             parentColumns = [USER.ID],
             childColumns = [SCHEDULE.USER_ID]
-        ),
-        ForeignKey(
-            entity = TbWorkType::class,
-            parentColumns = [WORK_TYPE.ID],
-            childColumns = [SCHEDULE.WORK_TYPE_ID]
         )
     ]
 )
 data class TbSchedule(
 
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     @ColumnInfo(name = SCHEDULE.ID)
-    val id: Int = 0,
-
-    @ColumnInfo(name = SCHEDULE.REMOTE_SCHEDULE_ID)
-    val remoteScheduleId: Int,
+    val id: Int,
 
     @ColumnInfo(name = SCHEDULE.WORK_DATE)
-    val workDate: Long?,
+    val workDate: String?,
 
-    val progress: Int?, // persentase progress
+    @ColumnInfo(name = SCHEDULE.PROGRESS)
+    val progress: Int, // persentase progress
 
-    val status: String?, // i.e. "ON PROGRESS", "ON REVIEW", etc
+    @ColumnInfo(name = SCHEDULE.PIC_STATUS)
+    val picStatus: Int,
+
+    @ColumnInfo(name = SCHEDULE.PIC_STATUS_TEXT)
+    val picStatusText: String?,
+
+    @ColumnInfo(name = SCHEDULE.PM_STATUS)
+    val pmStatus: Int,
+
+    @ColumnInfo(name = SCHEDULE.PM_STATUS_TEXT)
+    val pmStatusText: String?,
 
     @ColumnInfo(name = SCHEDULE.USER_ID)
-    val userId: Int,
+    val userId: String?,
 
-    @ColumnInfo(name = SCHEDULE.WORK_TYPE_ID)
-    val workTypeId: Int,
-
+    @ColumnInfo(name = SCHEDULE.REJECTION)
     val rejection: String?
 )
 
 object SCHEDULE{
     const val TB_NAME = "schedule"
     const val ID = "id"
-    const val REMOTE_SCHEDULE_ID = "remote_schedule_id"
-    const val WORK_DATE = "work_date"
     const val USER_ID = "user_id"
-    const val WORK_TYPE_ID = "work_type_id"
+    const val WORK_DATE = "work_date"
+    const val PROGRESS = "progress"
+    const val PIC_STATUS = "pic_status"
+    const val PIC_STATUS_TEXT = "pic_status_text"
+    const val PM_STATUS = "pm_status"
+    const val PM_STATUS_TEXT = "pm_status_text"
+    const val REJECTION = "rejection"
 
     const val INDEX_USER_ID = "${TB_NAME}-USER_INDEX"
-    const val INDEX_WORK_TYPE = "${TB_NAME}-WORK_TYPE_INDEX"
 }

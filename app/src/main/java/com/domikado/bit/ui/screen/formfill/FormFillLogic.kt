@@ -1,114 +1,186 @@
 package com.domikado.bit.ui.screen.formfill
 
+import android.text.TextUtils
 import androidx.lifecycle.Observer
 import com.domikado.bit.abstraction.base.BaseLogic
-import com.domikado.bit.domain.domainmodel.FormFillData
+import com.domikado.bit.domain.domainmodel.Loading
+import com.domikado.bit.domain.domainmodel.toFormFillData
+import com.domikado.bit.domain.interactor.AuthSource
 import com.domikado.bit.domain.interactor.FormFillSource
+import com.domikado.bit.domain.interactor.OperatorSource
 import com.domikado.bit.domain.servicelocator.FormFillServiceLocator
+import com.domikado.bit.domain.servicelocator.OperatorServiceLocator
+import com.domikado.bit.domain.servicelocator.UserServiceLocator
 import com.domikado.bit.ui.screen.formfill.recyclerview.BodyModel
 import com.domikado.bit.ui.screen.formfill.recyclerview.FormFillModel
 import com.domikado.bit.ui.screen.formfill.recyclerview.HeaderModel
 import com.domikado.bit.ui.screen.formfill.recyclerview.SectionModel
-import com.github.ajalt.timberkt.Timber
-import com.jakewharton.rxrelay2.PublishRelay
-import io.reactivex.disposables.Disposable
+import com.domikado.bit.utility.PREF_KEY_FIREBASE_ID
+import com.github.ajalt.timberkt.d
+import com.pixplicity.easyprefs.library.Prefs
 import java.io.File
 
 class FormFillLogic(
     private val view: IFormFillContract.View,
+    private val authSource: AuthSource,
     private val formFillSource: FormFillSource,
+    private val operatorSource: OperatorSource,
+    private val userServiceLocator: UserServiceLocator,
     private val formFillServiceLocator: FormFillServiceLocator,
+    private val operatorServiceLocator: OperatorServiceLocator,
     private val formFillViewModel: FormFillViewModel
 ): BaseLogic(), Observer<FormFillEvent> {
 
-    private val formFillData by lazy {
-        PublishRelay.create<MutableList<FormFillData>>()
-    }
-
-    private val dataObserver by lazy {
-        object: io.reactivex.Observer<MutableList<FormFillData>> {
-            override fun onComplete() {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-
-            override fun onSubscribe(d: Disposable) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-
-            override fun onNext(t: MutableList<FormFillData>) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-
-            override fun onError(e: Throwable) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-        }
-    }
+    private val formFillModels by lazy { ArrayList<FormFillModel>() }
 
     override fun onChanged(t: FormFillEvent?) {
         when(t) {
-            //is FormFillEvent.OnStart -> onStart()
-            is FormFillEvent.OnTakePictureClick -> onTakePictureClick(t.formFillId)
-            is FormFillEvent.OnSuccessTakePicture -> onSuccessTakePicture(t.formFillId, t.position, t.imageFile)
+            is FormFillEvent.OnViewCreated -> onViewCreated()
+            is FormFillEvent.OnSuccessTakePicture -> onSuccessTakePicture(t.imageFile)
             is FormFillEvent.OnFailedTakePicture -> onFailedTakePicture()
+            is FormFillEvent.OnTextChanged -> onTextChanged(t.text, t.model)
+            is FormFillEvent.OnUploadClick -> onUploadClick()
         }
     }
 
-    private fun onStart(siteMonitorId: Int) {
-
-        formFillViewModel.async(
-            formFillSource.getFormFillData(siteMonitorId, formFillServiceLocator)
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
-                .subscribe({ data ->
-                    formFillData.accept(data.toMutableList())
-                }, { t ->
-                    Timber.e(t)
-                })
-        )
-
-
-        view.loadFormFill(listOf(
+    private fun onViewCreated() {
+        formFillModels.addAll(listOf(
             FormFillModel(
                 0,
+                formFillViewModel.siteMonitorId,
+                null,
                 HeaderModel("Photo 1"),
                 BodyModel(
                     arrayListOf(
                         SectionModel.PhotoLayoutModel(
                             0,
                             "OTDR",
-                            "Indosat",
-                            "Photo 1"
+                            formFillViewModel.operator?.name?: "No operator", // first phase of development, using only one operato
+                            "Photo 1",
+                            true
                         )
                     )
                 )
             ),
             FormFillModel(
                 1,
+                formFillViewModel.siteMonitorId,
+                null,
                 HeaderModel("Photo 2"),
                 BodyModel(
                     arrayListOf(
                         SectionModel.PhotoLayoutModel(
                             1,
                             "OTDR",
-                            "Indosat",
-                            "Photo 2"
+                            formFillViewModel.operator?.name?: "No operator",
+                            "Photo 2",
+                            true
                         )
                     )
                 )
             )
         ))
+
+        view.showLoadingData(Loading(message = "Memuat form"))
+        formFillViewModel.async(
+            formFillSource.getFormFillData(formFillViewModel.siteMonitorId, formFillServiceLocator)
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.ui())
+                .subscribe({ data ->
+                    if (data != null && data.isNotEmpty()) {
+                        for (formFillData in data) {
+                            (formFillModels[formFillData.formFillModelId].body.sections[0] as SectionModel.PhotoLayoutModel).photoPath = formFillData.image
+                            (formFillModels[formFillData.formFillModelId].body.sections[0] as SectionModel.PhotoLayoutModel).remark = formFillData.remark
+                        }
+                    }
+                    view.dismissLoading()
+                    view.loadFormFill(formFillModels)
+                }, { t ->
+                    view.showError(t, "Gagal memuat form")
+                })
+        )
     }
 
-    private fun onTakePictureClick(formFillId: Int) {
+    private fun onSuccessTakePicture(imageFile: File) {
+
+        formFillViewModel.photoFormFillModel?.also {
+            (it.body.sections[0] as SectionModel.PhotoLayoutModel).photoPath = imageFile.path
+            val formFillData = it.toFormFillData
+
+            view.showLoadingData(Loading(message = "Menyimpan photo"))
+            formFillViewModel.async(
+                formFillSource.addOrReplace(listOf(formFillData), formFillServiceLocator)
+                    .subscribeOn(schedulerProvider.io())
+                    .observeOn(schedulerProvider.ui())
+                    .subscribe({
+                        (formFillModels[formFillData.formFillModelId].body.sections[0] as SectionModel.PhotoLayoutModel).photoPath = formFillData.image
+                        view.dismissLoading()
+                        view.loadFormFill(formFillModels)
+                    }, { t->
+                        view.dismissLoading()
+                        view.showError(t, "Gagal menyimpan foto")
+                    })
+            )
+        }
 
     }
 
-    private fun onSuccessTakePicture(formFillId: Int, position: Int, imageFile: File) {
+    private fun onFailedTakePicture() {}
 
+    private fun onTextChanged(text: String?, model: FormFillModel?) {
+        model?.also {
+            (it.body.sections[0] as SectionModel.PhotoLayoutModel).remark = text
+            it.toFormFillData.also { formFillData ->
+                if (TextUtils.isEmpty(text)) {
+                    if (TextUtils.isEmpty(formFillData.itemValue) && TextUtils.isEmpty(formFillData.image)) {
+                        formFillViewModel.async(
+                            formFillSource.delete(it.id, formFillViewModel.siteMonitorId, formFillServiceLocator)
+                                .subscribeOn(schedulerProvider.io())
+                                .observeOn(schedulerProvider.ui())
+                                .subscribe({
+                                    d {"delete form fill data: $formFillData"}
+                                }, { t ->
+                                    view.showError(t, "Gagal menghapus data text item ${formFillData.title}")
+                                })
+                        )
+                    }
+                } else {
+                    formFillViewModel.async(
+                        formFillSource.addOrReplace(listOf(formFillData), formFillServiceLocator)
+                            .subscribeOn(schedulerProvider.io())
+                            .observeOn(schedulerProvider.ui())
+                            .subscribe({
+                                d {"saved form fill data: $formFillData"}
+                            }, { t ->
+                                view.showError(t, "Gagal mennyimpan data text $text")
+                            })
+                    )
+                }
+            }
+        }
     }
 
-    private fun onFailedTakePicture() {
+    private fun onUploadClick() {
+        uploadData()
+    }
+
+    private fun uploadData() {
+        authSource.getCurrentUser(userServiceLocator)?.also {
+            val firebaseId = Prefs.getString(PREF_KEY_FIREBASE_ID, null)
+            view.showLoadingData(Loading("Mengupload data form", "Mulai mengupload. Jangan menghentikan aplikasi"))
+            formFillViewModel.async(
+                formFillSource.uploadData(it.id, it.accessToken, firebaseId, formFillViewModel.siteMonitorId, formFillServiceLocator)
+                    .subscribeOn(schedulerProvider.io())
+                    .observeOn(schedulerProvider.ui())
+                    .subscribe({
+                        view.dismissLoading()
+                        view.uploadSuccess()
+                    }, { t ->
+                        view.dismissLoading()
+                        view.showError(t, "Gagal mengupload data")
+                    })
+            )
+        }
 
     }
 }

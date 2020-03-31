@@ -21,7 +21,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:gravity="center"
-            android:text="100%"
+            android:text="...%"
             android:textSize="20sp"
             android:textStyle="bold"
             android:textColor="@color/colorPrimary"
@@ -37,11 +37,25 @@
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
             android:paddingBottom="16dp"
-            android:text="On Progress"
+            android:text="Pic status: proses\nPM status: proses"
             android:textStyle="italic"
             app:layout_constraintTop_toBottomOf="@id/schedule.parent.worktype"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/schedule.parent.guideline"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/schedule.parent.rejection"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="16dp"
+            android:text="Rejection: dilakukan reject oleh sdfsd sdfsd"
+            android:textStyle="bold"
+            android:textColor="@color/colorError"
+            app:layout_constraintTop_toBottomOf="@id/schedule.parent.status"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/schedule.parent.guideline" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/schedule.parent.dropdown"
@@ -85,8 +99,7 @@
             app:layout_constraintEnd_toStartOf="@id/schedule.parent.guideline"
             app:layout_constraintTop_toBottomOf="@id/schedule.parent.sitename" />
 
-<!--        <com.domikado.bit.ui.screen.schedulelist.recyclerview.ScheduleSiteView->
-<!-            android:id="@+id/schedule.parent.child.1"-->
+<!--        <com.domikado.bit.ui.screen.schedulelist.recyclerview.SiteView          android:id="@+id/schedule.parent.child.1"-->
 <!--            android:layout_width="0dp"-->
 <!--            android:layout_height="wrap_content"-->
 <!--            android:padding="10dp"-->

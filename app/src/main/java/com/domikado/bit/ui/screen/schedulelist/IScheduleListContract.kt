@@ -10,8 +10,8 @@ interface IScheduleListContract {
     interface View {
         fun startLoadingSchedule(loading: Loading)
         fun dismissLoading()
-        fun loadSchedules(schedules: ArrayList<ScheduleModel>) // debug
-        fun uploadScheduleData(schedule: ScheduleModel) // debug only
+        fun loadSchedules(schedules: List<ScheduleModel>)
+        fun showError(t: Throwable, message: String? = null)
         fun setObserver(observer: Observer<ScheduleListEvent>)
     }
 }
@@ -20,6 +20,3 @@ sealed class ScheduleListEvent {
     object OnStart: ScheduleListEvent()
     data class OnScheduleItemClick(val schedule: Schedule): ScheduleListEvent()
 }
-
-internal val SCHEDULE_LIST_LOADING_TITLE = "Mohon tunggu"
-internal val SCHEDULE_LIST_LOADING_MESSAGE = "Memuat daftar schedule"

@@ -9,18 +9,18 @@ import androidx.room.PrimaryKey
 )
 data class TbSite(
 
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     @ColumnInfo(name = SITE.ID)
-    val id: Int = 0,
-
-    @ColumnInfo(name = SITE.REMOTE_SITE_ID)
-    val remoteSiteId: Int,
+    val id: Int,
 
     @ColumnInfo(name = SITE.SITE_MONITOR_ID)
     val siteMonitorId: Int,
 
     @ColumnInfo(name = SITE.NAME)
     val name: String?,
+
+    @ColumnInfo(name = SITE.ALAMAT)
+    val alamat: String?,
 
     @ColumnInfo(name = SITE.CODE)
     val code: String?,
@@ -32,18 +32,27 @@ data class TbSite(
     val longitude: Double?,
 
     @ColumnInfo(name = SITE.STATUS)
-    val status: Int
+    val status: Int,
+
+    @ColumnInfo(name = SITE.CHECKIN_AT)
+    val checkInAt: String?,
+
+    @ColumnInfo(name = SITE.FINISH_AT)
+    val finishAt: String?
 )
 
 object SITE {
-    const val TB_NAME = "Site"
+    const val TB_NAME = "site"
     const val ID = "id"
     const val REMOTE_SITE_ID = "remote_site_id"
+    const val ALAMAT = "alamat"
     const val NAME = "name"
     const val LATITUDE = "latitude"
     const val LONGITUDE = "longitude"
     const val CODE = "code"
     const val SITE_MONITOR_ID = "site_monitor_id"
     const val STATUS = "status"
+    const val CHECKIN_AT = "checkin_at"
+    const val FINISH_AT = "finish_at"
 }
 

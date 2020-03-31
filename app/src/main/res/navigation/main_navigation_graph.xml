@@ -40,7 +40,17 @@
         android:id="@+id/formFillFragment"
         android:name="com.domikado.bit.ui.screen.formfill.FormFillFragment"
         android:label="fragment_form"
-        tools:layout="@layout/fragment_form" />
+        tools:layout="@layout/fragment_form">
+        <argument
+            android:name="siteMonitorId"
+            app:argType="integer"
+            android:defaultValue="-1"/>
+        <argument
+            android:name="operator"
+            app:argType="string"
+            android:defaultValue="@null"
+            app:nullable="true"/>
+    </fragment>
     <fragment
         android:id="@+id/checkInFragment"
         android:name="com.domikado.bit.ui.screen.checkin.CheckInFragment"
@@ -83,6 +93,11 @@
             android:name="siteMonitorId"
             app:argType="integer"
             android:defaultValue="-1"/>
+        <argument
+            android:name="operator"
+            app:argType="string"
+            android:defaultValue="@null"
+            app:nullable="true"/>
         <action
             android:id="@+id/action_checkInFragment_to_formFillFragment"
             app:destination="@id/formFillFragment" />

@@ -10,7 +10,6 @@ import com.domikado.bit.R
 import com.domikado.bit.abstraction.base.BaseActivity
 import com.domikado.bit.domain.domainmodel.Loading
 import com.domikado.bit.ui.screen.MainActivity
-import com.domikado.bit.utility.AuthUtil
 import com.domikado.bit.utility.makeText
 import kotlinx.android.synthetic.main.activity_login.*
 
@@ -27,17 +26,13 @@ class LoginActivity : BaseActivity(), ILoginContract.View {
             .buildLoginLogic(this)
 
         login_btn_signin.setOnClickListener {
-
-            if (AuthUtil.isUsernameValid(login_tf_username.text.toString()) &&
-                    AuthUtil.isPasswordValid(login_tf_password.text.toString())) {
-                loginEvent.value = LoginEvent.OnSignInButtonClick(
-                    login_tf_username.text.toString(),
-                    login_tf_password.text.toString()
-                )
-            } else {
-                makeText(USERNAME_PASSWORD_EMPTY, Toast.LENGTH_SHORT)
-            }
+            loginEvent.value = LoginEvent.OnSignInButtonClick(
+                login_tf_username.text.toString(),
+                login_tf_password.text.toString()
+            )
         }
+
+        loginEvent.value = LoginEvent.OnCreate
     }
 
     override fun onStart() {

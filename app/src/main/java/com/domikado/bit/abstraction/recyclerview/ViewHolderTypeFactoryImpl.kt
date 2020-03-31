@@ -10,12 +10,12 @@ import com.domikado.bit.ui.screen.formfill.recyclerview.FormFillViewHolder
 import com.domikado.bit.ui.screen.formfill.recyclerview.OnFormFillListener
 import com.domikado.bit.ui.screen.schedulelist.recyclerview.OnScheduleClickListener
 import com.domikado.bit.ui.screen.schedulelist.recyclerview.ScheduleModel
-import com.domikado.bit.ui.screen.schedulelist.recyclerview.ScheduleSiteModel
 import com.domikado.bit.ui.screen.schedulelist.recyclerview.ScheduleViewHolder
+import com.domikado.bit.ui.screen.schedulelist.recyclerview.SiteModel
 
 class ViewHolderTypeFactoryImpl: ViewHolderTypeFactory {
 
-    override fun type(itemModel: ScheduleSiteModel): Int {
+    override fun type(itemModel: SiteModel): Int {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

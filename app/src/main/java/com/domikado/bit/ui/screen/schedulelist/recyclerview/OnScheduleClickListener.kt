@@ -1,6 +1,7 @@
 package com.domikado.bit.ui.screen.schedulelist.recyclerview
 
 import com.domikado.bit.abstraction.recyclerview.IBaseRvListener
+import com.domikado.bit.domain.domainmodel.Operator
 
 interface OnScheduleClickListener: IBaseRvListener<ScheduleModel> {
     fun onSiteCheckInButtonClick(
@@ -11,6 +12,7 @@ interface OnScheduleClickListener: IBaseRvListener<ScheduleModel> {
         siteCode: String?,
         siteLatitude: Double?,
         siteLongitude: Double?,
-        siteMonitorId: Int
+        siteMonitorId: Int,
+        operator: Operator?
     )
 }

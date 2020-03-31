@@ -31,8 +31,8 @@ data class TbJoinSiteMonitoring(
 )
 
 object SITE_MONITORING_JOIN {
-    const val TB_NAME = "schedule_site_join"
-    const val ID = "ID"
+    const val TB_NAME = "site_monitoring_join"
+    const val ID = "site_monitor_id"
     const val SCHEDULE_ID = "schedule_id"
     const val SITE_ID = "site_id"
 

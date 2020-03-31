@@ -6,7 +6,7 @@ import io.reactivex.Single
 
 interface IRemoteScheduleRepository {
 
-    fun getSchedules(userId: Int): Single<List<Schedule>>
+    fun getSchedules(userId: String, apiToken: String, firebaseToken: String): Single<List<Schedule>>
 
-    fun checkIn(userId: Int): Single<CheckIn>
+    fun checkIn(userId: String, apiToken: String, firebaseId: String, siteMonitorId: Int): Single<CheckIn>
 }

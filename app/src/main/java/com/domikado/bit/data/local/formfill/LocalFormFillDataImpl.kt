@@ -10,13 +10,14 @@ import io.reactivex.Single
 
 class LocalFormFillDataImpl(private val formFillDataDao: FormFillDataDao) : IFormFillDataRepository {
 
-    override fun delete(listFormFillData: List<FormFillData>): Completable = formFillDataDao.delete(
-        listFormFillData.map { it.toTbFormFillData }
-    )
+    override fun delete(listFormFillData: List<FormFillData>): Completable =
+        formFillDataDao.delete(listFormFillData.map { it.toTbFormFillData })
 
-    override fun addOrUpdate(listFormFillData: List<FormFillData>): Completable = formFillDataDao.insertOrReplace(
-        listFormFillData.map { it.toTbFormFillData }
-    )
+    override fun delete(formFillModelId: Int, siteMonitorId: Int): Completable =
+        formFillDataDao.delete(formFillModelId, siteMonitorId)
+
+    override fun addOrUpdate(listFormFillData: List<FormFillData>): Completable =
+        formFillDataDao.insertOrReplace(listFormFillData.map { it.toTbFormFillData })
 
     override fun getFormFillData(siteMonitorId: Int): Single<List<FormFillData>> {
         return formFillDataDao.getFormFillData(siteMonitorId).map {

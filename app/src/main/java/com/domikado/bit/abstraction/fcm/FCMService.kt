@@ -2,9 +2,11 @@ package com.domikado.bit.abstraction.fcm
 
 import android.os.Bundle
 import android.widget.Toast
+import com.domikado.bit.utility.PREF_KEY_FIREBASE_TOKEN
 import com.github.ajalt.timberkt.Timber.d
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import com.pixplicity.easyprefs.library.Prefs
 
 class FCMService: FirebaseMessagingService() {
 
@@ -35,6 +37,9 @@ class FCMService: FirebaseMessagingService() {
         if (remoteMessage.data.isNotEmpty()) { // data can be processed in long-running mode (using Firebase Job Dispatcher)
             // or just handle it directly which is short-running mode (under 10 secs)
             d {"remote message: $remoteMessage"}
+            d {"from: ${remoteMessage.from}"}
+            d {"data: ${remoteMessage.data}"}
+            d {"messageid: ${remoteMessage.messageId}"}
         }
 
         // Check if message contains a notification payload.
@@ -59,12 +64,12 @@ class FCMService: FirebaseMessagingService() {
          *
          */
         d {"NEW TOKEN : $s"}
-        //storeRegIdInpref(s)
+        storeFirebaseToken(s)
     }
 
-//    private fun storeRegIdInpref(token: String) {
-//        PrefUtil.putStringPref(R.string.app_fcm_reg_id, token)
-//    }
+    private fun storeFirebaseToken(token: String) {
+        Prefs.putString(PREF_KEY_FIREBASE_TOKEN, token)
+    }
 
     private fun handleNotification(bundleMessage: Bundle) {
         Toast.makeText(

@@ -8,6 +8,8 @@ interface IFormFillDataRepository {
 
     fun delete(listFormFillData: List<FormFillData>): Completable
 
+    fun delete(formFillModelId: Int, siteMonitorId: Int): Completable
+
     fun addOrUpdate(listFormFillData: List<FormFillData>): Completable
 
     fun getFormFillData(siteMonitorId: Int): Single<List<FormFillData>>

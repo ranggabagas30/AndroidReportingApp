@@ -35,6 +35,8 @@ abstract class BitDatabase : RoomDatabase() {
 //    abstract fun itemDao(): ItemDao
 //    abstract fun rowDao(): RowDao
 //    abstract fun rowColumnDao(): RowColumnJoinDao
+    abstract fun userDao(): UserDao
+    abstract fun operatorDao(): OperatorDao
     abstract fun scheduleDao(): ScheduleDao
     abstract fun scheduleOperatorJoinDao(): ScheduleOperatorJoinDao
     abstract fun scheduleSiteJoinDao(): ScheduleSiteJoinDao

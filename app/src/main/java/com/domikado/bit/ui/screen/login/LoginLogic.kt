@@ -3,18 +3,15 @@ package com.domikado.bit.ui.screen.login
 import android.text.TextUtils
 import androidx.lifecycle.Observer
 import com.domikado.bit.abstraction.base.BaseLogic
+import com.domikado.bit.domain.domainmodel.BitThrowable
 import com.domikado.bit.domain.domainmodel.Loading
-import com.domikado.bit.domain.domainmodel.Result
-import com.domikado.bit.domain.domainmodel.User
 import com.domikado.bit.domain.interactor.AuthSource
 import com.domikado.bit.domain.servicelocator.UserServiceLocator
-import com.domikado.bit.utility.PREF_KEY_ACCESS_TOKEN
+import com.domikado.bit.utility.*
 import com.github.ajalt.timberkt.Timber.d
 import com.github.ajalt.timberkt.Timber.e
 import com.google.firebase.iid.FirebaseInstanceId
 import com.pixplicity.easyprefs.library.Prefs
-import io.reactivex.Completable
-import java.util.concurrent.TimeUnit
 
 class LoginLogic(
     private val view: ILoginContract.View,
@@ -25,34 +22,52 @@ class LoginLogic(
 
     override fun onChanged(t: LoginEvent<Nothing>?) {
         when(t) {
+            is LoginEvent.OnCreate -> onCreate()
+            is LoginEvent.OnStart -> onStart()
             is LoginEvent.OnSignInButtonClick -> onSignInClick(t.username, t.password)
             //is LoginEvent.OnSignInResult -> onSignInResult(t.result)
-            is LoginEvent.OnStart -> onStart()
         }
+    }
+
+    private fun onCreate() {
+//        // mendapatkan firebase id dan token untuk disimpan
+//        getFirebaseIdAndToken()
+    }
+
+    private fun onStart() {
+        // mendapatkan firebase id dan token untuk disimpan
+        getFirebaseIdAndToken()
+
+        // mengecek apakah session user masih ada
+        val userPrefs = Prefs.getString(PREF_KEY_USER, null)
+        if (!TextUtils.isEmpty(userPrefs)) view.navigateAfterLogin()
     }
 
     private fun onSignInClick(username: String, password: String) {
 
-//        view.startLoadingSignIn(Loading(LOGIN_LOADING_TITLE, LOGIN_LOADING_MESSAGE))
-//        loginViewModel.async(authSource.signInUser(username, password, userServiceLocator)
-//            .subscribeOn(schedulerProvier.io())
-//            .observeOn(schedulerProvier.ui())
-//            .subscribe(
-//                { user ->
-//                    view.dismissLoading()
-//                    onSignInResult(Result.build { LoginResult(user, LOGIN_SUCCESS) })
-//                },
-//                { t ->
-//                    view.dismissLoading()
-//                    onSignInResult(Result.build { throw t })
-//                }
-//            ))
+        val firebaseToken = Prefs.getString(PREF_KEY_FIREBASE_TOKEN, null)
+
+        if (!AuthUtil.isUsernameValid(username) || !AuthUtil.isPasswordValid(password)) {
+            view.showError(BitThrowable.BitIllegalAuthException())
+            return
+        }
+
+        if (!AuthUtil.isFirebaseTokenValid(firebaseToken)) {
+            view.showError(NullPointerException("Firebase token kosong"))
+            return
+        }
+
+        val encodedPassword = SecurityUtil.getSHA256bytes(password).let {
+            SecurityUtil.bytesToHex(it)
+        }
+        d {"username: $username"}
+        d {"encoded password: $encodedPassword"}
+        d {"firebase token: $firebaseToken"}
 
 
-        //debug
         view.startLoadingSignIn(Loading(LOGIN_LOADING_TITLE, LOGIN_LOADING_MESSAGE))
         loginViewModel.async(
-            Completable.timer(1, TimeUnit.SECONDS)
+            authSource.signInUser(username, encodedPassword, firebaseToken, userServiceLocator)
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
                 .subscribe(
@@ -66,41 +81,26 @@ class LoginLogic(
                     }
                 )
         )
-    }
 
-    private fun onSignInResult(loginResult: Result<Throwable, LoginResult>) {
-
-        when(loginResult) {
-            is Result.Value -> {
-                val user        = loginResult.value.user
-                val message     = loginResult.value.message
-
-                // save user data
-                saveUserData(user)
-                message?.also {
-                    view.showMessageLoginSuccess(it)
-                    view.navigateAfterLogin()
-                }
-            }
-            is Result.Error -> {
-                // show error
-                val error = loginResult.error
-                view.showError(error)
-            }
-        }
-    }
-
-    private fun onStart() {
-
-        getFirebaseIdAndToken()
-
-        // mengecek apakah session user masih ada
-        val accessToken = Prefs.getString(PREF_KEY_ACCESS_TOKEN, null)
-        if (!TextUtils.isEmpty(accessToken)) view.navigateAfterLogin()
-    }
-
-    private fun saveUserData(user: User) {
-
+        //debug
+//        if (BuildConfig.DEBUG) {
+//            view.startLoadingSignIn(Loading(LOGIN_LOADING_TITLE, LOGIN_LOADING_MESSAGE))
+//            loginViewModel.async(
+//                Completable.timer(1, TimeUnit.SECONDS)
+//                    .subscribeOn(schedulerProvider.io())
+//                    .observeOn(schedulerProvider.ui())
+//                    .subscribe(
+//                        {
+//                            view.dismissLoading()
+//                            view.navigateAfterLogin()
+//                        },
+//                        { t ->
+//                            view.dismissLoading()
+//                            view.showError(t)
+//                        }
+//                    )
+//            )
+//        }
     }
 
     private fun getFirebaseIdAndToken() {
@@ -115,6 +115,10 @@ class LoginLogic(
                 val token = task.result?.token
                 d {"firebase id: $id"}
                 d {"firebase Token: $token"}
+
+                // save firebase id and token
+                Prefs.putString(PREF_KEY_FIREBASE_ID, id)
+                Prefs.putString(PREF_KEY_FIREBASE_TOKEN, token)
             }
     }
 }

@@ -9,7 +9,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.domikado.bit.R
 import com.google.android.material.button.MaterialButton
 
-class ScheduleSiteView: ConstraintLayout {
+class SiteView: ConstraintLayout {
 
     @JvmOverloads constructor(
         context: Context,

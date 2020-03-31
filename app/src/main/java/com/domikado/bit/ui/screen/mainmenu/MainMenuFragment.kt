@@ -14,7 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.domikado.bit.R
 import com.domikado.bit.abstraction.base.BaseFragment
-import com.domikado.bit.ui.screen.SettingActivity
+import com.domikado.bit.ui.screen.setting.SettingActivity
 import com.google.android.material.card.MaterialCardView
 import kotlinx.android.synthetic.main.fragment_main_menu.*
 

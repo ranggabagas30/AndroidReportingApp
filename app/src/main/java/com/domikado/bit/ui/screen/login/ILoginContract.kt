@@ -16,6 +16,7 @@ interface ILoginContract {
 }
 
 sealed class LoginEvent<out T> {
+    object OnCreate: LoginEvent<Nothing>()
     object OnStart: LoginEvent<Nothing>()
     data class OnSignInButtonClick(val username: String, val password: String): LoginEvent<Nothing>()
     //data class OnSignInResult<out T>(val result: T): LoginEvent<T>()
