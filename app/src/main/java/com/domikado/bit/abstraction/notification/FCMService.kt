@@ -1,4 +1,4 @@
-package com.domikado.bit.abstraction.fcm
+package com.domikado.bit.abstraction.notification
 
 import android.os.Bundle
 import android.widget.Toast
@@ -40,6 +40,8 @@ class FCMService: FirebaseMessagingService() {
             d {"from: ${remoteMessage.from}"}
             d {"data: ${remoteMessage.data}"}
             d {"messageid: ${remoteMessage.messageId}"}
+
+            handleNotification(remoteMessage)
         }
 
         // Check if message contains a notification payload.
@@ -78,5 +80,17 @@ class FCMService: FirebaseMessagingService() {
             Toast.LENGTH_SHORT
         ).show()
         d {"message notification : " + bundleMessage.getString("message")}
+    }
+
+    private fun handleNotification(remoteMessage: RemoteMessage) {
+        val body = remoteMessage.data.get("body")
+        val type = remoteMessage.data.get("type")
+        val sound = remoteMessage.data.get("sound")
+        val title = remoteMessage.data.get("title")
+
+        when(type) {
+            2.toString() -> NotificationHelper.notifyRejection(this, NotificationHelper.DEFAULT_NAME, title, body)
+            else -> Toast.makeText(this, "Bit notifikasi: Tidak dikenali", Toast.LENGTH_SHORT).show()
+        }
     }
 }

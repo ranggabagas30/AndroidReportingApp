@@ -9,25 +9,21 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.domikado.bit.R
 import com.google.android.material.button.MaterialButton
 
-class SiteView: ConstraintLayout {
+class SiteView : ConstraintLayout {
 
-    @JvmOverloads constructor(
-        context: Context,
-        attributeSet: AttributeSet? = null,
-        defStyleAttr: Int = 0
-    ): super(context, attributeSet, defStyleAttr)
+    constructor(context: Context): super(context)
 
-    private var siteRootView: ConstraintLayout =
-        LayoutInflater.from(context)
-            .inflate(R.layout.item_schedule_child, this, true) as ConstraintLayout
+    constructor(context: Context, attributeSet: AttributeSet): super(context, attributeSet)
+
+    private var siteRootView: View = LayoutInflater.from(context).inflate(R.layout.item_schedule_child, this, true) as ConstraintLayout
     private var siteNameView: AppCompatTextView
     private var siteStatusView: AppCompatTextView
     private var siteCheckInView: MaterialButton
     
     init {
-        siteNameView = siteRootView.findViewById(R.id.schedule_child_site_name)
-        siteStatusView = siteRootView.findViewById(R.id.schedule_child_site_status)
-        siteCheckInView = siteRootView.findViewById(R.id.schedule_child_btn_checkin)
+        siteNameView = siteRootView.findViewById(R.id.site_name)
+        siteStatusView = siteRootView.findViewById(R.id.site_status)
+        siteCheckInView = siteRootView.findViewById(R.id.site_btn_checkin)
     }
 
     fun setViewId(id: Int) {
@@ -37,15 +33,23 @@ class SiteView: ConstraintLayout {
     fun setSiteName(siteName: String) {
         siteNameView.text = siteName
     }
-    
+
+    fun getSiteName() = siteNameView.text.toString()
+
     fun setSiteStatus(siteStatus: String) {
         siteStatusView.text = siteStatus
     }
+
+    fun getSiteStatus() = siteStatusView.text.toString()
     
     fun setCheckInOnClickListener(onClickListener: OnClickListener) {
         siteCheckInView.setOnClickListener(onClickListener)
     }
-    
+
+    fun setCheckinIsEnabled(isAllowed: Boolean) {
+        if (isAllowed) enableCheckin() else disableCheckin()
+    }
+
     // behaviour 
     fun show() {
         this.visibility = View.VISIBLE

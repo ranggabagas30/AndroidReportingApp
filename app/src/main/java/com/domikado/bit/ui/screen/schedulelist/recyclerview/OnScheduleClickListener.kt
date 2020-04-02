@@ -10,6 +10,7 @@ interface OnScheduleClickListener: IBaseRvListener<ScheduleModel> {
         siteId: Int,
         siteName: String?,
         siteCode: String?,
+        siteStatus: Int,
         siteLatitude: Double?,
         siteLongitude: Double?,
         siteMonitorId: Int,

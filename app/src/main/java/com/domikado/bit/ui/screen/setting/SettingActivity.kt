@@ -4,10 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.domikado.bit.R
 import com.domikado.bit.abstraction.base.BaseActivity
+import com.domikado.bit.abstraction.notification.NotificationHelper
 import com.domikado.bit.domain.domainmodel.User
 import com.domikado.bit.ui.screen.login.LoginActivity
 import com.domikado.bit.utility.PREF_KEY_FIREBASE_TOKEN
@@ -20,24 +21,19 @@ import kotlinx.android.synthetic.main.activity_setting.*
 
 class SettingActivity : BaseActivity(), Observer<SettingEvent> {
 
+    private val settingViewModel: SettingViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_setting)
 
-        val settingViewModel: SettingViewModel = ViewModelProvider.AndroidViewModelFactory(this.application).create(SettingViewModel::class.java)
         settingViewModel.settingEvent.observe(this, this)
 
+        setting_btn_notification.setOnClickListener {
+            testNotify()
+        }
         setting_btn_logout.setOnClickListener {
-            val userPrefs = Prefs.getString(PREF_KEY_USER, null)
-            val firebaseToken = Prefs.getString(PREF_KEY_FIREBASE_TOKEN, null)
-
-            if (TextUtils.isEmpty(userPrefs) || TextUtils.isEmpty(firebaseToken)) {
-                navigateAfterLogout()
-                return@setOnClickListener
-            }
-
-            val user = Gson().fromJson(userPrefs, User::class.java)
-            settingViewModel.logout(user.id, user.accessToken, firebaseToken)
+            doLogout()
         }
     }
 
@@ -61,6 +57,25 @@ class SettingActivity : BaseActivity(), Observer<SettingEvent> {
     private fun onFailedLogout(t: Throwable) {
         hideLoading()
         makeText("Error logout: ${t.message}", Toast.LENGTH_LONG)
+    }
+
+    private fun testNotify() {
+        val title = setting_notification_title.text.toString()
+        val message = setting_notification_message.text.toString()
+        NotificationHelper.notifyRejection(this, NotificationHelper.DEFAULT_NAME, title, message)
+    }
+
+    private fun doLogout() {
+        val userPrefs = Prefs.getString(PREF_KEY_USER, null)
+        val firebaseToken = Prefs.getString(PREF_KEY_FIREBASE_TOKEN, null)
+
+        if (TextUtils.isEmpty(userPrefs) || TextUtils.isEmpty(firebaseToken)) {
+            navigateAfterLogout()
+            return
+        }
+
+        val user = Gson().fromJson(userPrefs, User::class.java)
+        settingViewModel.logout(user.id, user.accessToken, firebaseToken)
     }
 
     private fun navigateAfterLogout() {

@@ -47,7 +47,6 @@ class ScheduleListLogic(
                 view.startLoadingSchedule(Loading(message = "Memuat schedule"))
                 scheduleListViewModel.async(
                     scheduleSource.getSchedules(it.id, it.accessToken, firebaseToken, scheduleServiceLocator)
-                        .concatWith {  }
                         .subscribeOn(schedulerProvider.io())
                         .observeOn(schedulerProvider.ui())
                         .subscribe({ data ->

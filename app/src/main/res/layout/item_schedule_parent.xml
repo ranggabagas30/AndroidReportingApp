@@ -44,6 +44,20 @@
             app:layout_constraintEnd_toStartOf="@id/schedule.parent.guideline"/>
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/schedule.parent.worktype"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/work_fo_monitoring"
+            android:textAllCaps="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/schedule.parent.guideline"
+            app:layout_constraintTop_toBottomOf="@id/schedule.parent.sitename" />
+
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/schedule.parent.rejection"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -55,7 +69,8 @@
             android:textColor="@color/colorError"
             app:layout_constraintTop_toBottomOf="@id/schedule.parent.status"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/schedule.parent.guideline" />
+            app:layout_constraintEnd_toStartOf="@id/schedule.parent.guideline"
+            android:visibility="gone"/>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/schedule.parent.dropdown"
@@ -85,27 +100,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/schedule.parent.worktype"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:text="@string/work_fo_monitoring"
-            android:textAllCaps="true"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/schedule.parent.guideline"
-            app:layout_constraintTop_toBottomOf="@id/schedule.parent.sitename" />
-
-<!--        <com.domikado.bit.ui.screen.schedulelist.recyclerview.SiteView          android:id="@+id/schedule.parent.child.1"-->
+<!--        <com.domikado.bit.ui.screen.schedulelist.recyclerview.SiteView-->
+<!--            android:id="@+id/schedule.parent.child.1"-->
 <!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_height="100dp"-->
 <!--            android:padding="10dp"-->
 <!--            android:paddingStart="16dp"-->
 <!--            android:paddingEnd="16dp"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/schedule.parent.status"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/schedule.parent.rejection"-->
 <!--            app:layout_constraintStart_toStartOf="parent"-->
 <!--            app:layout_constraintEnd_toEndOf="parent"-->
 <!--            android:visibility="visible"/>-->

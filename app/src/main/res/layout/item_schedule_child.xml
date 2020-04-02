@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/schedule.child.root"
+    android:id="@+id/site.root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="10dp"
     android:paddingStart="16dp"
     android:paddingEnd="16dp">
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/schedule.child.site.name"
+        android:id="@+id/site.name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Site Name"
@@ -18,17 +18,17 @@
         app:layout_constraintStart_toStartOf="parent"/>
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/schedule.child.site.status"
+        android:id="@+id/site.status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/schedule.child.site.name"
+        android:layout_below="@id/site.name"
         android:text="Progress"
         android:textStyle="italic"
-        app:layout_constraintTop_toBottomOf="@+id/schedule.child.site.name"
+        app:layout_constraintTop_toBottomOf="@+id/site.name"
         app:layout_constraintStart_toStartOf="parent"/>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/schedule.child.btn.checkin"
+        android:id="@+id/site.btn.checkin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/checkin"

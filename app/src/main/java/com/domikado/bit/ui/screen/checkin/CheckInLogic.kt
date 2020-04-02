@@ -21,12 +21,24 @@ class CheckInLogic(
 
     override fun onChanged(t: CheckInEvent?) {
         when (t) {
+            is CheckInEvent.OnCreateView -> onCreateView()
             is CheckInEvent.OnViewCreated -> onViewCreated()
             is CheckInEvent.OnCheckInClick -> onCheckInClick()
         }
     }
 
+    private fun onCreateView() {
+
+    }
+
     private fun onViewCreated() {
+//        println("site status: ${checkInViewModel.siteStatus}")
+//        if (checkInViewModel.siteStatus == 1) {
+//            // sedang checkin, maka redirect langsung ke halaman form fill
+//            view.navigateAfterCheckIn()
+//            return
+//        }
+
         checkInViewModel.also {
             view.showCheckInData(
                 it.scheduleId,

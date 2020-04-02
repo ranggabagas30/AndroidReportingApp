@@ -8,6 +8,58 @@
     tools:context=".ui.screen.setting.SettingActivity"
     android:padding="16dp">
 
+    <LinearLayout
+        android:id="@+id/setting.layout.notification"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:padding="16dp"
+        android:orientation="vertical"
+        android:background="@drawable/shape_card">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/setting.notification.label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Notification"
+            android:textStyle="bold"
+            android:textSize="16sp"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:hint="Title"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/setting.notification.title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:hint="Message"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/setting.notification.message"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:maxHeight="200dp"
+                android:gravity="start|top"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/setting.btn.notification"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Test Notification" />
+    </LinearLayout>
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/setting.btn.logout"
         android:layout_width="match_parent"

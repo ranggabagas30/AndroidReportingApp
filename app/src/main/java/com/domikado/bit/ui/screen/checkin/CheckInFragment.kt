@@ -59,13 +59,6 @@ class CheckInFragment : BaseFragment(), ICheckInContract.View {
         savedInstanceState: Bundle?
     ): View? {
 
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_checkin, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
         checkInViewModel.buildCheckInLogic(this)
         checkInViewModel.also {
             it.scheduleId = args.scheduleId
@@ -73,12 +66,22 @@ class CheckInFragment : BaseFragment(), ICheckInContract.View {
             it.siteId = args.siteId
             it.siteName = args.siteName
             it.siteCode = args.siteCode
+            it.siteStatus = args.siteStatus
             it.siteLatitude = args.siteLatitude?.toDouble()
             it.siteLongitude = args.siteLongitude?.toDouble()
             it.siteMonitorId = args.siteMonitorId
             it.operator = Gson().fromJson(args.operator, Operator::class.java)
         }
         d {"args: $args"}
+
+        //checkInEvent.value = CheckInEvent.OnCreateView
+
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_checkin, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         siteIdSTPView = checkin_tf_siteidstp as TextInputEditText
         siteNameView = checkin_tf_sitename as TextInputEditText

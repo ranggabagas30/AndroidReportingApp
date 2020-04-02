@@ -1,7 +1,9 @@
 package com.domikado.bit
 
 import android.content.ContextWrapper
+import androidx.core.app.NotificationManagerCompat
 import androidx.multidex.MultiDexApplication
+import com.domikado.bit.abstraction.notification.NotificationHelper
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.pixplicity.easyprefs.library.Prefs
 import timber.log.Timber
@@ -22,6 +24,16 @@ class BitApplication: MultiDexApplication() {
             .setUseDefaultSharedPreference(true)
             .build()
 
-        AndroidThreeTen.init(this); // ThreeTenABP by JakeWharton implements JSR-310 date/time
+        // ThreeTenABP by JakeWharton implements JSR-310 date/time
+        AndroidThreeTen.init(this)
+
+        // registering notification channel
+        NotificationHelper.createNotificationChannel(
+            this,
+            NotificationManagerCompat.IMPORTANCE_DEFAULT,
+            false,
+            NotificationHelper.DEFAULT_NAME,
+            "Channel notifikasi default"
+        )
     }
 }

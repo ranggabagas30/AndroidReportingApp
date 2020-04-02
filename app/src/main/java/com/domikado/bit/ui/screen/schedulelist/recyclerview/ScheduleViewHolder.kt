@@ -15,13 +15,13 @@ import com.domikado.bit.data.local.schedule.RoomLocalScheduleImpl
 import com.domikado.bit.data.remote.schedule.RemoteScheduleImpl
 import com.domikado.bit.domain.interactor.ScheduleSource
 import com.domikado.bit.domain.servicelocator.ScheduleServiceLocator
-import com.github.ajalt.timberkt.Timber
+import com.github.ajalt.timberkt.d
 import com.github.ajalt.timberkt.e
 import io.reactivex.disposables.CompositeDisposable
 
 class ScheduleViewHolder(itemView: View, private val onScheduleClickListener: OnScheduleClickListener?): AbstractViewHolder<ScheduleModel>(itemView) {
 
-    private var childSitesView: List<SiteView>? = null
+    private val childSitesView: ArrayList<SiteView> by lazy { ArrayList<SiteView>() }
     private lateinit var parentRootView: ConstraintLayout
     private lateinit var parentSiteNameView: AppCompatTextView
     private lateinit var parentWorkTypeView: AppCompatTextView
@@ -41,7 +41,10 @@ class ScheduleViewHolder(itemView: View, private val onScheduleClickListener: On
     private val scheduleServiceLocator by lazy { ScheduleServiceLocator(localScheduleRepository, remoteScheduleRepository) }
     private val scheduleSource by lazy { ScheduleSource() }
 
+    private lateinit var model: ScheduleModel
+
     override fun bind(model: ScheduleModel) {
+        d {"bind view on scheduleid: ${model.id}"}
         parentRootView     = itemView.findViewById(R.id.schedule_parent_root)
         parentSiteNameView = itemView.findViewById(R.id.schedule_parent_sitename)
         parentWorkTypeView = itemView.findViewById(R.id.schedule_parent_worktype)
@@ -50,10 +53,17 @@ class ScheduleViewHolder(itemView: View, private val onScheduleClickListener: On
         parentProgressView = itemView.findViewById(R.id.schedule_parent_progress)
         parentDropdownIcon = itemView.findViewById(R.id.schedule_parent_dropdown)
 
+        this.model = model
+
+        setParentView()
+        setChildView()
+    }
+
+    private fun setParentView() {
         parentSiteNameView.text = model.sites?.joinToString { it.name }
         parentWorkTypeView.text = "OTDR"
-        parentStatusView.text = "PIC status: ${model.picStatusText}\n" +
-                                "PM status: ${model.pmStatusText}"
+        parentStatusView.text =  "PIC status: ${model.picStatusText}\n" +
+                                 "PM status: ${model.pmStatusText}"
         parentRejectionView.apply {
             if (TextUtils.isEmpty(model.rejection)) {
                 visibility = View.GONE
@@ -63,6 +73,7 @@ class ScheduleViewHolder(itemView: View, private val onScheduleClickListener: On
             }
         }
 
+        // NB: progress dihitung dari backend
         if (model.progress != null) parentProgressView.text = "${model.progress}%"
         else {
             compositeDisposable.add(
@@ -83,87 +94,91 @@ class ScheduleViewHolder(itemView: View, private val onScheduleClickListener: On
 
         parentRootView.setOnClickListener {
             if (model.isExpanded)
-                collapse(model)
+                collapse()
             else
-                expand(model)
+                expand()
         }
-        
-        addChildSiteViewToParentView(model)
     }
 
-    private fun addChildSiteViewToParentView(model: ScheduleModel) {
-        Timber.d { "parent root id: ${parentRootView.id}" }
-        Timber.d { "parent sitename id: ${parentSiteNameView.id}" }
-        Timber.d { "parent worktype id: ${parentWorkTypeView.id}" }
-        Timber.d { "parent status id: ${parentStatusView.id}" }
-        Timber.d { "parent progress id: ${parentProgressView.id}" }
-
-        println("schedule sites: ${model.sites}")
-
-        childSitesView = ArrayList()
-        childSitesView = model.sites?.map {
-            val childSiteView = SiteView(itemView.context)
-
-            childSiteView.apply {
-                setViewId(it.id)
-                setSiteName(it.name)
-                setSiteStatus(it.status)
-                setCheckInOnClickListener(View.OnClickListener { _ ->
-                    // interface click listener
-                    // navigate to checkin
-                    onScheduleClickListener?.onSiteCheckInButtonClick(
-                        model.id,
-                        model.workDate,
-                        it.id,
-                        it.name,
-                        it.code,
-                        it.latitude,
-                        it.longitude,
-                        it.siteMonitorId,
-                        model.operators?.get(0)
-                    )
-                })
-                if (it.isCheckInAllowed) enableCheckin() else disableCheckin()
-                Timber.d { "child Site id: ${childSiteView.id}" }
-            }
-        }?.also {
-            for(i in it.indices) {
-
-                val childSiteView = it[i]
-                parentRootView.addView(childSiteView)
-
-                val set = ConstraintSet()
-                set.constrainWidth(childSiteView.id, ConstraintSet.MATCH_CONSTRAINT)
-                set.constrainHeight(childSiteView.id, ConstraintSet.WRAP_CONTENT)
-                set.connect(childSiteView.id, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START)
-                set.connect(childSiteView.id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END)
-                if (i == 0) {
-                    set.connect(childSiteView.id, ConstraintSet.TOP, parentStatusView.id, ConstraintSet.BOTTOM)
-                } else {
-                    set.connect(childSiteView.id, ConstraintSet.TOP, it[i-1].id, ConstraintSet.BOTTOM)
+    private fun setChildView() {
+        model.sites?.also { sites ->
+            var previousChildSiteView: SiteView? = null
+            var siteIndex = 1
+            for (site in sites) {
+                d { "child site view id: ${siteIndex}" }
+                d { "id: ${site.id}"}
+                d { "name: ${site.name}"}
+                d { "status: ${site.status}"}
+                var childSiteView: SiteView? = parentRootView.findViewById(siteIndex)
+                if (childSiteView == null) {
+                    d {"--> add to parent"}
+                    childSiteView = createChildSiteView(site, siteIndex)
+                    addToParentView(childSiteView, previousChildSiteView)
+                    previousChildSiteView = childSiteView
+                    childSitesView.add(childSiteView)
                 }
-                set.applyTo(parentRootView)
+
+                childSiteView.apply {
+                    setSiteName(site.name)
+                    setSiteStatus(site.status_text)
+                    setCheckinIsEnabled(site.isCheckInAllowed)
+                }
+                siteIndex++
             }
-        }
-    }
-    
-    private fun collapse(model: ScheduleModel) {
-        childSitesView?.also {
-            model.isExpanded = false
-            for (i in it.indices) {
-                it[i].hide()
-            }
-            parentDropdownIcon.setImageResource(iconCollapsed)
         }
     }
 
-    private fun expand(model: ScheduleModel) {
-        childSitesView?.also {
-            model.isExpanded = true
-            for (i in it.indices) {
-                it[i].show()
-            }
-            parentDropdownIcon.setImageResource(iconExpanded)
+
+    private fun createChildSiteView(site: SiteModel, siteIndex: Int): SiteView {
+        return SiteView(itemView.context).apply {
+            setViewId(siteIndex)
+            setCheckInOnClickListener(View.OnClickListener {
+                onScheduleClickListener?.onSiteCheckInButtonClick(
+                    model.id,
+                    model.workDate,
+                    site.id,
+                    site.name,
+                    site.code,
+                    site.status,
+                    site.latitude,
+                    site.longitude,
+                    site.siteMonitorId,
+                    model.operators?.get(0)
+                )
+            })
         }
+    }
+
+    private fun addToParentView(childSiteView: ConstraintLayout, previousChildSiteView: ConstraintLayout?) {
+        parentRootView.addView(childSiteView)
+        val set = ConstraintSet()
+        set.constrainWidth(childSiteView.id, ConstraintSet.MATCH_CONSTRAINT)
+        set.constrainHeight(childSiteView.id, ConstraintSet.WRAP_CONTENT)
+        set.connect(childSiteView.id, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START)
+        set.connect(childSiteView.id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END)
+        if (previousChildSiteView == null) {
+            set.connect(childSiteView.id, ConstraintSet.TOP, parentRejectionView.id, ConstraintSet.BOTTOM)
+            d {"child site view id: ${childSiteView.id}, constraint top with top of ${parentRejectionView.id}"}
+        } else {
+            set.connect(childSiteView.id, ConstraintSet.TOP, previousChildSiteView.id, ConstraintSet.BOTTOM)
+            d {"child site view id: ${childSiteView.id}, constraint top to bottom of ${previousChildSiteView.id}"}
+        }
+        set.applyTo(parentRootView)
+    }
+
+    private fun collapse() {
+        model.isExpanded = false
+        for (i in childSitesView.indices) {
+            childSitesView[i].hide()
+        }
+        parentDropdownIcon.setImageResource(iconCollapsed)
+    }
+
+    private fun expand() {
+        model.isExpanded = true
+        for (i in childSitesView.indices) {
+            childSitesView[i].show()
+        }
+        parentDropdownIcon.setImageResource(iconExpanded)
     }
 }

@@ -76,7 +76,11 @@ class ScheduleListFragment : BaseFragment(), IScheduleListContract.View {
     }
 
     override fun loadSchedules(schedules: List<ScheduleModel>) {
-
+        d {"remote schedules: ${schedules.forEach {
+            d {"scheduleid: ${it.id}"}
+            d {"site1 (id, name): (${it.sites?.get(0)?.id}, ${it.sites?.get(0)?.name})"}
+            d {"site2 (id, name): (${it.sites?.get(1)?.id}, ${it.sites?.get(1)?.name})"}
+        }}"}
         recyclerAdapter.setItems(schedules.toMutableList())
     }
 
@@ -100,12 +104,17 @@ class ScheduleListFragment : BaseFragment(), IScheduleListContract.View {
                 siteId: Int,
                 siteName: String?,
                 siteCode: String?,
+                siteStatus: Int,
                 siteLatitude: Double?,
                 siteLongitude: Double?,
                 siteMonitorId: Int,
                 operator: Operator?
             ) {
-                navigateToCheckIn(scheduleId, workDate, siteId, siteName, siteCode, siteLatitude, siteLongitude, siteMonitorId, operator)
+                when (siteStatus) {
+                    0, 3 -> navigateToCheckIn(scheduleId, workDate, siteId, siteName, siteCode, siteStatus, siteLatitude, siteLongitude, siteMonitorId, operator)
+                    1 -> navigateToFormFill(siteMonitorId, operator)
+                    else -> requireActivity().makeText("Site sudah tuntas, tidak bisa masuk", Toast.LENGTH_SHORT)
+                }
             }
 
             override fun onItemClick(model: ScheduleModel) {
@@ -119,6 +128,7 @@ class ScheduleListFragment : BaseFragment(), IScheduleListContract.View {
                                   siteId: Int,
                                   siteName: String?,
                                   siteCode: String?,
+                                  siteStatus: Int,
                                   siteLatitude: Double?,
                                   siteLongitude: Double?,
                                   siteMonitorId: Int,
@@ -130,6 +140,7 @@ class ScheduleListFragment : BaseFragment(), IScheduleListContract.View {
                 "site: $siteId, " +
                 "sitename: $siteName, " +
                 "sitecode: $siteCode, " +
+                "sitestatus: $siteStatus," +
                 "sitelat: $siteLatitude, " +
                 "siteLong: $siteLongitude, " +
                 "siteMonitorId: $siteMonitorId, " +
@@ -140,11 +151,18 @@ class ScheduleListFragment : BaseFragment(), IScheduleListContract.View {
             siteId,
             siteName,
             siteCode,
+            siteStatus,
             siteLatitude.toString(),
             siteLongitude.toString(),
             siteMonitorId,
             Gson().toJson(operator, Operator::class.java)
         )
+        findNavController().navigate(action)
+    }
+
+    private fun navigateToFormFill(siteMonitorId: Int, operator: Operator?) {
+        d {"navigate to form fill -> siteMonitorId: $siteMonitorId, operator: $operator"}
+        val action = ScheduleListFragmentDirections.actionScheduleListFragmentToFormFillFragment(siteMonitorId, Gson().toJson(operator, Operator::class.java))
         findNavController().navigate(action)
     }
 }

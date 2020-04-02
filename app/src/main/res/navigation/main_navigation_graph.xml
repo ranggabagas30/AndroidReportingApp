@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/mainMenuFragment"
         android:name="com.domikado.bit.ui.screen.mainmenu.MainMenuFragment"
-        android:label="fragment_main_menu"
+        android:label="Main Menu"
         tools:layout="@layout/fragment_main_menu" >
         <action
             android:id="@+id/action_mainMenuFragment_to_scheduleListFragment"
@@ -17,7 +17,7 @@
     <fragment
         android:id="@+id/scheduleListFragment"
         android:name="com.domikado.bit.ui.screen.schedulelist.ScheduleListFragment"
-        android:label="fragment_schedule"
+        android:label="Schedule"
         tools:layout="@layout/fragment_schedule" >
         <action
             android:id="@+id/action_scheduleListFragment_to_checkInFragment"
@@ -26,11 +26,14 @@
             android:name="workTypeId"
             app:argType="integer"
             android:defaultValue="-1"/>
+        <action
+            android:id="@+id/action_scheduleListFragment_to_formFillFragment"
+            app:destination="@id/formFillFragment" />
     </fragment>
     <fragment
         android:id="@+id/formGroupFragment"
         android:name="com.domikado.bit.ui.screen.formgroup.FormGroupFragment"
-        android:label="fragment_group"
+        android:label="Form Group"
         tools:layout="@layout/fragment_group" >
         <action
             android:id="@+id/action_formGroupFragment_to_formFillFragment"
@@ -39,7 +42,7 @@
     <fragment
         android:id="@+id/formFillFragment"
         android:name="com.domikado.bit.ui.screen.formfill.FormFillFragment"
-        android:label="fragment_form"
+        android:label="Form"
         tools:layout="@layout/fragment_form">
         <argument
             android:name="siteMonitorId"
@@ -54,7 +57,7 @@
     <fragment
         android:id="@+id/checkInFragment"
         android:name="com.domikado.bit.ui.screen.checkin.CheckInFragment"
-        android:label="fragment_checkin"
+        android:label="Check In"
         tools:layout="@layout/fragment_checkin" >
         <argument
             android:name="scheduleId"
@@ -79,6 +82,10 @@
             app:argType="string"
             android:defaultValue="@null"
             app:nullable="true"/>
+        <argument
+            android:name="siteStatus"
+            app:argType="integer"
+            android:defaultValue="0"/>
         <argument
             android:name="siteLatitude"
             app:argType="string"

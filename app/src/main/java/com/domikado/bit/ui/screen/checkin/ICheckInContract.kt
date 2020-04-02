@@ -24,6 +24,7 @@ interface ICheckInContract {
 }
 
 sealed class CheckInEvent {
+    object OnCreateView: CheckInEvent()
     object OnViewCreated: CheckInEvent()
     object OnCheckInClick: CheckInEvent()
 }

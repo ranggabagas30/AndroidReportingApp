@@ -10,7 +10,6 @@
         android:id="@+id/main.toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:title="Hi, Domikado Tester"
         app:titleTextColor="@color/colorOnPrimary"
         app:layout_constraintTop_toTopOf="parent"
         android:background="@color/colorPrimaryLight"/>

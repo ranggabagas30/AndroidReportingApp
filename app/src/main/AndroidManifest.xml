@@ -33,7 +33,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_provider_path" />
         </provider>
-        <service android:name=".abstraction.fcm.FCMService">
+        <service android:name=".abstraction.notification.FCMService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>

@@ -22,6 +22,7 @@ class CheckInViewModel(application: Application): BaseAndroidViewModel(applicati
     var siteId: Int = -1
     var siteName: String? = null
     var siteCode: String? = null
+    var siteStatus: Int = 0
     var siteLatitude: Double? = null
     var siteLongitude: Double? = null
     var siteMonitorId: Int = -1
