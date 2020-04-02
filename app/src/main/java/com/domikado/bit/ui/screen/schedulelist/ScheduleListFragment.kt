@@ -2,6 +2,7 @@ package com.domikado.bit.ui.screen.schedulelist
 
 
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +22,7 @@ import com.domikado.bit.abstraction.recyclerview.RecyclerAdapter
 import com.domikado.bit.abstraction.recyclerview.ViewHolderTypeFactoryImpl
 import com.domikado.bit.domain.domainmodel.Loading
 import com.domikado.bit.domain.domainmodel.Operator
+import com.domikado.bit.ui.screen.schedulelist.recyclerview.HeaderDateModel
 import com.domikado.bit.ui.screen.schedulelist.recyclerview.OnScheduleClickListener
 import com.domikado.bit.ui.screen.schedulelist.recyclerview.ScheduleModel
 import com.domikado.bit.utility.makeText
@@ -61,7 +63,7 @@ class ScheduleListFragment : BaseFragment(), IScheduleListContract.View {
         rvSchedules.layoutManager = linearLayoutManager
 
         recyclerAdapter = RecyclerAdapter(
-            arrayListOf<ScheduleModel>() as ArrayList<AbstractBaseItemModel>,
+            arrayListOf(),
             ViewHolderTypeFactoryImpl(),
             rvListeners
         )
@@ -81,7 +83,7 @@ class ScheduleListFragment : BaseFragment(), IScheduleListContract.View {
             d {"site1 (id, name): (${it.sites?.get(0)?.id}, ${it.sites?.get(0)?.name})"}
             d {"site2 (id, name): (${it.sites?.get(1)?.id}, ${it.sites?.get(1)?.name})"}
         }}"}
-        recyclerAdapter.setItems(schedules.toMutableList())
+        recyclerAdapter.setItems(getAppendedWorkDateList(schedules).toMutableList())
     }
 
     override fun startLoadingSchedule(loading: Loading) = showLoadingMessage(loading.title, loading.message)
@@ -164,5 +166,20 @@ class ScheduleListFragment : BaseFragment(), IScheduleListContract.View {
         d {"navigate to form fill -> siteMonitorId: $siteMonitorId, operator: $operator"}
         val action = ScheduleListFragmentDirections.actionScheduleListFragmentToFormFillFragment(siteMonitorId, Gson().toJson(operator, Operator::class.java))
         findNavController().navigate(action)
+    }
+
+    private fun getAppendedWorkDateList(schedules: List<ScheduleModel>): List<AbstractBaseItemModel> {
+        val schedulesWorkDate = ArrayList<AbstractBaseItemModel>()
+        var workDate = ""
+        schedules.forEach { schedule ->
+            if (!TextUtils.isEmpty(schedule.workDate)) {
+                if (workDate != schedule.workDate) {
+                    workDate = schedule.workDate!!
+                    schedulesWorkDate.add(HeaderDateModel(workDate))
+                }
+            }
+            schedulesWorkDate.add(schedule)
+        }
+        return schedulesWorkDate
     }
 }

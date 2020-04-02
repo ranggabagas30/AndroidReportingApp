@@ -105,7 +105,7 @@ class ScheduleViewHolder(itemView: View, private val onScheduleClickListener: On
             var previousChildSiteView: SiteView? = null
             var siteIndex = 1
             for (site in sites) {
-                d { "child site view id: ${siteIndex}" }
+                d { "child site view id: $siteIndex" }
                 d { "id: ${site.id}"}
                 d { "name: ${site.name}"}
                 d { "status: ${site.status}"}
