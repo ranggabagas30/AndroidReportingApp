@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.screen.setting.SettingActivity"
+    tools:context=".presentation.screen.setting.SettingActivity"
     android:padding="16dp">
 
     <LinearLayout

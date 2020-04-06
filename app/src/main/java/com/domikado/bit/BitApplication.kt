@@ -3,7 +3,7 @@ package com.domikado.bit
 import android.content.ContextWrapper
 import androidx.core.app.NotificationManagerCompat
 import androidx.multidex.MultiDexApplication
-import com.domikado.bit.abstraction.notification.NotificationHelper
+import com.domikado.bit.external.notification.NotificationHelper
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.pixplicity.easyprefs.library.Prefs
 import timber.log.Timber

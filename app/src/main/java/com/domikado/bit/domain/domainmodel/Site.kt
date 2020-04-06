@@ -1,8 +1,8 @@
 package com.domikado.bit.domain.domainmodel
 
-import com.domikado.bit.data.local.database.entity.TbSite
-import com.domikado.bit.data.remote.pojo.JSONSite
-import com.domikado.bit.ui.screen.schedulelist.recyclerview.SiteModel
+import com.domikado.bit.data.localrepo.database.entity.TbSite
+import com.domikado.bit.data.remoterepo.pojo.JSONSite
+import com.domikado.bit.presentation.screen.schedulelist.recyclerview.SiteModel
 
 data class Site(
     val id: Int,

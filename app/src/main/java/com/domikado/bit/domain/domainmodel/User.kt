@@ -1,7 +1,7 @@
 package com.domikado.bit.domain.domainmodel
 
-import com.domikado.bit.data.local.database.entity.TbUser
-import com.domikado.bit.data.remote.pojo.JSONUser
+import com.domikado.bit.data.localrepo.database.entity.TbUser
+import com.domikado.bit.data.remoterepo.pojo.JSONUser
 
 data class User(
     val id: String, // max 35 characters

@@ -1,9 +1,9 @@
 package com.domikado.bit.domain.domainmodel
 
 import android.text.TextUtils
-import com.domikado.bit.data.local.database.entity.TbSchedule
-import com.domikado.bit.data.remote.pojo.JSONSchedule
-import com.domikado.bit.ui.screen.schedulelist.recyclerview.ScheduleModel
+import com.domikado.bit.data.localrepo.database.entity.TbSchedule
+import com.domikado.bit.data.remoterepo.pojo.JSONSchedule
+import com.domikado.bit.presentation.screen.schedulelist.recyclerview.ScheduleModel
 
 data class Schedule(
     val id: Int,

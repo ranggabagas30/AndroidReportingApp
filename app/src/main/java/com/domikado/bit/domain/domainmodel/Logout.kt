@@ -1,6 +1,6 @@
 package com.domikado.bit.domain.domainmodel
 
-import com.domikado.bit.data.remote.pojo.JSONLogout
+import com.domikado.bit.data.remoterepo.pojo.JSONLogout
 
 data class Logout(
     var status: Int,

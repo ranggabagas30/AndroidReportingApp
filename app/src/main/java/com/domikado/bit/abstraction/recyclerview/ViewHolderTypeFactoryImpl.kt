@@ -6,10 +6,10 @@ import com.domikado.bit.abstraction.recyclerview.ViewHolderTypeFactoryImpl.ViewH
 import com.domikado.bit.abstraction.recyclerview.ViewHolderTypeFactoryImpl.ViewHolderItemType.HEADER_DATE_ITEM_TYPE
 import com.domikado.bit.abstraction.recyclerview.ViewHolderTypeFactoryImpl.ViewHolderItemType.SCHEDULE_SITE_ITEM_TYPE
 import com.domikado.bit.domain.domainmodel.BitThrowable
-import com.domikado.bit.ui.screen.formfill.recyclerview.FormFillModel
-import com.domikado.bit.ui.screen.formfill.recyclerview.FormFillViewHolder
-import com.domikado.bit.ui.screen.formfill.recyclerview.OnFormFillListener
-import com.domikado.bit.ui.screen.schedulelist.recyclerview.*
+import com.domikado.bit.presentation.screen.formfill.recyclerview.FormFillModel
+import com.domikado.bit.presentation.screen.formfill.recyclerview.FormFillViewHolder
+import com.domikado.bit.presentation.screen.formfill.recyclerview.OnFormFillListener
+import com.domikado.bit.presentation.screen.schedulelist.recyclerview.*
 
 class ViewHolderTypeFactoryImpl: ViewHolderTypeFactory {
 

@@ -13,7 +13,11 @@ buildscript {
         classpath 'com.android.tools.build:gradle:3.5.3'
         classpath 'com.google.gms:google-services:4.3.3'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'io.fabric.tools:gradle:1.27.1'
+
+        // new sdk
+        //classpath 'com.google.firebase:firebase-crashlytics-gradle:2.0.0-beta03'
+        // Add the Fabric Crashlytics plugin. (legacy)
+        classpath 'io.fabric.tools:gradle:1.31.2'
         def nav_version = "2.3.0-alpha03"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
     }
@@ -44,10 +48,11 @@ ext {
     playServicesMapsVersion = "16.0.0"
     playServicesAnalyticsVersion = "16.0.5"
     firebaseCoreVersion = "16.0.5"
-    firebaseMessagingVersion = "17.3.4"
+    firebaseMessagingVersion = "20.1.5"
     firebaseAnalytics = "16.0.5"
-    fabricGradleVersion = "1.27.0"
-    crashlyticsVersion = "2.9.7"
+    firebaseCrashlyticsVersion = "17.0.0-beta03"
+    fabricGradleVersion = "1.27.0" // legacy
+    crashlyticsVersion = "2.10.1" // legacy
 
     // jetpack
     appCompat = "1.1.0"

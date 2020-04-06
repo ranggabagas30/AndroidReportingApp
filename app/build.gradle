@@ -1,17 +1,4 @@
-buildscript {
-    repositories {
-        maven { url 'https://maven.fabric.io/public' }
-        mavenCentral()
-    }
-
-    dependencies {
-        classpath "io.fabric.tools:gradle:${rootProject.ext.fabricGradleVersion}"
-    }
-}
-
 apply plugin: 'com.android.application'
-
-apply plugin: 'io.fabric'
 
 apply plugin: 'kotlin-android'
 
@@ -22,6 +9,10 @@ apply plugin: 'kotlin-kapt'
 apply plugin: "androidx.navigation.safeargs.kotlin"
 
 apply plugin: 'com.google.gms.google-services'
+
+//apply plugin: 'com.google.firebase.crashlytics' // new sdk
+
+apply plugin: 'io.fabric' // legacy
 
 // Manifest version information!
 def minAPIlevel = rootProject.ext.minSdkVersion
@@ -124,12 +115,12 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:${rootProject.ext.navigationComponent}"
     implementation "androidx.navigation:navigation-ui-ktx:${rootProject.ext.navigationComponent}"
     implementation "com.google.android.gms:play-services-location:${rootProject.ext.playServicesLocationVersion}"
-    implementation "com.google.android.gms:play-services-maps:${rootProject.ext.playServicesMapsVersion}"
+    //implementation "com.google.android.gms:play-services-maps:${rootProject.ext.playServicesMapsVersion}"
     implementation "com.google.firebase:firebase-core:${rootProject.ext.firebaseCoreVersion}"
     implementation "com.google.firebase:firebase-messaging:${rootProject.ext.firebaseMessagingVersion}"
     implementation "com.google.firebase:firebase-analytics:${rootProject.ext.firebaseAnalytics}"
-    implementation "com.crashlytics.sdk.android:crashlytics:${rootProject.ext.crashlyticsVersion}"
-
+    //implementation "com.google.firebase:firebase-crashlytics:${rootProject.ext.firebaseCrashlyticsVersion}" // new sdk
+    implementation "com.crashlytics.sdk.android:crashlytics:${rootProject.ext.crashlyticsVersion}" // legacy
     // Coroutine
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${rootProject.ext.coroutine}"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${rootProject.ext.coroutine}"

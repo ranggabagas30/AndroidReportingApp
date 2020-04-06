@@ -1,6 +1,6 @@
 package com.domikado.bit.domain.domainmodel
 
-import com.domikado.bit.data.remote.pojo.JSONWorkType
+import com.domikado.bit.data.remoterepo.pojo.JSONWorkType
 
 data class WorkType(
     val id: Int,

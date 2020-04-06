@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/mainMenuFragment"
-        android:name="com.domikado.bit.ui.screen.mainmenu.MainMenuFragment"
+        android:name="com.domikado.bit.presentation.screen.mainmenu.MainMenuFragment"
         android:label="Main Menu"
         tools:layout="@layout/fragment_main_menu" >
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/scheduleListFragment"
-        android:name="com.domikado.bit.ui.screen.schedulelist.ScheduleListFragment"
+        android:name="com.domikado.bit.presentation.screen.schedulelist.ScheduleListFragment"
         android:label="Schedule"
         tools:layout="@layout/fragment_schedule" >
         <action
@@ -32,7 +32,7 @@
     </fragment>
     <fragment
         android:id="@+id/formGroupFragment"
-        android:name="com.domikado.bit.ui.screen.formgroup.FormGroupFragment"
+        android:name="com.domikado.bit.presentation.screen.formgroup.FormGroupFragment"
         android:label="Form Group"
         tools:layout="@layout/fragment_group" >
         <action
@@ -41,7 +41,7 @@
     </fragment>
     <fragment
         android:id="@+id/formFillFragment"
-        android:name="com.domikado.bit.ui.screen.formfill.FormFillFragment"
+        android:name="com.domikado.bit.presentation.screen.formfill.FormFillFragment"
         android:label="Form"
         tools:layout="@layout/fragment_form">
         <argument
@@ -70,7 +70,7 @@
     </fragment>
     <fragment
         android:id="@+id/checkInFragment"
-        android:name="com.domikado.bit.ui.screen.checkin.CheckInFragment"
+        android:name="com.domikado.bit.presentation.screen.checkin.CheckInFragment"
         android:label="Check In"
         tools:layout="@layout/fragment_checkin" >
         <argument

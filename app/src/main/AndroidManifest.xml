@@ -22,7 +22,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.common.camera.CameraActivity"></activity>
+        <activity android:name=".presentation.common.camera.CameraActivity"></activity>
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -33,20 +33,20 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_provider_path" />
         </provider>
-        <service android:name=".abstraction.notification.FCMService">
+        <service android:name="com.domikado.bit.external.notification.FCMService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <activity android:name=".ui.screen.setting.SettingActivity" />
-        <activity android:name=".ui.screen.login.LoginActivity">
+        <activity android:name=".presentation.screen.setting.SettingActivity" />
+        <activity android:name=".presentation.screen.login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.screen.MainActivity"></activity>
+        <activity android:name=".presentation.screen.MainActivity"></activity>
     </application>
 
 </manifest>

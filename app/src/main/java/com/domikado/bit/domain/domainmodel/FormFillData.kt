@@ -1,10 +1,10 @@
 package com.domikado.bit.domain.domainmodel
 
-import com.domikado.bit.data.local.database.entity.TbFormFillData
-import com.domikado.bit.ui.screen.formfill.recyclerview.FormFillModel
-import com.domikado.bit.ui.screen.formfill.recyclerview.SectionModel
-import com.domikado.bit.ui.screen.formfill.recyclerview.image
-import com.domikado.bit.ui.screen.formfill.recyclerview.type
+import com.domikado.bit.data.localrepo.database.entity.TbFormFillData
+import com.domikado.bit.presentation.screen.formfill.recyclerview.FormFillModel
+import com.domikado.bit.presentation.screen.formfill.recyclerview.SectionModel
+import com.domikado.bit.presentation.screen.formfill.recyclerview.image
+import com.domikado.bit.presentation.screen.formfill.recyclerview.type
 
 data class FormFillData(
     val id: Int,

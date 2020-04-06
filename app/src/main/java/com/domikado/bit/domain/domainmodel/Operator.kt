@@ -1,6 +1,6 @@
 package com.domikado.bit.domain.domainmodel
 
-import com.domikado.bit.data.local.database.entity.TbOperator
+import com.domikado.bit.data.localrepo.database.entity.TbOperator
 
 data class Operator(
     val id: Int,
