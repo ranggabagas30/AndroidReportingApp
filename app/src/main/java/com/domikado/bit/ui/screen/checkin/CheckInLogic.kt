@@ -32,13 +32,6 @@ class CheckInLogic(
     }
 
     private fun onViewCreated() {
-//        println("site status: ${checkInViewModel.siteStatus}")
-//        if (checkInViewModel.siteStatus == 1) {
-//            // sedang checkin, maka redirect langsung ke halaman form fill
-//            view.navigateAfterCheckIn()
-//            return
-//        }
-
         checkInViewModel.also {
             view.showCheckInData(
                 it.scheduleId,
@@ -63,17 +56,18 @@ class CheckInLogic(
                     .observeOn(schedulerProvider.ui())
                     .subscribe({ result ->
                         view.dismissLoading()
-                        if (result.status == 1) {
+                        if (result.status == 1) { // status == 1 -> sudah checkin, langsung masuk ke form fill
                             view.navigateAfterCheckIn()
                         } else {
-                            view.checkInFailed(result.message?: "Gagal melakukan check in")
+                            view.checkInFailed(result.message?: GAGAL_CHECK_IN)
                         }
                     }, { t ->
                         view.dismissLoading()
-                        view.showError(t, "Error check in")
+                        view.showError(t)
                     })
             )
         }
-
     }
 }
+
+internal const val GAGAL_CHECK_IN = "Gagal melakukan check in"

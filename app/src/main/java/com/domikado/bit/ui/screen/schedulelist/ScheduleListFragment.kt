@@ -25,9 +25,9 @@ import com.domikado.bit.domain.domainmodel.Operator
 import com.domikado.bit.ui.screen.schedulelist.recyclerview.HeaderDateModel
 import com.domikado.bit.ui.screen.schedulelist.recyclerview.OnScheduleClickListener
 import com.domikado.bit.ui.screen.schedulelist.recyclerview.ScheduleModel
+import com.domikado.bit.utility.DebugUtil
 import com.domikado.bit.utility.makeText
 import com.github.ajalt.timberkt.d
-import com.github.ajalt.timberkt.e
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_schedule.*
 
@@ -90,9 +90,9 @@ class ScheduleListFragment : BaseFragment(), IScheduleListContract.View {
 
     override fun dismissLoading() = hideLoading()
 
-    override fun showError(t: Throwable, message: String?) {
-        e(t)
-        requireActivity().makeText("$message: ${t.message}", Toast.LENGTH_LONG)
+    override fun showError(t: Throwable) {
+        DebugUtil.handleError(t)
+        requireActivity().makeText("$GAGAL_MEMUAT_SCHEDULE: ${t.message}", Toast.LENGTH_LONG)
     }
 
     override fun setObserver(observer: Observer<ScheduleListEvent>) = scheduleListEvent.observe(this, observer)
@@ -114,7 +114,7 @@ class ScheduleListFragment : BaseFragment(), IScheduleListContract.View {
             ) {
                 when (siteStatus) {
                     0, 3 -> navigateToCheckIn(scheduleId, workDate, siteId, siteName, siteCode, siteStatus, siteLatitude, siteLongitude, siteMonitorId, operator)
-                    1 -> navigateToFormFill(siteMonitorId, operator)
+                    1 -> navigateToFormFill(scheduleId, siteMonitorId, operator, siteLatitude, siteLongitude)
                     else -> requireActivity().makeText("Site sudah tuntas, tidak bisa masuk", Toast.LENGTH_SHORT)
                 }
             }
@@ -162,9 +162,9 @@ class ScheduleListFragment : BaseFragment(), IScheduleListContract.View {
         findNavController().navigate(action)
     }
 
-    private fun navigateToFormFill(siteMonitorId: Int, operator: Operator?) {
+    private fun navigateToFormFill(scheduleId: Int, siteMonitorId: Int, operator: Operator?, siteLatitude: Double?, siteLongitude: Double?) {
         d {"navigate to form fill -> siteMonitorId: $siteMonitorId, operator: $operator"}
-        val action = ScheduleListFragmentDirections.actionScheduleListFragmentToFormFillFragment(siteMonitorId, Gson().toJson(operator, Operator::class.java))
+        val action = ScheduleListFragmentDirections.actionScheduleListFragmentToFormFillFragment(scheduleId, siteMonitorId, Gson().toJson(operator, Operator::class.java), siteLatitude.toString(), siteLongitude.toString())
         findNavController().navigate(action)
     }
 

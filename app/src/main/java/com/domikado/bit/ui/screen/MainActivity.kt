@@ -1,17 +1,18 @@
 package com.domikado.bit.ui.screen
 
 import android.os.Bundle
+import android.text.TextUtils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.domikado.bit.R
 import com.domikado.bit.abstraction.notification.NotificationHelper
+import com.domikado.bit.ui.screen.mainmenu.MainMenuFragmentDirections
+import com.github.ajalt.timberkt.d
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
-
-    private var args: Bundle? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,8 +23,13 @@ class MainActivity : AppCompatActivity() {
         main_toolbar.setupWithNavController(navController, appBarConfiguration)
 
         intent.extras?.also {
-            val extraFromNotification = it.getString(NotificationHelper.EXTRA_KEY_REJECTION, null)
-            println("extra from notification: $extraFromNotification")
+            val dataRejection = it.getString(NotificationHelper.EXTRA_KEY_REJECTION, null)
+            d {"data rejection: $dataRejection"}
+
+            if (!TextUtils.isEmpty(dataRejection)) {
+                val action = MainMenuFragmentDirections.actionMainMenuFragmentToScheduleListFragment(1)
+                navController.navigate(action)
+            }
         }
     }
 }

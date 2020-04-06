@@ -21,14 +21,12 @@ import com.domikado.bit.abstraction.recyclerview.AbstractBaseItemModel
 import com.domikado.bit.abstraction.recyclerview.RecyclerAdapter
 import com.domikado.bit.abstraction.recyclerview.ViewHolderTypeFactoryImpl
 import com.domikado.bit.domain.domainmodel.Loading
-import com.domikado.bit.domain.domainmodel.Operator
 import com.domikado.bit.ui.common.camera.CameraActivity
 import com.domikado.bit.ui.screen.formfill.recyclerview.FormFillModel
 import com.domikado.bit.ui.screen.formfill.recyclerview.OnFormFillListener
+import com.domikado.bit.utility.DebugUtil
 import com.domikado.bit.utility.makeText
 import com.github.ajalt.timberkt.d
-import com.github.ajalt.timberkt.e
-import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_form.*
 import java.io.File
 
@@ -58,8 +56,7 @@ class FormFillFragment : BaseFragment(), IFormFillContract.View {
         super.onViewCreated(view, savedInstanceState)
 
         formFillViewModel.buildFormFillLogic(this)
-        formFillViewModel.siteMonitorId = args.siteMonitorId
-        formFillViewModel.operator = Gson().fromJson(args.operator, Operator::class.java)
+        formFillViewModel.args = args
 
         recyclerAdapter = RecyclerAdapter(
             arrayListOf<FormFillModel>() as ArrayList<AbstractBaseItemModel>,
@@ -98,20 +95,15 @@ class FormFillFragment : BaseFragment(), IFormFillContract.View {
         }
     }
 
-    override fun loadFormFill(formFillItems: List<FormFillModel>) {
-        println("refresh data: $formFillItems")
-        recyclerAdapter.setItems(formFillItems.toMutableList())
-    }
+    override fun loadFormFill(formFillItems: List<FormFillModel>) = recyclerAdapter.setItems(formFillItems.toMutableList())
 
     override fun showLoadingData(loading: Loading) = showLoadingMessage(loading.title, loading.message)
 
     override fun dismissLoading() = hideLoading()
 
     override fun showError(t: Throwable, message: String?) {
-        message?.also {
-            e(t) { message }
-            requireActivity().makeText("$it: ${t.message}", Toast.LENGTH_LONG)
-        }
+        DebugUtil.handleError(t)
+        requireActivity().makeText("${message?: TERJADI_KESALAHAN} :${t.message}", Toast.LENGTH_LONG)
     }
 
     override fun uploadSuccess() {
@@ -136,13 +128,22 @@ class FormFillFragment : BaseFragment(), IFormFillContract.View {
                 d {"take picture -> formFillModel: $formFillModel"}
 
                 if (formFillModel == null) {
-                    requireActivity().makeText("Tidak dapat mengambil gambar. Form fill model item ini kosong", Toast.LENGTH_LONG)
+                    showError(NullPointerException(FORM_FILL_KOSONG))
                     return
                 }
 
+                if (formFillViewModel.args == null) {
+                    showError(NullPointerException(GAGAL_MENGAMBIL_FOTO))
+                    return
+                }
+
+                d {"schedule id: ${formFillViewModel.args!!.scheduleId}"}
                 formFillViewModel.photoFormFillModel = formFillModel
-                Intent(requireActivity(), CameraActivity::class.java).also {
-                    startActivityForResult(it, RC_TAKE_PICTURE)
+                Intent(requireActivity(), CameraActivity::class.java).apply {
+                    putExtra(CameraActivity.EXTRA_SCHEDULE_ID, formFillViewModel.args!!.scheduleId)
+                    putExtra(CameraActivity.EXTRA_SITE_LATITUDE, formFillViewModel.args!!.siteLatitude)
+                    putExtra(CameraActivity.EXTRA_SITE_LONGITUDE, formFillViewModel.args!!.siteLongitude)
+                    startActivityForResult(this, RC_TAKE_PICTURE)
                 }
             }
 

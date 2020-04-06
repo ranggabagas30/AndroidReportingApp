@@ -54,10 +54,12 @@ class ScheduleListLogic(
                             view.loadSchedules(data.map { it.toScheduleModel } )
                         }, { t->
                             view.dismissLoading()
-                            view.showError(t, "Gagal memuat schedule")
+                            view.showError(t)
                         })
                 )
             }
         }
     }
 }
+
+internal const val GAGAL_MEMUAT_SCHEDULE = "Gagal memuat schedule"

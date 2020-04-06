@@ -89,7 +89,7 @@ class FCMService: FirebaseMessagingService() {
         val title = remoteMessage.data.get("title")
 
         when(type) {
-            2.toString() -> NotificationHelper.notifyRejection(this, NotificationHelper.DEFAULT_NAME, title, body)
+            NotificationHelper.NOTIFICATION_ID_REJECTION.toString() -> NotificationHelper.notifyRejection(this, NotificationHelper.DEFAULT_NAME, title, body)
             else -> Toast.makeText(this, "Bit notifikasi: Tidak dikenali", Toast.LENGTH_SHORT).show()
         }
     }

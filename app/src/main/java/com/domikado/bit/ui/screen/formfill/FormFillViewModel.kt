@@ -11,7 +11,6 @@ import com.domikado.bit.data.local.formfill.LocalFormFillDataImpl
 import com.domikado.bit.data.local.operator.LocalOperatorImpl
 import com.domikado.bit.data.remote.auth.AuthenticationImpl
 import com.domikado.bit.data.remote.formfill.RemoteFormFillImpl
-import com.domikado.bit.domain.domainmodel.Operator
 import com.domikado.bit.domain.interactor.AuthSource
 import com.domikado.bit.domain.interactor.FormFillSource
 import com.domikado.bit.domain.interactor.OperatorSource
@@ -24,8 +23,8 @@ class FormFillViewModel(
     application: Application
 ): BaseAndroidViewModel(application) {
 
-    var siteMonitorId: Int = -1
-    var operator: Operator? = null
+    var args: FormFillFragmentArgs? = null
+
     var photoFormFillModel: FormFillModel? = null
 
     private val userDao by lazy {

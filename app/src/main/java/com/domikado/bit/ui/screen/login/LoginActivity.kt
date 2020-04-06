@@ -10,6 +10,7 @@ import com.domikado.bit.R
 import com.domikado.bit.abstraction.base.BaseActivity
 import com.domikado.bit.domain.domainmodel.Loading
 import com.domikado.bit.ui.screen.MainActivity
+import com.domikado.bit.utility.DebugUtil
 import com.domikado.bit.utility.makeText
 import kotlinx.android.synthetic.main.activity_login.*
 
@@ -52,7 +53,10 @@ class LoginActivity : BaseActivity(), ILoginContract.View {
 
     override fun setObserver(observer: Observer<LoginEvent<Nothing>>) = loginEvent.observe(this, observer)
 
-    override fun showError(t: Throwable) = makeText(t.message?: LOGIN_ERROR, Toast.LENGTH_LONG)
+    override fun showError(t: Throwable) {
+        DebugUtil.handleError(t)
+        makeText(t.message?: LOGIN_ERROR, Toast.LENGTH_LONG)
+    }
 
     override fun showMessageLoginSuccess(s: String) = makeText(s, Toast.LENGTH_SHORT)
 }

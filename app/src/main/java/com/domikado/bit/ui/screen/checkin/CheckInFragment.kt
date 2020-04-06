@@ -19,9 +19,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.domikado.bit.R
 import com.domikado.bit.abstraction.base.BaseFragment
+import com.domikado.bit.domain.domainmodel.BitThrowable
 import com.domikado.bit.domain.domainmodel.Loading
 import com.domikado.bit.domain.domainmodel.Operator
 import com.domikado.bit.domain.domainmodel.Result
+import com.domikado.bit.utility.DebugUtil
 import com.domikado.bit.utility.GpsUtils
 import com.domikado.bit.utility.PermissionUtil
 import com.domikado.bit.utility.makeText
@@ -163,8 +165,9 @@ class CheckInFragment : BaseFragment(), ICheckInContract.View {
         requireActivity().makeText(message, Toast.LENGTH_LONG)
     }
 
-    override fun showError(t: Throwable, message: String?) {
-        requireActivity().makeText("$message: ${t.message}", Toast.LENGTH_LONG)
+    override fun showError(t: Throwable) {
+        DebugUtil.handleError(t)
+        requireActivity().makeText("$GAGAL_CHECK_IN: ${t.message}", Toast.LENGTH_LONG)
     }
 
     override fun navigateAfterCheckIn() {
@@ -205,8 +208,7 @@ class CheckInFragment : BaseFragment(), ICheckInContract.View {
                     }
                 }
             } catch (t: Throwable) {
-                Timber.e(t) { "error location"}
-                requireActivity().makeText("Error location: ${t.message}", Toast.LENGTH_LONG)
+                showError(BitThrowable.BitLocationException(t.message?: "Terjadi kesalahan pada fitur lokasi"))
             }
         })
     }
@@ -218,13 +220,21 @@ class CheckInFragment : BaseFragment(), ICheckInContract.View {
                 gpsUtils.askTurnOnGps()
             }
             PermissionUtil.hasPermissions(requireActivity(), permissions) -> startLocationUpdates()
-            //PermissionUtil.shouldShowPermissionRationale(requireActivity(), permissions) -> requireActivity().makeText("Mohon izinkan fitur lokasi untuk melakukan check in", Toast.LENGTH_LONG)
             else -> PermissionUtil.requestPermissions(this, permissions, RC_PERMISSION_LOCATION)
         }
     }
 
     private fun navigateToFormFill() {
-        val action = CheckInFragmentDirections.actionCheckInFragmentToFormFillFragment(checkInViewModel.siteMonitorId, Gson().toJson(checkInViewModel.operator, Operator::class.java))
+        val action = CheckInFragmentDirections.actionCheckInFragmentToFormFillFragment(
+            checkInViewModel.scheduleId,
+            checkInViewModel.siteMonitorId,
+            Gson().toJson(
+                checkInViewModel.operator,
+                Operator::class.java
+            ),
+            checkInViewModel.siteLatitude?.toString(),
+            checkInViewModel.siteLongitude?.toString()
+        )
         findNavController().navigate(action)
     }
 }

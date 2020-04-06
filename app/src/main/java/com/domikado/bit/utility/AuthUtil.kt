@@ -4,15 +4,15 @@ import android.text.TextUtils
 
 object AuthUtil {
 
-    fun isFirebaseTokenValid(firebaseToken: String): Boolean {
+    fun isFirebaseTokenValid(firebaseToken: String?): Boolean {
         return !TextUtils.isEmpty(firebaseToken)
     }
 
-    fun isUsernameValid(username: String): Boolean {
+    fun isUsernameValid(username: String?): Boolean {
         return !TextUtils.isEmpty(username)
     }
 
-    fun isPasswordValid(password: String): Boolean {
+    fun isPasswordValid(password: String?): Boolean {
         return !TextUtils.isEmpty(password)
     }
 }

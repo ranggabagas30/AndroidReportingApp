@@ -11,7 +11,7 @@ interface IScheduleListContract {
         fun startLoadingSchedule(loading: Loading)
         fun dismissLoading()
         fun loadSchedules(schedules: List<ScheduleModel>)
-        fun showError(t: Throwable, message: String? = null)
+        fun showError(t: Throwable)
         fun setObserver(observer: Observer<ScheduleListEvent>)
     }
 }

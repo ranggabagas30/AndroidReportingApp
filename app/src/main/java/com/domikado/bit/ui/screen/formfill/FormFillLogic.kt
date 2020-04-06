@@ -44,10 +44,19 @@ class FormFillLogic(
     }
 
     private fun onViewCreated() {
+        if (formFillViewModel.args == null) {
+            view.showError(NullPointerException(SITE_MONITOR_ID_KOSONG))
+            return
+        }
+        initForm()
+        loadFormFillData()
+    }
+
+    private fun initForm() {
         formFillModels.addAll(listOf(
             FormFillModel(
                 0,
-                formFillViewModel.siteMonitorId,
+                formFillViewModel.args!!.siteMonitorId,
                 null,
                 HeaderModel("Photo 1"),
                 BodyModel(
@@ -55,7 +64,7 @@ class FormFillLogic(
                         SectionModel.PhotoLayoutModel(
                             0,
                             "OTDR",
-                            formFillViewModel.operator?.name?: "No operator", // first phase of development, using only one operato
+                            formFillViewModel.args!!.operator?: "No operator", // first phase of development, using only one operato
                             "Photo 1",
                             true
                         )
@@ -64,7 +73,7 @@ class FormFillLogic(
             ),
             FormFillModel(
                 1,
-                formFillViewModel.siteMonitorId,
+                formFillViewModel.args!!.siteMonitorId,
                 null,
                 HeaderModel("Photo 2"),
                 BodyModel(
@@ -72,7 +81,7 @@ class FormFillLogic(
                         SectionModel.PhotoLayoutModel(
                             1,
                             "OTDR",
-                            formFillViewModel.operator?.name?: "No operator",
+                            formFillViewModel.args!!.operator?: "No operator",
                             "Photo 2",
                             true
                         )
@@ -80,10 +89,12 @@ class FormFillLogic(
                 )
             )
         ))
+    }
 
+    private fun loadFormFillData() {
         view.showLoadingData(Loading(message = "Memuat form"))
         formFillViewModel.async(
-            formFillSource.getFormFillData(formFillViewModel.siteMonitorId, formFillServiceLocator)
+            formFillSource.getFormFillData(formFillViewModel.args!!.siteMonitorId, formFillServiceLocator)
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
                 .subscribe({ data ->
@@ -96,17 +107,15 @@ class FormFillLogic(
                     view.dismissLoading()
                     view.loadFormFill(formFillModels)
                 }, { t ->
-                    view.showError(t, "Gagal memuat form")
+                    view.showError(t, GAGAL_MEMUAT_FORM)
                 })
         )
     }
 
     private fun onSuccessTakePicture(imageFile: File) {
-
         formFillViewModel.photoFormFillModel?.also {
             (it.body.sections[0] as SectionModel.PhotoLayoutModel).photoPath = imageFile.path
             val formFillData = it.toFormFillData
-
             view.showLoadingData(Loading(message = "Menyimpan photo"))
             formFillViewModel.async(
                 formFillSource.addOrReplace(listOf(formFillData), formFillServiceLocator)
@@ -118,7 +127,7 @@ class FormFillLogic(
                         view.loadFormFill(formFillModels)
                     }, { t->
                         view.dismissLoading()
-                        view.showError(t, "Gagal menyimpan foto")
+                        view.showError(t, GAGAL_MENYIMPAN_FOTO)
                     })
             )
         }
@@ -128,33 +137,35 @@ class FormFillLogic(
     private fun onFailedTakePicture() {}
 
     private fun onTextChanged(text: String?, model: FormFillModel?) {
-        model?.also {
-            (it.body.sections[0] as SectionModel.PhotoLayoutModel).remark = text
-            it.toFormFillData.also { formFillData ->
-                if (TextUtils.isEmpty(text)) {
-                    if (TextUtils.isEmpty(formFillData.itemValue) && TextUtils.isEmpty(formFillData.image)) {
+        formFillViewModel.args?.also { args ->
+            model?.also {
+                (it.body.sections[0] as SectionModel.PhotoLayoutModel).remark = text
+                it.toFormFillData.also { formFillData ->
+                    if (TextUtils.isEmpty(text)) {
+                        if (TextUtils.isEmpty(formFillData.itemValue) && TextUtils.isEmpty(formFillData.image)) {
+                            formFillViewModel.async(
+                                formFillSource.delete(it.id, args.siteMonitorId, formFillServiceLocator)
+                                    .subscribeOn(schedulerProvider.io())
+                                    .observeOn(schedulerProvider.ui())
+                                    .subscribe({
+                                        d {"delete form fill data: $formFillData"}
+                                    }, { t ->
+                                        view.showError(t, "$GAGAL_MENGHAPUS_DATA_TEXT_ITEM ${formFillData.title}")
+                                    })
+                            )
+                        }
+                    } else {
                         formFillViewModel.async(
-                            formFillSource.delete(it.id, formFillViewModel.siteMonitorId, formFillServiceLocator)
+                            formFillSource.addOrReplace(listOf(formFillData), formFillServiceLocator)
                                 .subscribeOn(schedulerProvider.io())
                                 .observeOn(schedulerProvider.ui())
                                 .subscribe({
-                                    d {"delete form fill data: $formFillData"}
+                                    d {"saved form fill data: $formFillData"}
                                 }, { t ->
-                                    view.showError(t, "Gagal menghapus data text item ${formFillData.title}")
+                                    view.showError(t, "$GAGAL_MENYIMPAN_DATA_TEXT $text")
                                 })
                         )
                     }
-                } else {
-                    formFillViewModel.async(
-                        formFillSource.addOrReplace(listOf(formFillData), formFillServiceLocator)
-                            .subscribeOn(schedulerProvider.io())
-                            .observeOn(schedulerProvider.ui())
-                            .subscribe({
-                                d {"saved form fill data: $formFillData"}
-                            }, { t ->
-                                view.showError(t, "Gagal mennyimpan data text $text")
-                            })
-                    )
                 }
             }
         }
@@ -165,11 +176,16 @@ class FormFillLogic(
     }
 
     private fun uploadData() {
+        if (formFillViewModel.args == null) {
+            view.showError(NullPointerException(SITE_MONITOR_ID_KOSONG))
+            return
+        }
+
         authSource.getCurrentUser(userServiceLocator)?.also {
             val firebaseId = Prefs.getString(PREF_KEY_FIREBASE_ID, null)
             view.showLoadingData(Loading("Mengupload data form", "Mulai mengupload. Jangan menghentikan aplikasi"))
             formFillViewModel.async(
-                formFillSource.uploadData(it.id, it.accessToken, firebaseId, formFillViewModel.siteMonitorId, formFillServiceLocator)
+                formFillSource.uploadData(it.id, it.accessToken, firebaseId, formFillViewModel.args!!.siteMonitorId, formFillServiceLocator)
                     .subscribeOn(schedulerProvider.io())
                     .observeOn(schedulerProvider.ui())
                     .subscribe({
@@ -177,10 +193,20 @@ class FormFillLogic(
                         view.uploadSuccess()
                     }, { t ->
                         view.dismissLoading()
-                        view.showError(t, "Gagal mengupload data")
+                        view.showError(t, GAGAL_MENGUPLOAD_DATA)
                     })
             )
         }
 
     }
 }
+
+internal const val SITE_MONITOR_ID_KOSONG = "Site monitor id kosong"
+internal const val FORM_FILL_KOSONG = "Tidak dapat mengambil gambar. Form fill model item ini kosong"
+internal const val TERJADI_KESALAHAN = "Terjadi kesalahan"
+internal const val GAGAL_MEMUAT_FORM = "Gagal memuat form"
+internal const val GAGAL_MENGUPLOAD_DATA = "Gagal mengupload data"
+internal const val GAGAL_MENYIMPAN_DATA_TEXT = "Gagal menyimpan data text: "
+internal const val GAGAL_MENGHAPUS_DATA_TEXT_ITEM = "Gagal menghapus data text item"
+internal const val GAGAL_MENYIMPAN_FOTO = "Gagal menyimpan foto"
+internal const val GAGAL_MENGAMBIL_FOTO = "Tidak dapat mengambil foto. Data scheduleid, site latitude, dan longitude kosong"

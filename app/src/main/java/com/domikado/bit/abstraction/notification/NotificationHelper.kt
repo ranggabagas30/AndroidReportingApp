@@ -9,11 +9,11 @@ import android.media.AudioAttributes
 import android.media.AudioManager
 import android.media.RingtoneManager
 import android.os.Build
-import android.os.Bundle
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.domikado.bit.R
 import com.domikado.bit.ui.screen.MainActivity
+
 
 object NotificationHelper {
 
@@ -50,8 +50,7 @@ object NotificationHelper {
     }
 
     fun notifyRejection(context: Context, name: String, title: String?, message: String?) {
-        val notificationId = 2
-        val requestCode = 2
+        val requestCode = NOTIFICATION_ID_REJECTION
         val channelId = getChannelId(name)
         val notificationBuilder = NotificationCompat.Builder(context, channelId).apply {
             setSmallIcon(R.drawable.ic_notification_bit)
@@ -63,18 +62,22 @@ object NotificationHelper {
 
             val intent = Intent(context, MainActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            val bundle = Bundle()
-            bundle.putString(EXTRA_KEY_REJECTION, "notification rejection")
-            val pendingIntent = PendingIntent.getActivity(context, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT, bundle)
+            intent.putExtra(EXTRA_KEY_REJECTION, message)
+            val pendingIntent = PendingIntent.getActivity(context, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT)
             setContentIntent(pendingIntent)
+
+            /* Clicking on notification itself dismisses notification, but delete intent will not be sent in this case. Instead content intent will be sent.*/
+            setDeleteIntent(pendingIntent)
         }
 
         val notificationManager = NotificationManagerCompat.from(context)
-        notificationManager.notify(notificationId, notificationBuilder.build())
+        notificationManager.notify(NOTIFICATION_ID_REJECTION, notificationBuilder.build())
     }
 
     private fun getChannelId(name: String) = "channelId-$name"
 
     internal val DEFAULT_NAME = "default"
     internal val EXTRA_KEY_REJECTION = "EXTRA_KEY_REJECTION"
+
+    internal val NOTIFICATION_ID_REJECTION = 2
 }

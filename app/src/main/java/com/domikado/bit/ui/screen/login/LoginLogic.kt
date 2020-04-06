@@ -9,7 +9,6 @@ import com.domikado.bit.domain.interactor.AuthSource
 import com.domikado.bit.domain.servicelocator.UserServiceLocator
 import com.domikado.bit.utility.*
 import com.github.ajalt.timberkt.Timber.d
-import com.github.ajalt.timberkt.Timber.e
 import com.google.firebase.iid.FirebaseInstanceId
 import com.pixplicity.easyprefs.library.Prefs
 
@@ -25,14 +24,10 @@ class LoginLogic(
             is LoginEvent.OnCreate -> onCreate()
             is LoginEvent.OnStart -> onStart()
             is LoginEvent.OnSignInButtonClick -> onSignInClick(t.username, t.password)
-            //is LoginEvent.OnSignInResult -> onSignInResult(t.result)
         }
     }
 
-    private fun onCreate() {
-//        // mendapatkan firebase id dan token untuk disimpan
-//        getFirebaseIdAndToken()
-    }
+    private fun onCreate() {}
 
     private fun onStart() {
         // mendapatkan firebase id dan token untuk disimpan
@@ -53,7 +48,7 @@ class LoginLogic(
         }
 
         if (!AuthUtil.isFirebaseTokenValid(firebaseToken)) {
-            view.showError(NullPointerException("Firebase token kosong"))
+            view.showError(BitThrowable.BitFirebaseException(FIREBASE_TOKEN_KOSONG))
             return
         }
 
@@ -81,33 +76,13 @@ class LoginLogic(
                     }
                 )
         )
-
-        //debug
-//        if (BuildConfig.DEBUG) {
-//            view.startLoadingSignIn(Loading(LOGIN_LOADING_TITLE, LOGIN_LOADING_MESSAGE))
-//            loginViewModel.async(
-//                Completable.timer(1, TimeUnit.SECONDS)
-//                    .subscribeOn(schedulerProvider.io())
-//                    .observeOn(schedulerProvider.ui())
-//                    .subscribe(
-//                        {
-//                            view.dismissLoading()
-//                            view.navigateAfterLogin()
-//                        },
-//                        { t ->
-//                            view.dismissLoading()
-//                            view.showError(t)
-//                        }
-//                    )
-//            )
-//        }
     }
 
     private fun getFirebaseIdAndToken() {
         FirebaseInstanceId.getInstance().instanceId
             .addOnCompleteListener { task ->
                 if (!task.isSuccessful) {
-                    e {"Error FCM: ${task.exception}"}
+                    DebugUtil.handleError(task.exception?.cause?: BitThrowable.BitFirebaseException())
                     return@addOnCompleteListener
                 }
 
@@ -123,8 +98,9 @@ class LoginLogic(
     }
 }
 
-internal val USERNAME_PASSWORD_EMPTY = "Mohon masukkan username dan password yang benar"
-internal val LOGIN_SUCCESS = "Login Berhasil"
-internal val LOGIN_ERROR    = "Login Gagal"
-internal val LOGIN_LOADING_TITLE = "Sign In"
-internal val LOGIN_LOADING_MESSAGE = "Menunggu validasi akun"
+internal const val USERNAME_PASSWORD_EMPTY = "Mohon masukkan username dan password yang benar"
+internal const val LOGIN_SUCCESS = "Login Berhasil"
+internal const val LOGIN_ERROR    = "Login Gagal"
+internal const val LOGIN_LOADING_TITLE = "Sign In"
+internal const val LOGIN_LOADING_MESSAGE = "Menunggu validasi akun"
+internal const val FIREBASE_TOKEN_KOSONG = "Firebase token kosong"

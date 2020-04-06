@@ -17,7 +17,7 @@ interface ICheckInContract {
                             siteLongitude: Double?,
                             siteMonitorId: Int)
         fun checkInFailed(message: String)
-        fun showError(t: Throwable, message: String?)
+        fun showError(t: Throwable)
         fun navigateAfterCheckIn()
         fun setObserver(observer: Observer<CheckInEvent>)
     }

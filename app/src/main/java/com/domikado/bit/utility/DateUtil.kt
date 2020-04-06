@@ -15,4 +15,8 @@ object DateUtil {
     fun stringToDate(source: String, pattern: String): LocalDate {
         return LocalDate.parse(source, DateTimeFormatter.ofPattern(pattern))
     }
+
+    fun getDateTimeNow(): LocalDate {
+        return LocalDate.now()
+    }
 }

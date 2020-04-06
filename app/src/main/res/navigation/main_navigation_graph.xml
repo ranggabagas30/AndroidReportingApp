@@ -45,11 +45,25 @@
         android:label="Form"
         tools:layout="@layout/fragment_form">
         <argument
+            android:name="scheduleId"
+            app:argType="integer"
+            android:defaultValue="-1"/>
+        <argument
             android:name="siteMonitorId"
             app:argType="integer"
             android:defaultValue="-1"/>
         <argument
             android:name="operator"
+            app:argType="string"
+            android:defaultValue="@null"
+            app:nullable="true"/>
+        <argument
+            android:name="siteLatitude"
+            app:argType="string"
+            android:defaultValue="@null"
+            app:nullable="true"/>
+        <argument
+            android:name="siteLongitude"
             app:argType="string"
             android:defaultValue="@null"
             app:nullable="true"/>
