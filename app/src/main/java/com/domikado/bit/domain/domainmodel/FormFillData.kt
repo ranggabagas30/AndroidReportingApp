@@ -10,15 +10,16 @@ data class FormFillData(
     val id: Int,
     val formFillModelId: Int,
     val siteMonitorId: Int,
-    val title: String? = null,
+    var title: String? = null,
     var itemValue: String? = null,
     var remark: String? = null,
     var image: String? = null,
-    val latitude: Double? = null,
-    val longitude: Double? = null,
-    val isMandatory: Boolean = true,
-    val type: String,
-    val lastUploadAt: String?
+    var latitude: Double? = null,
+    var longitude: Double? = null,
+    var isMandatory: Boolean = true,
+    var type: String,
+    var modifiedAt: Long? = null,
+    var lastUploadAt: String? = null
 )
 
 internal val TbFormFillData.toFormFillData
@@ -34,6 +35,7 @@ internal val TbFormFillData.toFormFillData
         this.longitude,
         this.isMandatory,
         this.type,
+        this.modifiedAt,
         this.lastUploadAt
     )
 
@@ -50,6 +52,7 @@ internal val FormFillData.toTbFormFillData
         longitude = this.longitude,
         isMandatory = this.isMandatory,
         type = this.type,
+        modifiedAt = this.modifiedAt,
         lastUploadAt = this.lastUploadAt
     )
 
@@ -59,12 +62,13 @@ internal val FormFillModel.toFormFillData
         this.id,
         this.siteMonitorId,
         this.header.title,
-        null,
+        this.header.title,
         (this.body.sections[0] as SectionModel.PhotoLayoutModel).remark,
         (this.body.sections[0] as SectionModel.PhotoLayoutModel).image,
         (this.body.sections[0] as SectionModel.PhotoLayoutModel).latitude,
         (this.body.sections[0] as SectionModel.PhotoLayoutModel).longitude,
         (this.body.sections[0] as SectionModel.PhotoLayoutModel).isMandatory,
         (this.body.sections[0] as SectionModel.PhotoLayoutModel).type,
+        this.modifiedAt,
         this.lastUploadAt
     )

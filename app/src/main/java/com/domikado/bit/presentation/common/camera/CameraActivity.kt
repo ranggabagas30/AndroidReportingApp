@@ -17,8 +17,9 @@ import com.domikado.bit.domain.domainmodel.Result
 import com.domikado.bit.external.makeText
 import com.domikado.bit.external.utils.*
 import com.github.ajalt.timberkt.Timber
-import com.github.ajalt.timberkt.d
+import com.github.ajalt.timberkt.e
 import com.otaliastudios.cameraview.CameraListener
+import com.otaliastudios.cameraview.CameraLogger
 import com.otaliastudios.cameraview.PictureResult
 import kotlinx.android.synthetic.main.activity_camera.*
 
@@ -37,15 +38,20 @@ class CameraActivity : AppCompatActivity() {
     private val permissionRationale = "Mohon izinkan untuk melanjutkan pengambilan foto"
     private val scheduleIdEmpty = "Schedule id kosong"
     private val scheduleIdInvalid = "Schedule id tidak ditemukan (invalid)"
+    private val locationIsNull = "Data lokasi pengambilan foto kosong. Pastikan jaringan stabil dan tunggu beberapa saat"
+    private val checkStoragePermission = "periksa izin penyimpanan file ke storage"
 
     private val gpsUtils by lazy {
         GpsUtils(this)
     }
 
     private val cameraViewModel: CameraViewModel by viewModels()
+    private var photoLocation: Location? = null
 
     companion object {
         const val RESULT_IMAGE_FILE = "RESULT_IMAGE_FILE"
+        const val RESULT_PHOTO_LATITUDE = "RESULT_PHOTO_LATITUDE"
+        const val RESULT_PHOTO_LONGITUDE = "RESULT_PHOTO_LONGITUDE"
         const val EXTRA_SCHEDULE_ID = "EXTRA_SCHEDULE_ID"
         const val EXTRA_SITE_LATITUDE = "EXTRA_SITE_LATITUDE"
         const val EXTRA_SITE_LONGITUDE = "EXTRA_SITE_LONGITUDE"
@@ -61,7 +67,16 @@ class CameraActivity : AppCompatActivity() {
             invokeActionCapture()
         }
 
+        cameraView.setLifecycleOwner(this)
+
         cameraView.addCameraListener(cameraListener)
+
+        CameraLogger.registerLogger { level, tag, message, throwable ->
+            throwable?.also {
+                DebugUtil.getReadableErrorMessage(it)
+            }
+            e {message}
+        }
     }
 
     override fun onResume() {
@@ -85,20 +100,9 @@ class CameraActivity : AppCompatActivity() {
         when {
             !gpsUtils.isGpsOn() -> gpsUtils.askTurnOnGps()
             PermissionUtil.hasPermissions(this, permissions) -> {
-                d {"has permissions, start camera"}
-                cameraView.setLifecycleOwner(this)
                 startLocationUpdates()
             }
-            PermissionUtil.shouldShowPermissionRationale(this, permissions) -> {
-                PermissionUtil.showPermissionRationaleDialog(this, permissionRationale,
-                    DialogInterface.OnClickListener { dialog, which -> PermissionUtil.openAppPermissionSettings(this@CameraActivity) },
-                    DialogInterface.OnClickListener { dialog, which ->
-                        dialog?.dismiss()
-                        makeText("Pengambilan gambar dibatalkan", Toast.LENGTH_SHORT)
-                        setResult(Activity.RESULT_CANCELED)
-                        finish()
-                    })
-            }
+            PermissionUtil.shouldShowPermissionRationale(this, permissions) -> showPermissionRationaleDialog()
             else -> PermissionUtil.requestPermissions(this, permissions, RC_PERMISSION_TAKE_PICTURE)
         }
     }
@@ -107,17 +111,19 @@ class CameraActivity : AppCompatActivity() {
         when {
             !gpsUtils.isGpsOn() -> gpsUtils.askTurnOnGps()
             PermissionUtil.hasPermissions(this, permissions) -> cameraView.takePictureSnapshot()
-            else -> {
-                PermissionUtil.showPermissionRationaleDialog(this, permissionRationale,
-                    DialogInterface.OnClickListener { dialog, which -> PermissionUtil.openAppPermissionSettings(this@CameraActivity) },
-                    DialogInterface.OnClickListener { dialog, which ->
-                        dialog?.dismiss()
-                        makeText("Pengambilan gambar dibatalkan", Toast.LENGTH_SHORT)
-                        setResult(Activity.RESULT_CANCELED)
-                        finish()
-                    })
-            }
+            else -> showPermissionRationaleDialog()
         }
+    }
+
+    private fun showPermissionRationaleDialog() {
+        PermissionUtil.showPermissionRationaleDialog(this, permissionRationale,
+            DialogInterface.OnClickListener { dialog, which -> PermissionUtil.openAppPermissionSettings(this@CameraActivity) },
+            DialogInterface.OnClickListener { dialog, which ->
+                dialog?.dismiss()
+                makeText("Pengambilan gambar dibatalkan", Toast.LENGTH_SHORT)
+                setResult(Activity.RESULT_CANCELED)
+                finish()
+            })
     }
 
     private fun startLocationUpdates() {
@@ -128,6 +134,7 @@ class CameraActivity : AppCompatActivity() {
                     is Result.Value -> {
                         val location = it.value
                         if (location != null) {
+                            photoLocation = location
                             updateWatermarkValue(location)
                         }
                     }
@@ -172,7 +179,7 @@ class CameraActivity : AppCompatActivity() {
                 savePhoto(scheduleId.toString(), result)
             } catch (e: Exception) {
                 Timber.e(e)
-                makeText("Gagal menyimpan foto: ${e.message}", Toast.LENGTH_LONG)
+                makeText("Gagal menyimpan foto. ${e.message}", Toast.LENGTH_LONG)
                 setResult(Activity.RESULT_CANCELED)
                 finish()
             }
@@ -188,12 +195,16 @@ class CameraActivity : AppCompatActivity() {
 
                 // save image file asynchronously
                 result.toFile(imageFile) {
-                    if (it == null) throw IllegalAccessException("periksa izin penyimpanan file ke storage")
+                    if (it == null) throw IllegalAccessException(checkStoragePermission)
+
+                    if (photoLocation == null) throw NullPointerException(locationIsNull)
 
                     Intent().apply {
 
                         // sent result image file back to caller activity
                         putExtra(RESULT_IMAGE_FILE, it)
+                        putExtra(RESULT_PHOTO_LATITUDE, photoLocation!!.latitude)
+                        putExtra(RESULT_PHOTO_LONGITUDE, photoLocation!!.longitude)
                         setResult(Activity.RESULT_OK, this)
                         finish()
                     }

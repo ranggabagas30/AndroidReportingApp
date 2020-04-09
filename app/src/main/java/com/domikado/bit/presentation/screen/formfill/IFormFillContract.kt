@@ -19,7 +19,7 @@ interface IFormFillContract {
 
 sealed class FormFillEvent {
     object OnViewCreated: FormFillEvent()
-    data class OnSuccessTakePicture(val imageFile: File): FormFillEvent()
+    data class OnSuccessTakePicture(val imageFile: File, val latitude: Double, val longitude: Double): FormFillEvent()
     object OnFailedTakePicture: FormFillEvent()
     data class OnTextChanged(val text: String?, val model: FormFillModel?): FormFillEvent()
     object OnUploadClick: FormFillEvent()

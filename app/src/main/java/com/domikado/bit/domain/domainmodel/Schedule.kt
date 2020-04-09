@@ -16,7 +16,11 @@ data class Schedule(
     val pmStatus: Int,
     val picStatusText: String?,
     val pmStatusText: String?,
-    val rejection: String?
+    val rejection: String?,
+    val scheduleType: Int,
+    val scheduleTypeText: String?,
+    val ringId: String,
+    val ringName: String?
 )
 
 internal val Schedule.toTbSchedule
@@ -44,7 +48,11 @@ internal val TbSchedule.toSchedule
         this.pmStatus,
         this.picStatusText,
         this.pmStatusText,
-        this.rejection
+        this.rejection,
+        -1,
+        null,
+        "n/a",
+        "n/a"
     )
 
 internal val JSONSchedule.toSchedule
@@ -57,9 +65,9 @@ internal val JSONSchedule.toSchedule
         listOf(
             Operator(
                 0, // ignored
-                this.operator_code,
                 this.operator_name,
-                this.operator_detail_name
+                this.operator_detail_name,
+                this.operator_code
             )
         ),
         this.work_date,
@@ -73,7 +81,11 @@ internal val JSONSchedule.toSchedule
             this.pic_reject_at,
             this.pm_reject_at,
             this.remark_schedule
-        )
+        ),
+        scheduleType = this.schedule_type,
+        scheduleTypeText = this.schedule_type_text,
+        ringId = this.ring_id,
+        ringName = this.ring_name
     )
 
 internal val Schedule.toScheduleModel
@@ -88,7 +100,11 @@ internal val Schedule.toScheduleModel
         this.workDate,
         this.site?.map { it.toSiteModel },
         this.operators,
-        isAllowed = true
+        isAllowed = true,
+        scheduleType = this.scheduleType,
+        scheduleTypeText = this.scheduleTypeText?: "N/A tipe schedule",
+        ringId = this.ringId,
+        ringName = this.ringName?: "N/A nama ring"
     )
 
 private fun toReadableStatus(code: Int): String {

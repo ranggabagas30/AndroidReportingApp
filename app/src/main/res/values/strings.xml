@@ -18,4 +18,5 @@
     <string name="dummy_long_text">asdfasd asdfasdf asdfasdf asdfasdasdafsdsdfasdfasdasdfasdfaadsfasdf sdfasdasdafsdsdfasdfasdasdfasdfaadsfasdf sdfasdasdafsdsdfasdfasdasdfasdfaadsfasdf</string>
     <string name="tidak_ada_item">Tidak ada item</string>
     <string name="menunggu_kesiapan_gps">Menunggu kesiapan GPS</string>
+    <string name="mohon_aktifkan_automatic_date_time">Mohon aktifkan pengaturan \"Automatic Date and Time\"</string>
 </resources>

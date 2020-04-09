@@ -1,6 +1,7 @@
 package com.domikado.bit.domain.repository
 
-import io.reactivex.Completable
+import com.domikado.bit.domain.domainmodel.Upload
+import io.reactivex.Single
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
@@ -10,8 +11,7 @@ interface IRemoteFormFillDataRepository {
         userId: String,
         apiToken: String,
         firebaseId: String,
-        image1: MultipartBody.Part,
-        image2: MultipartBody.Part,
+        imageBody: HashMap<String, MultipartBody.Part>,
         textBody: HashMap<String, RequestBody>
-    ): Completable
+    ): Single<Upload>
 }

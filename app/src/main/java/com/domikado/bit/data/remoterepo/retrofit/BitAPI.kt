@@ -1,7 +1,6 @@
 package com.domikado.bit.data.remoterepo.retrofit
 
 import com.domikado.bit.data.remoterepo.pojo.*
-import io.reactivex.Completable
 import io.reactivex.Single
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -25,18 +24,27 @@ object BitAPI {
     fun getSiteDetail(userId: String, apiToken: String, idSiteMonitor: String): Single<JSONGetSite> =
         service.getSiteDetail(userId, apiToken, idSiteMonitor)
 
-    fun checkIn(userId: String, apiToken: String, firebaseId: String, idSiteMonitor: String): Single<JSONCheckIn> =
-        service.checkIn(userId = userId, apiToken = apiToken, firebaseId = firebaseId, idSiteMonitor = idSiteMonitor)
+    fun checkIn(userId: String, apiToken: String, firebaseId: String, idSiteMonitor: String, textBody: Map<String, RequestBody>): Single<JSONCheckIn> =
+        service.checkIn(userId = userId, apiToken = apiToken, firebaseId = firebaseId, idSiteMonitor = idSiteMonitor, textBody = textBody)
 
     fun uploadFormData(
         userId: String,
         apiToken: String,
         firebaseId: String,
-        image1: MultipartBody.Part,
-        image2: MultipartBody.Part,
+        imageBody: HashMap<String, MultipartBody.Part>,
         textBody: HashMap<String, RequestBody>
-    ): Completable =
-        service.uploadFormData(userId = userId, apiToken = apiToken, firebaseId = firebaseId, image1 = image1, image2 = image2, textBody = textBody)
+    ): Single<JSONUploadFormData> =
+        service.uploadFormData(
+            userId = userId,
+            apiToken = apiToken,
+            firebaseId = firebaseId,
+            image1 = imageBody["image1"],
+            image2 = imageBody["image2"],
+            image3 = imageBody["image3"],
+            image4 = imageBody["image4"],
+            image5 = imageBody["image5"],
+            textBody = textBody
+        )
 
     internal val ERROR_DATA_IS_NULL = "Error: data is null"
 }

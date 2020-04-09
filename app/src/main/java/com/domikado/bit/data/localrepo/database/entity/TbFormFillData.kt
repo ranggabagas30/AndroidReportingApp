@@ -57,6 +57,9 @@ data class TbFormFillData(
     @ColumnInfo(name = FORM_FILL_DATA.TYPE)
     val type: String,
 
+    @ColumnInfo(name = FORM_FILL_DATA.MODIFIED_AT)
+    val modifiedAt: Long? = null,
+
     @ColumnInfo(name = FORM_FILL_DATA.LAST_UPLOAD_AT)
     val lastUploadAt: String? = null
 
@@ -74,6 +77,7 @@ object FORM_FILL_DATA {
     const val LATITUDE = "latitude"
     const val LONGITUDE = "longitude"
     const val IS_MANDATORY = "is_mandatory"
+    const val MODIFIED_AT = "modified_at"
     const val LAST_UPLOAD_AT = "last_upload_at"
     const val TYPE = "type"
     const val INDEX_1 = "$TB_NAME-INDEX1"

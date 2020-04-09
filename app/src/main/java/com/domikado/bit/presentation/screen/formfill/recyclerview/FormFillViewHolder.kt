@@ -14,9 +14,9 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.addTextChangedListener
-import com.bumptech.glide.Glide
 import com.domikado.bit.R
 import com.domikado.bit.abstraction.recyclerview.AbstractViewHolder
+import com.domikado.bit.external.glide.GlideApp
 import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.io.File
@@ -205,7 +205,7 @@ class FormFillViewHolder(itemView: View, private val onFormFillListener: OnFormF
             println("load image into pictureview")
             if (!TextUtils.isEmpty(section.photoPath)){
                 visibility = View.VISIBLE
-                Glide.with(formBodyView.context)
+                GlideApp.with(formBodyView.context)
                     .load(File(section.photoPath!!))
                     .into(pictureView)
             } else {
@@ -221,9 +221,9 @@ class FormFillViewHolder(itemView: View, private val onFormFillListener: OnFormF
         val remarkView = formPhotoLayoutView.findViewById(R.id.form_photolayout_tf_remark) as AppCompatEditText
         remarkView.apply {
             setText(section.remark)
-            addTextChangedListener {
-                onFormFillListener.onTextChanged(it?.toString(), model)
-            }
+            addTextChangedListener(onTextChanged = {text, start, count, after ->
+                onFormFillListener.onTextChanged(text.toString(), model)
+            })
         }
         formBodyView.addView(formPhotoLayoutView)
     }
@@ -253,7 +253,7 @@ class FormFillViewHolder(itemView: View, private val onFormFillListener: OnFormF
             println("load image into pictureview")
             if (!TextUtils.isEmpty(section.photoPath)){
                 visibility = View.VISIBLE
-                Glide.with(formBodyView.context)
+                GlideApp.with(formBodyView.context)
                     .load(File(section.photoPath!!))
                     .into(pictureView)
             } else {

@@ -7,7 +7,8 @@ data class FormFillModel(
     val id: Int,
     //val formFillDataId: Int,
     val siteMonitorId: Int,
-    val lastUploadAt: String?,
+    var modifiedAt: Long? = null,
+    var lastUploadAt: String? = null,
     val header: HeaderModel,
     val body: BodyModel
 ): AbstractBaseItemModel() {

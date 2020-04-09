@@ -13,6 +13,7 @@
         android:layout_height="0dp"
         android:keepScreenOn="true"
         app:cameraRequestPermissions="false"
+        app:cameraGestureTap="autoFocus"
         app:cameraAudio="off"
         app:cameraMode="picture"
         app:layout_constraintTop_toTopOf="parent"

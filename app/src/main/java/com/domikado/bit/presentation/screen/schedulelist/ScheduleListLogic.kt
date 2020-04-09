@@ -63,3 +63,4 @@ class ScheduleListLogic(
 }
 
 internal const val GAGAL_MEMUAT_SCHEDULE = "Gagal memuat schedule"
+internal const val TIDAK_BISA_CHECK_IN_SITE_SELAIN_HARI_INI = "Tidak bisa check in site selain tanggal hari ini"

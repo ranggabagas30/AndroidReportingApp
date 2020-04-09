@@ -2,7 +2,10 @@ package com.domikado.bit.domain.interactor
 
 import android.text.TextUtils
 import com.domikado.bit.domain.domainmodel.FormFillData
+import com.domikado.bit.domain.domainmodel.Upload
 import com.domikado.bit.domain.servicelocator.FormFillServiceLocator
+import com.domikado.bit.external.createPart
+import com.github.ajalt.timberkt.d
 import io.reactivex.Completable
 import io.reactivex.Single
 import okhttp3.MediaType
@@ -24,36 +27,74 @@ class FormFillSource {
     fun getFormFillData(siteMonitorId: Int, locator: FormFillServiceLocator): Single<List<FormFillData>> =
         locator.formFillDataRepository.getFormFillData(siteMonitorId)
 
-    fun uploadData(userId: String, apiToken: String, firebaseId: String, siteMonitorId: Int, locator: FormFillServiceLocator): Completable =
-        getFormFillData(siteMonitorId, locator)
-            .flatMapCompletable { data ->
-                if (TextUtils.isEmpty(data[0].image) && TextUtils.isEmpty(data[0].remark)) throw NullPointerException("Data form ${data[0].title} ada yang kosong. Mohon dilengkapi")
-                if (TextUtils.isEmpty(data[1].image) && TextUtils.isEmpty(data[1].remark)) throw NullPointerException("Data form ${data[1].title} ada yang kosong. Mohon dilengkapi")
+    fun getValidFormFillData(data: List<FormFillData>): Single<List<FormFillData>> {
+        for (i in data.indices) {
+            // cek jika pada satu item yang terisi remark, lengkap dengan gambar dan nilai itemvalue nya
+            if (TextUtils.isEmpty(data[i].image))
+                throw NullPointerException("Form ${data[i].title} tidak ada foto. Mohon lengkapi")
 
-                val fileImage1 = File(data[0].image!!)
-                val reqFile1 = RequestBody.create(MediaType.parse("image/*"), fileImage1)
-                val image1 = MultipartBody.Part.createFormData("image1", fileImage1.name, reqFile1)
+            if (TextUtils.isEmpty(data[i].remark))
+                throw NullPointerException("Form ${data[i].title} tidak ada remark. Mohon lengkapi")
 
-                val fileImage2 = File(data[1].image!!)
-                val reqFile2 = RequestBody.create(MediaType.parse("image/*"), fileImage2)
-                val image2 = MultipartBody.Part.createFormData("image2", fileImage2.name, reqFile2)
+            if (TextUtils.isEmpty(data[i].itemValue))
+                throw NullPointerException("Form ${data[i].title} tidak ada itemValue. Silahkan laporkan ke developer")
 
-                val textBodyMap = hashMapOf(
-                    "id_site_monitor" to createPartFromString(siteMonitorId.toString()),
-                    "item1" to createPartFromString(""),
-                    "remark1" to createPartFromString(data[0].remark!!),
-                    "item2" to createPartFromString(""),
-                    "remark2" to createPartFromString(data[1].remark!!),
-                    "latitude" to createPartFromString("-6.239"),
-                    "longitude" to createPartFromString( "106.123")
-                )
-                locator.remoteFormFillDataRepository.uploadData(userId, apiToken, firebaseId, image1, image2, textBodyMap)
-            }
-
-    private fun createPartFromString(descriptionString: String): RequestBody {
-        return RequestBody.create(
-            MultipartBody.FORM, descriptionString
-        )
+            // data latitude longitude item tidak boleh kosong
+            if (data[i].latitude == null || data[i].longitude == null)
+                throw NullPointerException("Tidak ada data gps location pada item ${data[i].title}")
+        }
+        return Single.just(data)
     }
+
+    fun uploadData(userId: String, apiToken: String, firebaseId: String, siteMonitorId: Int, locator: FormFillServiceLocator): Single<Upload> =
+        getFormFillData(siteMonitorId, locator)
+            .flatMap { data -> getValidFormFillData(data) }
+            .flatMap { data ->
+
+                // penyiapan upload data body
+                val textBody = hashMapOf(
+                    "id_site_monitor" to siteMonitorId.toString().createPart
+                )
+                val imageBody = hashMapOf<String, MultipartBody.Part>()
+
+                var latitude: Double? = null
+                var longitude: Double? = null
+                var latestModifietAt: Long = Long.MIN_VALUE
+
+                for (i in data.indices) {
+                    val formKe = data[i].formFillModelId + 1 // form fill model id is 0 based index
+                    d { "formKe: $formKe" }
+                    d { "data: ${data[i]}"}
+
+                    // itemValue
+                    textBody["item$formKe"] = data[i].itemValue!!.createPart
+
+                    // remark
+                    textBody["remark$formKe"] = data[i].remark!!.createPart
+
+                    // image
+                    val imageFile = File(data[i].image!!)
+                    val reqFile = RequestBody.create(MediaType.parse("image/*"), imageFile)
+                    val imageMultipartBody = MultipartBody.Part.createFormData("image$formKe", imageFile.name, reqFile)
+                    imageBody["image$formKe"] = imageMultipartBody
+
+                    // pick latest modified time lat long
+                    data[i].modifiedAt?.also {
+                        if (it >= latestModifietAt) { // ambil data lat long dengan modfied time terbaru
+                            latitude = data[i].latitude
+                            longitude = data[i].longitude
+                            latestModifietAt = it
+                        }
+                    }
+                }
+
+                // gps lat long
+                textBody["latitude"] = latitude.toString().createPart
+                textBody["longitude"] = longitude.toString().createPart
+
+                d { "textBody: $textBody"}
+                d { "imageBody: $imageBody"}
+                locator.remoteFormFillDataRepository.uploadData(userId, apiToken, firebaseId, imageBody, textBody)
+            }
 
 }

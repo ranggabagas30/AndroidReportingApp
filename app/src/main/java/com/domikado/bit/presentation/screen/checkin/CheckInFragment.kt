@@ -24,6 +24,7 @@ import com.domikado.bit.domain.domainmodel.Loading
 import com.domikado.bit.domain.domainmodel.Operator
 import com.domikado.bit.domain.domainmodel.Result
 import com.domikado.bit.external.makeText
+import com.domikado.bit.external.utils.DateUtil
 import com.domikado.bit.external.utils.DebugUtil
 import com.domikado.bit.external.utils.GpsUtils
 import com.domikado.bit.external.utils.PermissionUtil
@@ -58,7 +59,9 @@ class CheckInFragment : BaseFragment(), ICheckInContract.View {
     private val checkInViewModel: CheckInViewModel by viewModels()
     private val checkInEvent by lazy { MutableLiveData<CheckInEvent>() }
     private val RC_PERMISSION_LOCATION = 1
+    private val RC_AUTOMATIC_DATE_TIME = 2
     private val permissions = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+    private var userLocation: Location? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -101,8 +104,7 @@ class CheckInFragment : BaseFragment(), ICheckInContract.View {
         btnCheckIn = checkin_btn_checkin as MaterialButton
 
         btnCheckIn.setOnClickListener {
-            if (gpsUtils.isGpsOn()) checkInEvent.value = CheckInEvent.OnCheckInClick
-            else gpsUtils.askTurnOnGps()
+            invokeCheckIn()
         }
 
         checkInEvent.value = CheckInEvent.OnViewCreated
@@ -204,6 +206,9 @@ class CheckInFragment : BaseFragment(), ICheckInContract.View {
 
                             // enable btn checkin
                             btnCheckIn.isEnabled = true
+
+                            // assign user location
+                            userLocation = location
                         }
                     }
                     is Result.Error -> {
@@ -222,8 +227,23 @@ class CheckInFragment : BaseFragment(), ICheckInContract.View {
                 btnCheckIn.isEnabled = false
                 gpsUtils.askTurnOnGps()
             }
+            !DateUtil.isTimeAutomatic(requireContext()) -> {
+                requireActivity().makeText(getString(R.string.mohon_aktifkan_automatic_date_time), Toast.LENGTH_LONG)
+                DateUtil.openDateTimeSetting(requireActivity(), RC_AUTOMATIC_DATE_TIME)
+            }
             PermissionUtil.hasPermissions(requireActivity(), permissions) -> startLocationUpdates()
             else -> PermissionUtil.requestPermissions(this, permissions, RC_PERMISSION_LOCATION)
+        }
+    }
+
+    private fun invokeCheckIn() {
+        when {
+            !gpsUtils.isGpsOn() -> gpsUtils.askTurnOnGps()
+            !DateUtil.isTimeAutomatic(requireContext()) -> {
+                requireActivity().makeText(getString(R.string.mohon_aktifkan_automatic_date_time), Toast.LENGTH_LONG)
+                DateUtil.openDateTimeSetting(requireActivity(), RC_AUTOMATIC_DATE_TIME)
+            }
+            else -> checkInEvent.value = CheckInEvent.OnCheckInClick(userLocation)
         }
     }
 

@@ -1,8 +1,11 @@
 package com.domikado.bit.data.remoterepo.formfill
 
 import com.domikado.bit.data.remoterepo.retrofit.BitAPI
+import com.domikado.bit.domain.domainmodel.BitThrowable
+import com.domikado.bit.domain.domainmodel.Upload
+import com.domikado.bit.domain.domainmodel.toUpload
 import com.domikado.bit.domain.repository.IRemoteFormFillDataRepository
-import io.reactivex.Completable
+import io.reactivex.Single
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
@@ -12,10 +15,16 @@ class RemoteFormFillImpl(private val bitApi: BitAPI): IRemoteFormFillDataReposit
         userId: String,
         apiToken: String,
         firebaseId: String,
-        image1: MultipartBody.Part,
-        image2: MultipartBody.Part,
+        imageBody: HashMap<String, MultipartBody.Part>,
         textBody: HashMap<String, RequestBody>
-    ): Completable {
-        return bitApi.uploadFormData(userId, apiToken, firebaseId, image1, image2, textBody)
+    ): Single<Upload> {
+        return bitApi.uploadFormData(userId, apiToken, firebaseId, imageBody, textBody)
+            .map { response ->
+                if (response.status == 0) throw BitThrowable.BitApiResponseException(response.message)
+                else {
+                    if (response.data == null) throw BitThrowable.BitApiResponseException("Response API upload kosong")
+                    response.toUpload
+                }
+            }
     }
 }

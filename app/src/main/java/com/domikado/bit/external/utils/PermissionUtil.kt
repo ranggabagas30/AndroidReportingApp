@@ -57,6 +57,7 @@ object PermissionUtil {
         onNegativeDialogClickListener: DialogInterface.OnClickListener
     ) {
         MaterialAlertDialogBuilder(context)
+            .setCancelable(false)
             .setMessage(permissionRationale)
             .setPositiveButton("OK", onPositiveDialogClickListener)
             .setNegativeButton("Cancel", onNegativeDialogClickListener)

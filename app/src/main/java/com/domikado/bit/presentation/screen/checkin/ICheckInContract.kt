@@ -1,5 +1,6 @@
 package com.domikado.bit.presentation.screen.checkin
 
+import android.location.Location
 import androidx.lifecycle.Observer
 import com.domikado.bit.domain.domainmodel.Loading
 
@@ -26,5 +27,5 @@ interface ICheckInContract {
 sealed class CheckInEvent {
     object OnCreateView: CheckInEvent()
     object OnViewCreated: CheckInEvent()
-    object OnCheckInClick: CheckInEvent()
+    data class OnCheckInClick(val userLocation: Location?): CheckInEvent()
 }

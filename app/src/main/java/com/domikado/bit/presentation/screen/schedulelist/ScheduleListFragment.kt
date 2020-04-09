@@ -20,8 +20,7 @@ import com.domikado.bit.abstraction.base.BaseFragment
 import com.domikado.bit.abstraction.recyclerview.AbstractBaseItemModel
 import com.domikado.bit.abstraction.recyclerview.RecyclerAdapter
 import com.domikado.bit.abstraction.recyclerview.ViewHolderTypeFactoryImpl
-import com.domikado.bit.domain.domainmodel.Loading
-import com.domikado.bit.domain.domainmodel.Operator
+import com.domikado.bit.domain.domainmodel.*
 import com.domikado.bit.external.makeText
 import com.domikado.bit.external.utils.DebugUtil
 import com.domikado.bit.presentation.screen.schedulelist.recyclerview.HeaderDateModel
@@ -83,7 +82,7 @@ class ScheduleListFragment : BaseFragment(), IScheduleListContract.View {
             d {"site1 (id, name): (${it.sites?.get(0)?.id}, ${it.sites?.get(0)?.name})"}
             d {"site2 (id, name): (${it.sites?.get(1)?.id}, ${it.sites?.get(1)?.name})"}
         }}"}
-        recyclerAdapter.setItems(getAppendedWorkDateList(schedules).toMutableList())
+        recyclerAdapter.setItems(getAppendedHeaderWorkDateIntoScheduleList(schedules).toMutableList())
     }
 
     override fun startLoadingSchedule(loading: Loading) = showLoadingMessage(loading.title, loading.message)
@@ -111,10 +110,14 @@ class ScheduleListFragment : BaseFragment(), IScheduleListContract.View {
                 siteMonitorId: Int,
                 operator: Operator?
             ) {
-                when (siteStatus) {
-                    0, 3 -> navigateToCheckIn(scheduleId, workDate, siteId, siteName, siteCode, siteStatus, siteLatitude, siteLongitude, siteMonitorId, operator)
-                    1 -> navigateToFormFill(scheduleId, siteMonitorId, operator, siteLatitude, siteLongitude)
-                    else -> requireActivity().makeText("Site sudah tuntas, tidak bisa masuk", Toast.LENGTH_SHORT)
+                workDate?.also {
+                    if (isCheckInAllowed(it)) {
+                        when (siteStatus) {
+                            PROSES, TUNTAS, REJECT -> navigateToCheckIn(scheduleId, workDate, siteId, siteName, siteCode, siteStatus, siteLatitude, siteLongitude, siteMonitorId, operator)
+                            CHECK_IN -> navigateToFormFill(scheduleId, siteMonitorId, operator, siteLatitude, siteLongitude)
+                            else -> showError(BitThrowable.BitIllegalAccessException("Tidak bisa check in lagi"))
+                        }
+                    } else showError(BitThrowable.BitIllegalAccessException(TIDAK_BISA_CHECK_IN_SITE_SELAIN_HARI_INI))
                 }
             }
 
@@ -167,7 +170,7 @@ class ScheduleListFragment : BaseFragment(), IScheduleListContract.View {
         findNavController().navigate(action)
     }
 
-    private fun getAppendedWorkDateList(schedules: List<ScheduleModel>): List<AbstractBaseItemModel> {
+    private fun getAppendedHeaderWorkDateIntoScheduleList(schedules: List<ScheduleModel>): List<AbstractBaseItemModel> {
         val schedulesWorkDate = ArrayList<AbstractBaseItemModel>()
         var workDate = ""
         schedules.forEach { schedule ->

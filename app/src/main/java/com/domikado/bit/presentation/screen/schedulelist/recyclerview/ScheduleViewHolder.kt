@@ -7,16 +7,17 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import com.domikado.bit.R
-import com.domikado.bit.data.localrepo.database.BitDatabase
-import com.domikado.bit.data.remoterepo.retrofit.BitAPI
 import com.domikado.bit.abstraction.recyclerview.AbstractViewHolder
 import com.domikado.bit.abstraction.rx.AppSchedulerProvider
+import com.domikado.bit.data.localrepo.database.BitDatabase
 import com.domikado.bit.data.localrepo.schedule.RoomLocalScheduleImpl
+import com.domikado.bit.data.remoterepo.retrofit.BitAPI
 import com.domikado.bit.data.remoterepo.schedule.RemoteScheduleImpl
+import com.domikado.bit.domain.domainmodel.isCheckInAllowed
 import com.domikado.bit.domain.interactor.ScheduleSource
 import com.domikado.bit.domain.servicelocator.ScheduleServiceLocator
+import com.domikado.bit.external.utils.DebugUtil
 import com.github.ajalt.timberkt.d
-import com.github.ajalt.timberkt.e
 import io.reactivex.disposables.CompositeDisposable
 
 class ScheduleViewHolder(itemView: View, private val onScheduleClickListener: OnScheduleClickListener?): AbstractViewHolder<ScheduleModel>(itemView) {
@@ -25,6 +26,7 @@ class ScheduleViewHolder(itemView: View, private val onScheduleClickListener: On
     private lateinit var parentRootView: ConstraintLayout
     private lateinit var parentSiteNameView: AppCompatTextView
     private lateinit var parentWorkTypeView: AppCompatTextView
+    private lateinit var parentRingView: AppCompatTextView
     private lateinit var parentStatusView: AppCompatTextView
     private lateinit var parentRejectionView: AppCompatTextView
     private lateinit var parentProgressView: AppCompatTextView
@@ -45,13 +47,14 @@ class ScheduleViewHolder(itemView: View, private val onScheduleClickListener: On
 
     override fun bind(model: ScheduleModel) {
         d {"bind view on scheduleid: ${model.id}"}
-        parentRootView     = itemView.findViewById(R.id.schedule_parent_root)
-        parentSiteNameView = itemView.findViewById(R.id.schedule_parent_sitename)
-        parentWorkTypeView = itemView.findViewById(R.id.schedule_parent_worktype)
-        parentStatusView   = itemView.findViewById(R.id.schedule_parent_status)
+        parentRootView      = itemView.findViewById(R.id.schedule_parent_root)
+        parentSiteNameView  = itemView.findViewById(R.id.schedule_parent_sitename)
+        parentWorkTypeView  = itemView.findViewById(R.id.schedule_parent_worktype)
+        parentRingView      = itemView.findViewById(R.id.schedule_parent_ring)
+        parentStatusView    = itemView.findViewById(R.id.schedule_parent_status)
         parentRejectionView = itemView.findViewById(R.id.schedule_parent_rejection)
-        parentProgressView = itemView.findViewById(R.id.schedule_parent_progress)
-        parentDropdownIcon = itemView.findViewById(R.id.schedule_parent_dropdown)
+        parentProgressView  = itemView.findViewById(R.id.schedule_parent_progress)
+        parentDropdownIcon  = itemView.findViewById(R.id.schedule_parent_dropdown)
 
         this.model = model
 
@@ -61,7 +64,8 @@ class ScheduleViewHolder(itemView: View, private val onScheduleClickListener: On
 
     private fun setParentView() {
         parentSiteNameView.text = model.sites?.joinToString { it.name }
-        parentWorkTypeView.text = "OTDR"
+        parentWorkTypeView.text = model.scheduleTypeText
+        parentRingView.text     = "Ring:\n${model.ringId}\n${model.ringName}"
         parentStatusView.text =  "PIC status: ${model.picStatusText}\n" +
                                  "PM status: ${model.pmStatusText}"
         parentRejectionView.apply {
@@ -86,8 +90,8 @@ class ScheduleViewHolder(itemView: View, private val onScheduleClickListener: On
                         model.progress = progress.toInt()
                         parentProgressView.text = "${model.progress}%"
                     }, {
-                        e(it)
-                        parentProgressView.text = "error"
+                        DebugUtil.getReadableErrorMessage(it)
+                        parentProgressView.text = "Error"
                     })
             )
         }
@@ -121,13 +125,12 @@ class ScheduleViewHolder(itemView: View, private val onScheduleClickListener: On
                 childSiteView.apply {
                     setSiteName(site.name)
                     setSiteStatus(site.status_text)
-                    setCheckinIsEnabled(site.isCheckInAllowed)
+                    setCheckinIsEnabled(site.isCheckInAllowed && isCheckInAllowed(model.workDate))
                 }
                 siteIndex++
             }
         }
     }
-
 
     private fun createChildSiteView(site: SiteModel, siteIndex: Int): SiteView {
         return SiteView(itemView.context).apply {

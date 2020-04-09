@@ -16,7 +16,11 @@ data class ScheduleModel(
     var sites: List<SiteModel>?,
     var operators: List<Operator>?,
     var isExpanded: Boolean = true,
-    var isAllowed: Boolean = true
+    var isAllowed: Boolean = true,
+    var scheduleType: Int = -1,
+    var scheduleTypeText: String = "N/A tipe schedule",
+    var ringId: String = "N/A id ring",
+    var ringName: String = "N/A nama ring"
 ): AbstractBaseItemModel() {
     override fun type(viewHolderTypeFactory: ViewHolderTypeFactory): Int {
         return viewHolderTypeFactory.type(this)

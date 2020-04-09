@@ -1,7 +1,6 @@
 package com.domikado.bit.data.remoterepo.retrofit
 
 import com.domikado.bit.data.remoterepo.pojo.*
-import io.reactivex.Completable
 import io.reactivex.Single
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -45,13 +44,15 @@ interface BitRemoteService {
     ): Single<JSONGetSite>
 
     // CHECKIN
+    @Multipart
     @POST("v1/check-in/site/{id_site_monitor}")
     fun checkIn(
         @Header("Accept") accept: String = "application/json",
         @Header("Userid") userId: String,
         @Header("Apitoken") apiToken: String,
         @Header("Firebaseid") firebaseId: String,
-        @Path("id_site_monitor") idSiteMonitor: String
+        @Path("id_site_monitor") idSiteMonitor: String,
+        @PartMap textBody: Map<String, @JvmSuppressWildcards RequestBody>
     ): Single<JSONCheckIn>
 
     // UPLOAD FORM DATA
@@ -62,8 +63,11 @@ interface BitRemoteService {
         @Header("Userid") userId: String,
         @Header("Apitoken") apiToken: String,
         @Header("Firebaseid") firebaseId: String,
-        @Part image1: MultipartBody.Part,
-        @Part image2: MultipartBody.Part,
-        @PartMap textBody: Map<String, @JvmSuppressWildcards RequestBody>
-    ): Completable
+        @Part image1: MultipartBody.Part?,
+        @Part image2: MultipartBody.Part?,
+        @Part image3: MultipartBody.Part?,
+        @Part image4: MultipartBody.Part?,
+        @Part image5: MultipartBody.Part?,
+        @PartMap textBody: Map<String, @JvmSuppressWildcards RequestBody?>
+    ): Single<JSONUploadFormData>
 }

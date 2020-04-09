@@ -17,7 +17,7 @@ apply plugin: 'io.fabric' // legacy
 // Manifest version information!
 def minAPIlevel = rootProject.ext.minSdkVersion
 def versionMajor = 0
-def versionMinor = 1
+def versionMinor = 2
 def versionPatch = 0
 
 android {
@@ -114,6 +114,7 @@ dependencies {
     implementation "com.google.android.material:material:${rootProject.ext.materialComponent}"
     implementation "androidx.navigation:navigation-fragment-ktx:${rootProject.ext.navigationComponent}"
     implementation "androidx.navigation:navigation-ui-ktx:${rootProject.ext.navigationComponent}"
+
     implementation "com.google.android.gms:play-services-location:${rootProject.ext.playServicesLocationVersion}"
     //implementation "com.google.android.gms:play-services-maps:${rootProject.ext.playServicesMapsVersion}"
     implementation "com.google.firebase:firebase-core:${rootProject.ext.firebaseCoreVersion}"
@@ -156,7 +157,7 @@ dependencies {
 
     // Utilities
     implementation "com.github.bumptech.glide:glide:${rootProject.ext.glide}"
-    annotationProcessor "com.github.bumptech.glide:compiler:${rootProject.ext.glideCompiler}"
+    kapt "com.github.bumptech.glide:compiler:${rootProject.ext.glideCompiler}"
     implementation "com.google.code.gson:gson:${rootProject.ext.gson}"
     implementation "pl.droidsonroids.gif:android-gif-drawable:${rootProject.ext.gifLoader}"
     implementation "com.pixplicity.easyprefs:library:${rootProject.ext.easyPref}"

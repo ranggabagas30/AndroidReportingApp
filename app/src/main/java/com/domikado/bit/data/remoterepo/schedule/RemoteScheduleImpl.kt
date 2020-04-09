@@ -8,6 +8,7 @@ import com.domikado.bit.domain.domainmodel.toSchedule
 import com.domikado.bit.domain.repository.IRemoteScheduleRepository
 import com.github.ajalt.timberkt.d
 import io.reactivex.Single
+import okhttp3.RequestBody
 
 class RemoteScheduleImpl(private val bitAPI: BitAPI): IRemoteScheduleRepository {
 
@@ -29,9 +30,10 @@ class RemoteScheduleImpl(private val bitAPI: BitAPI): IRemoteScheduleRepository 
         userId: String,
         apiToken: String,
         firebaseId: String,
-        siteMonitorId: Int
+        siteMonitorId: Int,
+        textBody: Map<String, RequestBody>
     ): Single<CheckIn> {
-        return bitAPI.checkIn(userId, apiToken, firebaseId, siteMonitorId.toString())
+        return bitAPI.checkIn(userId, apiToken, firebaseId, siteMonitorId.toString(), textBody)
             .map { response ->
                 d {"checkin response: $response"}
                 if (response.status == 0) throw BitThrowable.BitApiResponseException(response.message)

@@ -82,19 +82,18 @@ class GpsUtils(private val activity: Activity) {
     }
 
     fun askTurnOnGps() {
-        val dialog = MaterialAlertDialogBuilder(activity)
-        dialog.apply {
-            setMessage("Mohon izinkan penggunaan GPS location untuk melanjutkan")
-            setPositiveButton("OK") { dialog, which ->
+        MaterialAlertDialogBuilder(activity)
+            .setCancelable(false)
+            .setMessage("Mohon izinkan penggunaan GPS location untuk melanjutkan")
+            .setPositiveButton("OK") { dialog, which ->
                 dialog.dismiss()
                 val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
                 activity.startActivity(intent)
             }
-            setNegativeButton("BATAL") { dialog, which ->
+            .setNegativeButton("BATAL") { dialog, which ->
                 dialog.dismiss()
             }
-            show()
-        }
+            .show()
     }
 
     fun isGpsOn() = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)

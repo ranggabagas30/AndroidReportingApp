@@ -1,7 +1,9 @@
 package com.domikado.bit.domain.domainmodel
 
+import android.text.TextUtils
 import com.domikado.bit.data.localrepo.database.entity.TbSite
 import com.domikado.bit.data.remoterepo.pojo.JSONSite
+import com.domikado.bit.external.utils.DateUtil
 import com.domikado.bit.presentation.screen.schedulelist.recyclerview.SiteModel
 
 data class Site(
@@ -67,7 +69,7 @@ internal val Site.toSiteModel
         this.id,
         this.name?: "Nama site N/A",
         this.status,
-        this.status_text?: SITE_STATUS[this.status],
+        this.status_text?: SITE_STATUS[this.status]?: "Status site N/A",
         this.latitude?: 0.0,
         this.longitude?: 0.0,
         this.code?: "Kode site N/A",
@@ -75,4 +77,15 @@ internal val Site.toSiteModel
         isCheckInAllowed = true
     )
 
-internal val SITE_STATUS = arrayOf("Progress", "Check In", "Tuntas")
+internal fun isCheckInAllowed(workDate: String?): Boolean {
+    return if (!TextUtils.isEmpty(workDate)) {
+        val workDateISO = DateUtil.stringToDate(workDate!!)
+        workDateISO.isEqual(DateUtil.getDateTimeNow())
+    } else false
+}
+
+internal val SITE_STATUS = mapOf(0 to "Progress", 1 to "Check In", 2 to "Tuntas", 3 to "Reject")
+internal const val PROSES = 0
+internal const val CHECK_IN = 1
+internal const val TUNTAS   = 2
+internal const val REJECT   = 4

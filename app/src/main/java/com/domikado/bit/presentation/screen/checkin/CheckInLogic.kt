@@ -1,7 +1,9 @@
 package com.domikado.bit.presentation.screen.checkin
 
+import android.location.Location
 import androidx.lifecycle.Observer
 import com.domikado.bit.abstraction.base.BaseLogic
+import com.domikado.bit.domain.domainmodel.BitThrowable
 import com.domikado.bit.domain.domainmodel.Loading
 import com.domikado.bit.domain.interactor.AuthSource
 import com.domikado.bit.domain.interactor.ScheduleSource
@@ -23,7 +25,7 @@ class CheckInLogic(
         when (t) {
             is CheckInEvent.OnCreateView -> onCreateView()
             is CheckInEvent.OnViewCreated -> onViewCreated()
-            is CheckInEvent.OnCheckInClick -> onCheckInClick()
+            is CheckInEvent.OnCheckInClick -> onCheckInClick(t.userLocation)
         }
     }
 
@@ -46,12 +48,25 @@ class CheckInLogic(
         }
     }
 
-    private fun onCheckInClick() {
+    private fun onCheckInClick(userLocation: Location?) {
+        if (userLocation == null) {
+            view.showError(BitThrowable.BitLocationException(LOCATION_NULL))
+            return
+        }
+
         authSource.getCurrentUser(userServiceLocator)?.also {
             val firebaseId = Prefs.getString(PREF_KEY_FIREBASE_ID, null)
             view.showLoadingCheckIn(Loading(message = "Memproses check in"))
             checkInViewModel.async(
-                scheduleSource.checkIn(it.id, it.accessToken, firebaseId, checkInViewModel.siteMonitorId, scheduleServiceLocator)
+                scheduleSource.checkIn(
+                    it.id,
+                    it.accessToken,
+                    firebaseId,
+                    checkInViewModel.siteMonitorId,
+                    userLocation.latitude.toString(),
+                    userLocation.longitude.toString(),
+                    scheduleServiceLocator
+                )
                     .subscribeOn(schedulerProvider.io())
                     .observeOn(schedulerProvider.ui())
                     .subscribe({ result ->
@@ -71,3 +86,4 @@ class CheckInLogic(
 }
 
 internal const val GAGAL_CHECK_IN = "Gagal melakukan check in"
+internal const val LOCATION_NULL = "GPS lokasi user tidak ada"

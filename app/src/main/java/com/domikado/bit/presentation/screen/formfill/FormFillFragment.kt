@@ -74,12 +74,6 @@ class FormFillFragment : BaseFragment(), IFormFillContract.View {
         formFillEvent.value = FormFillEvent.OnViewCreated
     }
 
-    override fun onStart() {
-        super.onStart()
-        println("on start")
-        //formFillEvent.value = FormFillEvent.OnStart
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when(requestCode) {
@@ -87,22 +81,33 @@ class FormFillFragment : BaseFragment(), IFormFillContract.View {
                 if (resultCode == Activity.RESULT_OK) {
                     formFillViewModel.photoFormFillModel?.also {
                         val imageFile = data?.getSerializableExtra(CameraActivity.RESULT_IMAGE_FILE) as File
+                        val latitude  = data.getDoubleExtra(CameraActivity.RESULT_PHOTO_LATITUDE, 0.0)
+                        val longitude = data.getDoubleExtra(CameraActivity.RESULT_PHOTO_LONGITUDE, 0.0)
+
                         d {"imagefile: $imageFile"}
-                        formFillEvent.value = FormFillEvent.OnSuccessTakePicture(imageFile)
+                        d {"latitude: $latitude"}
+                        d {"longitude: $longitude"}
+                        formFillEvent.value = FormFillEvent.OnSuccessTakePicture(imageFile, latitude, longitude)
                     }
                 }
             }
         }
     }
 
-    override fun loadFormFill(formFillItems: List<FormFillModel>) = recyclerAdapter.setItems(formFillItems.toMutableList())
+    override fun loadFormFill(formFillItems: List<FormFillModel>) {
+        formFillItems.forEach {
+            d { "-> item header: ${it.header.title}" }
+            d { "item body: ${it.body.sections[0]}"}
+        }
+        recyclerAdapter.setItems(formFillItems.toMutableList())
+    }
 
     override fun showLoadingData(loading: Loading) = showLoadingMessage(loading.title, loading.message)
 
     override fun dismissLoading() = hideLoading()
 
     override fun showError(t: Throwable, message: String?) {
-        requireActivity().makeText("${message?: TERJADI_KESALAHAN} :${DebugUtil.getReadableErrorMessage(t)}", Toast.LENGTH_LONG)
+        requireActivity().makeText("${message?: TERJADI_KESALAHAN}. ${DebugUtil.getReadableErrorMessage(t)}", Toast.LENGTH_LONG)
     }
 
     override fun uploadSuccess() {

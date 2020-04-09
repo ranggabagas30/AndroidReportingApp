@@ -15,6 +15,9 @@ interface FormFillDataDao {
     @Query("DELETE FROM ${FORM_FILL_DATA.TB_NAME} WHERE ${FORM_FILL_DATA.FORM_FILL_MODEL_ID} = :formFillModelId AND ${FORM_FILL_DATA.SITE_MONITOR_ID} = :siteMonitorId")
     fun delete(formFillModelId: Int, siteMonitorId: Int): Completable
 
+    @Query("UPDATE ${FORM_FILL_DATA.TB_NAME} SET ${FORM_FILL_DATA.LAST_UPLOAD_AT} = :lastUploadAt WHERE ${FORM_FILL_DATA.SITE_MONITOR_ID} = :siteMonitorId")
+    fun updateLastUploadAt(siteMonitorId: Int, lastUploadAt: String): Completable
+
     // insert or replace form fill data
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertOrReplace(formFillData: List<TbFormFillData>): Completable
