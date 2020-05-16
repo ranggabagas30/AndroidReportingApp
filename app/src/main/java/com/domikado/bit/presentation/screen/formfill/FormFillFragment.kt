@@ -145,6 +145,7 @@ class FormFillFragment : BaseFragment(), IFormFillContract.View {
                 formFillViewModel.photoFormFillModel = formFillModel
                 Intent(requireActivity(), CameraActivity::class.java).apply {
                     putExtra(CameraActivity.EXTRA_SCHEDULE_ID, formFillViewModel.args!!.scheduleId)
+                    putExtra(CameraActivity.EXTRA_SITE_MONITOR_ID, formFillViewModel.args!!.siteMonitorId)
                     putExtra(CameraActivity.EXTRA_SITE_LATITUDE, formFillViewModel.args!!.siteLatitude)
                     putExtra(CameraActivity.EXTRA_SITE_LONGITUDE, formFillViewModel.args!!.siteLongitude)
                     startActivityForResult(this, RC_TAKE_PICTURE)
