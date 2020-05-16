@@ -16,6 +16,7 @@ data class Site(
     val siteMonitorId: Int,
     var status: Int,
     val status_text: String?,
+    val proses: Int,
     val checkInAt: String?,
     val finishAt: String?
 )
@@ -31,6 +32,7 @@ internal val JSONSite.toSite
         this.id_site_monitor,
         this.status,
         this.status_text,
+        this.proses,
         this.checkin_at,
         this.finnish_at
     )
@@ -60,6 +62,7 @@ internal val TbSite.toSite
         this.siteMonitorId,
         this.status,
         null,
+        0,
         this.checkInAt,
         this.finishAt
     )
@@ -70,6 +73,7 @@ internal val Site.toSiteModel
         this.name?: "Nama site N/A",
         this.status,
         this.status_text?: SITE_STATUS[this.status]?: "Status site N/A",
+        this.proses,
         this.latitude?: 0.0,
         this.longitude?: 0.0,
         this.code?: "Kode site N/A",
@@ -80,7 +84,7 @@ internal val Site.toSiteModel
 internal fun isCheckInAllowed(workDate: String?): Boolean {
     return if (!TextUtils.isEmpty(workDate)) {
         val workDateISO = DateUtil.stringToDate(workDate!!)
-        workDateISO.isEqual(DateUtil.getDateTimeNow())
+        workDateISO.isBefore(DateUtil.getDateTimeNow()) || workDateISO.isEqual(DateUtil.getDateTimeNow())
     } else false
 }
 
@@ -88,4 +92,4 @@ internal val SITE_STATUS = mapOf(0 to "Progress", 1 to "Check In", 2 to "Tuntas"
 internal const val PROSES = 0
 internal const val CHECK_IN = 1
 internal const val TUNTAS   = 2
-internal const val REJECT   = 4
+internal const val REJECT   = 3
