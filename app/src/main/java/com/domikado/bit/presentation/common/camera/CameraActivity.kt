@@ -6,6 +6,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.location.Location
 import android.location.LocationManager
+import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
 import android.widget.Toast
@@ -17,11 +18,13 @@ import com.domikado.bit.domain.domainmodel.Result
 import com.domikado.bit.external.makeText
 import com.domikado.bit.external.utils.*
 import com.github.ajalt.timberkt.Timber
+import com.github.ajalt.timberkt.d
 import com.github.ajalt.timberkt.e
 import com.otaliastudios.cameraview.CameraListener
 import com.otaliastudios.cameraview.CameraLogger
 import com.otaliastudios.cameraview.PictureResult
 import kotlinx.android.synthetic.main.activity_camera.*
+import java.util.*
 
 class CameraActivity : AppCompatActivity() {
 
@@ -38,6 +41,8 @@ class CameraActivity : AppCompatActivity() {
     private val permissionRationale = "Mohon izinkan untuk melanjutkan pengambilan foto"
     private val scheduleIdEmpty = "Schedule id kosong"
     private val scheduleIdInvalid = "Schedule id tidak ditemukan (invalid)"
+    private val siteMonitorIdEmpty = "Site monitor id kosong"
+    private val siteMonitorIdInvalid = "Site monitor id tidak ditemukan (invalid)"
     private val locationIsNull = "Data lokasi pengambilan foto kosong. Pastikan jaringan stabil dan tunggu beberapa saat"
     private val checkStoragePermission = "periksa izin penyimpanan file ke storage"
 
@@ -53,6 +58,7 @@ class CameraActivity : AppCompatActivity() {
         const val RESULT_PHOTO_LATITUDE = "RESULT_PHOTO_LATITUDE"
         const val RESULT_PHOTO_LONGITUDE = "RESULT_PHOTO_LONGITUDE"
         const val EXTRA_SCHEDULE_ID = "EXTRA_SCHEDULE_ID"
+        const val EXTRA_SITE_MONITOR_ID = "EXTRA_SITE_MONITOR_ID"
         const val EXTRA_SITE_LATITUDE = "EXTRA_SITE_LATITUDE"
         const val EXTRA_SITE_LONGITUDE = "EXTRA_SITE_LONGITUDE"
     }
@@ -171,12 +177,12 @@ class CameraActivity : AppCompatActivity() {
     private val cameraListener = object : CameraListener() {
         override fun onPictureTaken(result: PictureResult) {
 
-            val scheduleId: Int? = cameraViewModel.args?.getInt(EXTRA_SCHEDULE_ID, -1)
+            val siteMonitorId: Int? = cameraViewModel.args?.getInt(EXTRA_SITE_MONITOR_ID, -1)
 
             try {
-                if (scheduleId == null) throw NullPointerException(scheduleIdEmpty)
-                if (scheduleId == -1) throw IllegalArgumentException(scheduleIdInvalid)
-                savePhoto(scheduleId.toString(), result)
+                if (siteMonitorId == null) throw NullPointerException(siteMonitorIdEmpty)
+                if (siteMonitorId == -1) throw InvalidPropertiesFormatException(siteMonitorIdInvalid)
+                savePhoto(siteMonitorId.toString(), result)
             } catch (e: Exception) {
                 Timber.e(e)
                 makeText("Gagal menyimpan foto. ${e.message}", Toast.LENGTH_LONG)
@@ -186,9 +192,11 @@ class CameraActivity : AppCompatActivity() {
         }
     }
 
-    private fun savePhoto(scheduleId: String, result: PictureResult) {
-        FileUtil.getPhotoDir(scheduleId.toInt()).also { photoDir ->
+    private fun savePhoto(subDir: String, result: PictureResult){
+        FileUtil.getPhotoDirBySiteMonitorId(subDir.toInt()).also { photoDir ->
             FileUtil.createOrUseDir(photoDir).also { path ->
+
+                d { "save photo path: ${path.absolutePath}" }
 
                 // create image file
                 val imageFile = FileUtil.createImageFile(path, FileUtil.createFileName())
@@ -196,7 +204,6 @@ class CameraActivity : AppCompatActivity() {
                 // save image file asynchronously
                 result.toFile(imageFile) {
                     if (it == null) throw IllegalAccessException(checkStoragePermission)
-
                     if (photoLocation == null) throw NullPointerException(locationIsNull)
 
                     Intent().apply {
