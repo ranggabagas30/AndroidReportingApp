@@ -282,7 +282,7 @@ class FormFillViewHolder(itemView: View, private val onFormFillListener: OnFormF
         val operatorView = formSectionView.findViewById(operatorLayoutResId) as AppCompatTextView
         operatorView.apply {
             visibility = if (TextUtils.isEmpty(operator)) View.GONE else View.VISIBLE
-            text = "Operator : $operator"
+            text = "Client : $operator"
         }
     }
 
