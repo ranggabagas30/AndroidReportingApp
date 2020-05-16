@@ -28,6 +28,7 @@ class FormFillSource {
         locator.formFillDataRepository.getFormFillData(siteMonitorId)
 
     fun getValidFormFillData(data: List<FormFillData>): Single<List<FormFillData>> {
+        val formSize = 5
         for (i in data.indices) {
             // cek jika pada satu item yang terisi remark, lengkap dengan gambar dan nilai itemvalue nya
             if (TextUtils.isEmpty(data[i].image))
@@ -43,6 +44,7 @@ class FormFillSource {
             if (data[i].latitude == null || data[i].longitude == null)
                 throw NullPointerException("Tidak ada data gps location pada item ${data[i].title}")
         }
+        if (data.size < formSize) throw NullPointerException("Mohon lengkapi form data terlebih dahulu")
         return Single.just(data)
     }
 
