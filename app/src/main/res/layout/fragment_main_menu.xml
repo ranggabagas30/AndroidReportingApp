@@ -23,7 +23,7 @@
         app:layout_constraintGuide_percent="0.5" />
 
     <include
-        android:id="@+id/main_menu.item.schedule"
+        android:id="@+id/main_menu.item.otdr"
         layout="@layout/item_main_menu"
         android:layout_width="0dp"
         android:layout_height="150dp"
@@ -33,7 +33,7 @@
         app:layout_constraintEnd_toStartOf="@id/guideline" />
 
     <include
-        android:id="@+id/main_menu.item.otdr"
+        android:id="@+id/main_menu.item.settings"
         layout="@layout/item_main_menu"
         android:layout_width="0dp"
         android:layout_height="150dp"
@@ -43,12 +43,13 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <include
-        android:id="@+id/main_menu.item.settings"
+        android:id="@+id/main_menu.item.schedule"
         layout="@layout/item_main_menu"
         android:layout_width="0dp"
         android:layout_height="150dp"
         android:layout_margin="5dp"
         app:layout_constraintStart_toEndOf="@id/guideline"
         app:layout_constraintTop_toBottomOf="@id/main_menu.item.otdr"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="gone"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
