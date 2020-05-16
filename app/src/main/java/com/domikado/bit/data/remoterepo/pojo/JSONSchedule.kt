@@ -8,6 +8,7 @@ data class JSONSchedule(
     val schedule_type_text: String?,
     val ring_id: String,
     val ring_name: String?,
+    val cluster_name: String?,
     val operator_code: String?,
     val operator_detail_name: String?,
     val operator_name: String?,
