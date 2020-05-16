@@ -20,7 +20,8 @@ data class ScheduleModel(
     var scheduleType: Int = -1,
     var scheduleTypeText: String = "N/A tipe schedule",
     var ringId: String = "N/A id ring",
-    var ringName: String = "N/A nama ring"
+    var ringName: String = "N/A nama ring",
+    var clusterName: String = "N/A nama cluster"
 ): AbstractBaseItemModel() {
     override fun type(viewHolderTypeFactory: ViewHolderTypeFactory): Int {
         return viewHolderTypeFactory.type(this)

@@ -26,6 +26,7 @@ class ScheduleViewHolder(itemView: View, private val onScheduleClickListener: On
     private lateinit var parentRootView: ConstraintLayout
     private lateinit var parentSiteNameView: AppCompatTextView
     private lateinit var parentWorkTypeView: AppCompatTextView
+    private lateinit var parentClusterNameView: AppCompatTextView
     private lateinit var parentRingView: AppCompatTextView
     private lateinit var parentStatusView: AppCompatTextView
     private lateinit var parentRejectionView: AppCompatTextView
@@ -50,6 +51,7 @@ class ScheduleViewHolder(itemView: View, private val onScheduleClickListener: On
         parentRootView      = itemView.findViewById(R.id.schedule_parent_root)
         parentSiteNameView  = itemView.findViewById(R.id.schedule_parent_sitename)
         parentWorkTypeView  = itemView.findViewById(R.id.schedule_parent_worktype)
+        parentClusterNameView = itemView.findViewById(R.id.schedule_parent_clustername)
         parentRingView      = itemView.findViewById(R.id.schedule_parent_ring)
         parentStatusView    = itemView.findViewById(R.id.schedule_parent_status)
         parentRejectionView = itemView.findViewById(R.id.schedule_parent_rejection)
@@ -65,9 +67,10 @@ class ScheduleViewHolder(itemView: View, private val onScheduleClickListener: On
     private fun setParentView() {
         parentSiteNameView.text = model.sites?.joinToString { it.name }
         parentWorkTypeView.text = model.scheduleTypeText
+        parentClusterNameView.text = "Cluster name: ${model.clusterName}"
         parentRingView.text     = "Ring:\n${model.ringId}\n${model.ringName}"
-        parentStatusView.text =  "PIC status: ${model.picStatusText}\n" +
-                                 "PM status: ${model.pmStatusText}"
+        parentStatusView.text   = "PIC status: ${model.picStatusText}\n" +
+                                  "PM status: ${model.pmStatusText}"
         parentRejectionView.apply {
             if (TextUtils.isEmpty(model.rejection)) {
                 visibility = View.GONE
@@ -78,7 +81,7 @@ class ScheduleViewHolder(itemView: View, private val onScheduleClickListener: On
         }
 
         // NB: progress dihitung dari backend
-        if (model.progress != null) parentProgressView.text = "${model.progress}%"
+        /*if (model.progress != null) parentProgressView.text = "${model.progress}%"
         else {
             compositeDisposable.add(
                 scheduleSource.getProgress(model.id, scheduleServiceLocator)
@@ -94,7 +97,7 @@ class ScheduleViewHolder(itemView: View, private val onScheduleClickListener: On
                         parentProgressView.text = "Error"
                     })
             )
-        }
+        }*/
 
         parentRootView.setOnClickListener {
             if (model.isExpanded)
@@ -113,6 +116,7 @@ class ScheduleViewHolder(itemView: View, private val onScheduleClickListener: On
                 d { "id: ${site.id}"}
                 d { "name: ${site.name}"}
                 d { "status: ${site.status}"}
+                d { "proses: ${site.proses}%"}
                 var childSiteView: SiteView? = parentRootView.findViewById(siteIndex)
                 if (childSiteView == null) {
                     d {"--> add to parent"}
@@ -125,6 +129,7 @@ class ScheduleViewHolder(itemView: View, private val onScheduleClickListener: On
                 childSiteView.apply {
                     setSiteName(site.name)
                     setSiteStatus(site.status_text)
+                    setSitePercentage(site.proses)
                     setCheckinIsEnabled(site.isCheckInAllowed && isCheckInAllowed(model.workDate))
                 }
                 siteIndex++

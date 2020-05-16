@@ -28,7 +28,8 @@
             app:layout_constraintStart_toEndOf="@id/schedule.parent.guideline"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/schedule.parent.sitename"
-            app:layout_constraintBottom_toBottomOf="@id/schedule.parent.status"/>
+            app:layout_constraintBottom_toBottomOf="@id/schedule.parent.status"
+            android:visibility="gone"/>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/schedule.parent.worktype"
@@ -45,17 +46,30 @@
             app:layout_constraintTop_toBottomOf="@id/schedule.parent.sitename" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/schedule.parent.ring"
+            android:id="@+id/schedule.parent.clustername"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:paddingTop="10dp"
             android:paddingStart="16dp"
             android:paddingBottom="10dp"
             android:paddingEnd="16dp"
-            android:text="Ring : \nCLDGOUT005\nLarangan Indah"
+            android:text="Cluster name: nama kluster"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/schedule.parent.guideline"
             app:layout_constraintTop_toBottomOf="@id/schedule.parent.worktype"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/schedule.parent.ring"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingStart="16dp"
+            android:paddingBottom="10dp"
+            android:paddingEnd="16dp"
+            android:text="Ring: \nCLDGOUT005\nLarangan Indah"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/schedule.parent.guideline"
+            app:layout_constraintTop_toBottomOf="@id/schedule.parent.clustername"/>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/schedule.parent.status"
@@ -147,7 +161,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.7" />
+            app:layout_constraintGuide_percent="0.77" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

@@ -5,6 +5,7 @@ data class SiteModel(
     val name: String,
     val status: Int,
     val status_text: String,
+    val proses: Int,
     val latitude: Double,
     val longitude: Double,
     val code: String,

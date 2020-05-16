@@ -72,7 +72,7 @@ class FormFillLogic(
                         SectionModel.PhotoLayoutModel(
                             0,
                             "OTDR",
-                            operator!!.name?: "No operator", // first phase of development, using only one operato
+                            operator!!.name?: OPERATOR_NA, // first phase of development, using only one operato
                             "Photo 1",
                             true
                         )
@@ -90,7 +90,7 @@ class FormFillLogic(
                         SectionModel.PhotoLayoutModel(
                             0,
                             "OTDR",
-                            operator!!.name?: "No operator",
+                            operator!!.name?: OPERATOR_NA,
                             "Photo 2",
                             true
                         )
@@ -108,7 +108,7 @@ class FormFillLogic(
                         SectionModel.PhotoLayoutModel(
                             0,
                             "OTDR",
-                            operator!!.name?: "No operator",
+                            operator!!.name?: OPERATOR_NA,
                             "Photo 3",
                             true
                         )
@@ -126,7 +126,7 @@ class FormFillLogic(
                         SectionModel.PhotoLayoutModel(
                             0,
                             "OTDR",
-                            operator!!.name?: "No operator",
+                            operator!!.name?: OPERATOR_NA,
                             "Photo 4",
                             true
                         )
@@ -144,7 +144,7 @@ class FormFillLogic(
                         SectionModel.PhotoLayoutModel(
                             0,
                             "OTDR",
-                            operator!!.name?: "No operator",
+                            operator!!.name?: OPERATOR_NA,
                             "Photo 5",
                             true
                         )
@@ -321,3 +321,4 @@ internal const val GAGAL_MENYIMPAN_DATA_TEXT = "Gagal menyimpan data text"
 internal const val GAGAL_MENGHAPUS_DATA_TEXT_ITEM = "Gagal menghapus data text item"
 internal const val GAGAL_MENYIMPAN_FOTO = "Gagal menyimpan foto"
 internal const val GAGAL_MENGAMBIL_FOTO = "Tidak dapat mengambil foto. Data scheduleid, site latitude, dan longitude kosong"
+internal const val OPERATOR_NA = "Nama client N/A"

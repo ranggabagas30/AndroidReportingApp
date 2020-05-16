@@ -18,11 +18,13 @@ class SiteView : ConstraintLayout {
     private var siteRootView: View = LayoutInflater.from(context).inflate(R.layout.item_schedule_child, this, true) as ConstraintLayout
     private var siteNameView: AppCompatTextView
     private var siteStatusView: AppCompatTextView
+    private var sitePercentageView: AppCompatTextView
     private var siteCheckInView: MaterialButton
     
     init {
         siteNameView = siteRootView.findViewById(R.id.site_name)
         siteStatusView = siteRootView.findViewById(R.id.site_status)
+        sitePercentageView = siteRootView.findViewById(R.id.site_percentage)
         siteCheckInView = siteRootView.findViewById(R.id.site_btn_checkin)
     }
 
@@ -35,6 +37,10 @@ class SiteView : ConstraintLayout {
     }
 
     fun getSiteName() = siteNameView.text.toString()
+
+    fun setSitePercentage(percentage: Int) {
+        sitePercentageView.text = "$percentage%"
+    }
 
     fun setSiteStatus(siteStatus: String) {
         siteStatusView.text = siteStatus
