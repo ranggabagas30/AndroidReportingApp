@@ -20,7 +20,8 @@ data class Schedule(
     val scheduleType: Int,
     val scheduleTypeText: String?,
     val ringId: String,
-    val ringName: String?
+    val ringName: String?,
+    val clusterName: String?
 )
 
 internal val Schedule.toTbSchedule
@@ -51,6 +52,7 @@ internal val TbSchedule.toSchedule
         this.rejection,
         -1,
         null,
+        "n/a",
         "n/a",
         "n/a"
     )
@@ -85,7 +87,8 @@ internal val JSONSchedule.toSchedule
         scheduleType = this.schedule_type,
         scheduleTypeText = this.schedule_type_text,
         ringId = this.ring_id,
-        ringName = this.ring_name
+        ringName = this.ring_name,
+        clusterName = this.cluster_name
     )
 
 internal val Schedule.toScheduleModel
@@ -104,7 +107,8 @@ internal val Schedule.toScheduleModel
         scheduleType = this.scheduleType,
         scheduleTypeText = this.scheduleTypeText?: "N/A tipe schedule",
         ringId = this.ringId,
-        ringName = this.ringName?: "N/A nama ring"
+        ringName = this.ringName?: "N/A nama ring",
+        clusterName = this.clusterName?: "N/A nama cluster"
     )
 
 private fun toReadableStatus(code: Int): String {
