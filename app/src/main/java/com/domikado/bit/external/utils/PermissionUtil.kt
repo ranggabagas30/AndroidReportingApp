@@ -6,6 +6,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.provider.Settings
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
@@ -15,27 +16,33 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 object PermissionUtil {
 
     fun hasPermissions(activity: Activity, permissions: Array<String>): Boolean {
-        for (permission in permissions) {
-            if (ActivityCompat.checkSelfPermission(activity, permission) != PackageManager.PERMISSION_GRANTED)
-                return false
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            for (permission in permissions) {
+                if (ActivityCompat.checkSelfPermission(activity, permission) != PackageManager.PERMISSION_GRANTED)
+                    return false
+            }
         }
         return true
     }
 
     fun shouldShowPermissionRationale(activity: Activity, permissions: Array<String>): Boolean {
-        for (permission in permissions) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission))
-                return true
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            for (permission in permissions) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission))
+                    return true
+            }
         }
         return false
     }
 
     fun requestPermissions(activity: Activity, permissions: Array<out String>, requestCode: Int) {
-        ActivityCompat.requestPermissions(activity, permissions, requestCode)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            ActivityCompat.requestPermissions(activity, permissions, requestCode)
     }
 
     fun requestPermissions(fragment: Fragment, permissions: Array<out String>, requestCode: Int) {
-        fragment.requestPermissions(permissions, requestCode)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            fragment.requestPermissions(permissions, requestCode)
     }
 
     fun openAppPermissionSettings(context: Context) {
