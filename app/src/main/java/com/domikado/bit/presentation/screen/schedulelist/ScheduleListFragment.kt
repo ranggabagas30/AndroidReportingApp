@@ -111,13 +111,11 @@ class ScheduleListFragment : BaseFragment(), IScheduleListContract.View {
                 operator: Operator?
             ) {
                 workDate?.also {
-                    if (isCheckInAllowed(it)) {
-                        when (siteStatus) {
-                            PROSES, TUNTAS, REJECT -> navigateToCheckIn(scheduleId, workDate, siteId, siteName, siteCode, siteStatus, siteLatitude, siteLongitude, siteMonitorId, operator)
-                            CHECK_IN -> navigateToFormFill(scheduleId, siteMonitorId, operator, siteLatitude, siteLongitude)
-                            else -> showError(BitThrowable.BitIllegalAccessException("Tidak bisa check in lagi"))
-                        }
-                    } else showError(BitThrowable.BitIllegalAccessException(TIDAK_BISA_CHECK_IN_SITE_SELAIN_HARI_INI))
+                    when (siteStatus) {
+                        PROSES, TUNTAS, REJECT -> navigateToCheckIn(scheduleId, workDate, siteId, siteName, siteCode, siteStatus, siteLatitude, siteLongitude, siteMonitorId, operator)
+                        CHECK_IN -> navigateToFormFill(scheduleId, siteMonitorId, operator, siteLatitude, siteLongitude)
+                        else -> showError(BitThrowable.BitIllegalAccessException("Tidak bisa check in lagi"))
+                    }
                 }
             }
 
@@ -138,7 +136,7 @@ class ScheduleListFragment : BaseFragment(), IScheduleListContract.View {
                                   siteMonitorId: Int,
                                   operator: Operator?) {
 
-        d {"navigate checkin -> " +
+             d {"navigate checkin -> " +
                 "scheduleId: $scheduleId, " +
                 "workdate: $workDate, " +
                 "site: $siteId, " +
