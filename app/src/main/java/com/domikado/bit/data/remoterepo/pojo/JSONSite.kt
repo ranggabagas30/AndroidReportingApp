@@ -35,6 +35,7 @@ data class JSONSite(
     val site_longitude: String?,
     val checkin_at: String?,
     val finnish_at: String?,
+    val proses: Int,
 
     val android_id: String?
 )
